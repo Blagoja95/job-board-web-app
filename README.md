@@ -8,4 +8,6 @@ return all users
 
 /users with parameters can be use to find specific user, update or delete user
 
-calling /users via POST method is used to create a new user
+calling /registe via POST method is used to create a new user
+
+calling /login via POST is used for login authentication
