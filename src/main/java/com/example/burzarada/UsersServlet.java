@@ -160,39 +160,6 @@ public class UsersServlet extends HttpServlet {
         return respJson;
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-
-        JSONObject respJson = new JSONObject();
-
-        String pass = request.getParameter("password");
-
-        if (pass.length() == 0) {
-            respJson.put("user", "pogresna lozinka");
-            response.getWriter().println(respJson);
-            return;
-        }
-
-        int hashPass = pass.hashCode();
-
-        int id = (int) (Math.random() * 1800) + 100;
-
-        User user = new User(
-                id,
-                request.getParameter("name"),
-                hashPass,
-                request.getParameter("email"),
-                request.getParameter("about"),
-                request.getParameter("username"),
-                request.getParameter("city")
-        );
-
-        DbAccess db = new DbAccess();
-
-        db.createUser(user);
-
-    }
-
     public void updateUser(HttpServletRequest request) throws IOException {
 
         String what = request.getParameter("what");
