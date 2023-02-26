@@ -67,4 +67,75 @@ public class DbAccess {
         else
             return null;
     }
+
+    public void createUser(User user) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into users (id, name, hashPass, email, about, username, city) values (?, ?, ?, ?, ?, ?, ?);"
+            );
+
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setInt(3, user.getHashPass());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getAbout());
+            preparedStatement.setString(6, user.getUsername());
+            preparedStatement.setString(7, user.getCity());
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUser(String what, String value1, String where, String value2) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE users SET " + what + "=? WHERE " + where + "=?"
+            );
+
+            preparedStatement.setString(1, value1);
+            preparedStatement.setString(2, value2);
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(String id) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM users WHERE id=?;"
+            );
+
+            preparedStatement.setString(1, id);
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -31,7 +31,7 @@ public class HelloServlet extends HttpServlet {
 
         List<User> users = db.getAllUsers();
 
-        for(User user : users){
+        for (User user : users) {
             System.out.println(user.toString());
             JSONObject jsonUser = new JSONObject();
 
@@ -51,6 +51,7 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("application/json");
         response.getWriter().println(respJson);
     }
+
 
     public void destroy() {
     }
