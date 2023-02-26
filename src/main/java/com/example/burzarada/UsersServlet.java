@@ -168,7 +168,7 @@ public class UsersServlet extends HttpServlet {
         String pass = request.getParameter("password");
 
         if (pass.length() == 0) {
-            respJson.put("user", "invalid password");
+            respJson.put("user", "pogresna lozinka");
             response.getWriter().println(respJson);
             return;
         }
