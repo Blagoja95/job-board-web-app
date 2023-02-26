@@ -6,6 +6,6 @@ Job posting web app made with JS JAVA, hosted using Tomcat server and MySql for 
 
 return all users
 
-/users with parameters can be use to find specific user, update or delte user
+/users with parameters can be use to find specific user, update or delete user
 
 calling /users via POST method is used to create a new user
