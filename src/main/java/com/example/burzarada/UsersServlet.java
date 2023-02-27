@@ -57,6 +57,7 @@ public class UsersServlet extends HttpServlet {
 
         } else if (request.getParameterMap().containsKey("delete")) {
             deleteUser(request);
+            response.setStatus(200);
 
         } else {
             response.setStatus(404);

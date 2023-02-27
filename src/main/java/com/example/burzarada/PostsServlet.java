@@ -60,6 +60,14 @@ public class PostsServlet extends HttpServlet {
 
             response.getWriter().println(returnPost("id", id));
 
+        } else if (request.getParameterMap().containsKey("update")) {
+            updatePost(request);
+            response.setStatus(200);
+
+        } else if (request.getParameterMap().containsKey("delete")) {
+            deletePost(request);
+            response.setStatus(200);
+
         } else {
             response.setStatus(404);
             response.getWriter().println(new JSONObject().put("bad request!", false));
@@ -113,5 +121,31 @@ public class PostsServlet extends HttpServlet {
             respJson.put("posts", resArr);
 
         return respJson;
+    }
+
+    public void updatePost(HttpServletRequest request) throws IOException {
+
+        String what = request.getParameter("what");
+        String value1 = request.getParameter("value1");
+        String where = request.getParameter("where");
+        String value2 = request.getParameter("value2");
+
+        new DbAccess().updatePost(what, value1, where, value2);
+    }
+
+    public void deletePost(HttpServletRequest request) throws IOException {
+        new DbAccess().deletePost(request.getParameter("id"));
+    }
+
+    // ########################################
+    // $$$$$ CREATE POST
+    // ########################################
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+
+        JSONObject respJson = new JSONObject();
+
+        // todo
     }
 }

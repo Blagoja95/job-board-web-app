@@ -197,4 +197,47 @@ public class DbAccess {
         else
             return null;
     }
+
+    public void updatePost(String what, String value1, String where, String value2) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE posts SET " + what + "=? WHERE " + where + "=?"
+            );
+
+            preparedStatement.setString(1, value1);
+            preparedStatement.setString(2, value2);
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePost(String id) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM posts WHERE id=?;"
+            );
+
+            preparedStatement.setString(1, id);
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
