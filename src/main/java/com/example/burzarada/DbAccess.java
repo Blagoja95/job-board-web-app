@@ -168,4 +168,33 @@ public class DbAccess {
         else
             return null;
     }
+
+    public List<Post> getPost(String parameter, String value) {
+        List<Post> posts = new LinkedList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE " + parameter + "='" + value + "';");
+
+
+            while (resultSet.next()) {
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual")));
+            }
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (posts.size() > 0)
+            return posts;
+        else
+            return null;
+    }
 }

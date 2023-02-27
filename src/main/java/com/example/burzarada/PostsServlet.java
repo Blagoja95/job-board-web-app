@@ -19,29 +19,99 @@ public class PostsServlet extends HttpServlet {
 
         if (request.getParameterMap().size() == 0) {
             response.getWriter().println(returnAllPosts());
+
+        } else if (request.getParameterMap().containsKey("title")) {
+            String title = request.getParameter("title");
+
+            if (title.length() == 0) {
+                response.getWriter().println(new JSONObject().put("title", "naslov!"));
+                return;
+            }
+
+            response.getWriter().println(returnPost("title", title));
+
+        } else if (request.getParameterMap().containsKey("city")) {
+            String city = request.getParameter("city");
+
+            if (city.length() == 0) {
+                response.getWriter().println(new JSONObject().put("city", "grad!"));
+                return;
+            }
+
+            response.getWriter().println(returnPost("city", city));
+
+        } else if (request.getParameterMap().containsKey("type")) {
+            String type = request.getParameter("type");
+
+            if (type.length() == 0) {
+                response.getWriter().println(new JSONObject().put("type", "tip!"));
+                return;
+            }
+
+            response.getWriter().println(returnPost("type", type));
+
+        } else if (!request.getParameterMap().containsKey("delete") && request.getParameterMap().containsKey("id")) {
+            String id = request.getParameter("id");
+
+            if (id.length() == 0) {
+                response.getWriter().println(new JSONObject().put("posts", "id!"));
+                return;
+            }
+
+            response.getWriter().println(returnPost("id", id));
+
+        } else {
+            response.setStatus(404);
+            response.getWriter().println(new JSONObject().put("bad request!", false));
         }
     }
 
-private JSONObject returnAllPosts() {
-    DbAccess db = new DbAccess();
+    private JSONObject returnAllPosts() {
+        DbAccess db = new DbAccess();
 
-    JSONArray resArr = new JSONArray();
+        JSONArray resArr = new JSONArray();
 
-    JSONObject respJson = new JSONObject();
+        JSONObject respJson = new JSONObject();
 
-    List<Post> posts = db.getAllPosts();
+        List<Post> posts = db.getAllPosts();
 
-    if (posts == null) {
-        respJson.put("users", null);
+        if (posts == null) {
+            respJson.put("posts", null);
+            return respJson;
+        }
+
+        for (Post post : posts) {
+            resArr.add(post.getPost());
+        }
+
+        respJson.put("posts", resArr);
+
         return respJson;
     }
 
-    for (Post post : posts) {
-        resArr.add(post.getPost());
+    private JSONObject returnPost(String parameter, String value) {
+        DbAccess db = new DbAccess();
+
+        JSONArray resArr = new JSONArray();
+
+        JSONObject respJson = new JSONObject();
+
+        List<Post> posts = db.getPost(parameter, value);
+
+        if (posts == null) {
+            respJson.put("posts", null);
+            return respJson;
+        }
+
+        for (Post post : posts) {
+            resArr.add(post.getPost());
+        }
+
+        if (resArr.size() == 0)
+            respJson.put("posts", null);
+        else
+            respJson.put("posts", resArr);
+
+        return respJson;
     }
-
-    respJson.put("users", resArr);
-
-    return respJson;
-}
 }
