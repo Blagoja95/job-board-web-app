@@ -70,7 +70,7 @@ public class UsersServlet extends HttpServlet {
             return respJson;
         }
 
-        for (User user : db.getAllUsers()) {
+        for (User user : users) {
             resArr.add(user.getUser());
         }
 
