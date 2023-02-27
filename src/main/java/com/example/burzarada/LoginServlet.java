@@ -16,7 +16,7 @@ public class LoginServlet extends HelloServlet {
 
         JSONObject respJson = new JSONObject();
 
-        if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password")){
+        if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password")) {
             respJson.put(false, "pogresna lozinka / ime");
 
             response.getWriter().println(respJson);
@@ -31,10 +31,9 @@ public class LoginServlet extends HelloServlet {
 
         User user;
 
-        if (users != null && users.size() >= 1){
+        if (users != null && users.size() >= 1) {
             user = users.get(0);
-        }
-        else {
+        } else {
             respJson.put(false, "nema korisnika sa ovim imenom");
 
             response.getWriter().println(respJson);
@@ -42,16 +41,14 @@ public class LoginServlet extends HelloServlet {
             return;
         }
 
-        if (user.getHashPass() == hash){
-            respJson.put(true, "pogresna lozinka");
+        if (user.getHashPass() == hash) {
+            respJson.put(true, true);
 
-            response.getWriter().println(true);
-        }
-        else {
-            respJson.put(true, "pogresna lozinka");
+            request.getSession().setAttribute(user.getUsername(), user.getId());
+        } else
+            respJson.put(false, "pogresna lozinka");
 
-            response.getWriter().println(respJson);
-        }
+        response.getWriter().println(respJson);
 
     }
 }
