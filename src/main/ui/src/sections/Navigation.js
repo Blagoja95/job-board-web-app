@@ -2,7 +2,7 @@ import React from "react";
 
 const Navigation =  () => {
     return (
-        <div className="flex flex-row justify-between pt-8 pb-24 px-24">
+        <div className="flex flex-row justify-between pt-8 pb-12 px-24">
             <div className="image"></div>
             
             <ul className="nav-ul w-2/6 flex flex-row justify-around">

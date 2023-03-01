@@ -1,15 +1,15 @@
 import React from 'react';
 import './index.css'
-import Navigation from './components/Navigation';
-import MainText from './components/MainText'
+import Navigation from './sections/Navigation';
+import Header from './sections/Header'
+import SearchBar from "./components/SearchBar";
 
 function App() {
   return (
     <div>
-
-
     <Navigation/>
-    <MainText/>
+    <Header/>
+    <SearchBar/>
     </div>
   );
 }
