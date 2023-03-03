@@ -10,6 +10,7 @@ public class Post {
     private String city;
     private String about;
     private String qual;
+    private Date date;
 
     public Post(int id, int companyID, String title, String type, String city, String about, String qual) {
         this.id = id;
