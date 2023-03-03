@@ -1,6 +1,15 @@
 # job-posting-web-app
 Job posting web app made with JS JAVA, hosted using Tomcat server and MySql for storing data
 
+## Colors
+
+[Colors](https://coolors.co/d8ddef-a0a4b8-7293a0-45b69c-21d19f)
+
+Main : 
+BG:
+
+
+## URI
 
 /users
 

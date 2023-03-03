@@ -5,6 +5,10 @@
 @layer components {
   .bg-gray-light {
     --tw-bg-opacity: 1;
-    background-color: rgba(243, 245, 254, var(--tw-bg-opacity));
+    background-color: rgba(226, 230, 243, var(--tw-bg-opacity));
+  } 
+
+  .search-shadow {
+    box-shadow: 0 7px 14px 0 rgb(8 15 52/3%);
   }
 }
