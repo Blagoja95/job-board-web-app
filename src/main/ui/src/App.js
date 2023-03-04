@@ -5,6 +5,7 @@ import SearchBar from "./components/SearchBar";
 import Footer from './sections/Footer';
 import Posts from './sections/Posts';
 import DetaildPost from './components/DetailedPost';
+import Users from './sections/Users';
 
 const posts = [
 	{
@@ -33,11 +34,28 @@ const post = {
 		date: new Date()
 }
 
+const users = [
+	{
+		id: 202,
+		name: 'Tritol',
+		email: 'some@mail.com',
+		about: 'Aout sdasdasd asd asd asd asd asd asd asd asd asd a',
+		city: 'Doboj'
+	},
+	{
+		id: 202,
+		name: 'Tritol',
+		email: 'some@mail.com',
+		about: 'Aout sdasdasd asd asd asd asd asd asd asd asd asd a',
+		city: 'Doboj'
+	}
+]
+
 function App() {
 	return (
 		<div>
 			<Navigation />
-			<DetaildPost post={post}/>
+			<Users users={users}/>
 			{/* <Header />
 			<SearchBar />
 			<Posts posts={posts} />

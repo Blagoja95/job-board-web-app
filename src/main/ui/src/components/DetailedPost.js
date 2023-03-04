@@ -5,12 +5,10 @@ import {
   faClock,
   faLink
 } from "@fortawesome/fontawesome-free-solid";
+
 import Button from "./Button";
 
-const openMail = (mail)  => {
-
-  window.location.href = 'mailto:' + mail;
-};
+import {openMail} from '../utils';
 
 const DetaildPost = ({ post }) => {
   return (
