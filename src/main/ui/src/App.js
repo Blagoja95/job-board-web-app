@@ -15,7 +15,17 @@ const posts = [
 		about: 'Potreban radnik za rad u skladistu',
 		qual: 'Poznavanje ...',
 		date: new Date()
-	}
+	},
+	{
+		id: 1000,
+		companyID: 209,
+		title: 'Potreban radnik u skladištu',
+		type: 'pun aražman',
+		city: 'Doboj',
+		about: 'Potreban radnik za rad u skladistu',
+		qual: 'Poznavanje ...',
+		date: new Date()
+	},
 ]
 
 function App() {
@@ -24,7 +34,7 @@ function App() {
 			<Navigation />
 			<Header />
 			<SearchBar />
-			<Posts users={posts[0]} />
+			<Posts posts={posts} />
 			<Footer />
 		</div>
 	);

@@ -10,7 +10,9 @@ const Footer = () => {
 
 				<div className="flex flex-row gap-4">
 					<div><a href="Pocetna" className="hover:text-mint">Početna</a></div>
+					<div>|</div>
 					<div><a href="#top" className="hover:text-mint">Vrati me na vrh</a></div>
+					<div>|</div>
 					<div><a href="/about" className="hover:text-mint">Informacije</a></div>
 				</div>
 			</div>

@@ -10,7 +10,7 @@ const Navigation = () => {
 
 			<div className="w-2/6 flex flex-row justify-around align-center">
 				{
-					navItemsText.map(item => <NavItem text={item.text} href={item.href} />)
+					navItemsText.map(item => <NavItem text={item.text} href={item.href} key={item.href}/>)
 				}
 			</div>
 
