@@ -1,9 +1,19 @@
 import { closeWindow } from "../utils";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {} from "@fortawesome/fontawesome-free-solid";
+import Login from "../components/Login";
+import Register from '../components/Register';
 
-const Window = (content) => {
+const whatToRender = (what) => {
+  switch (what) {
+    case 2:
+      return <Login />;
+    
+      case 3:
+        return <Register/>
+  }
+};
+
+const Window = ({content}) => {
   return (
     <div
       className="fixed top-40 left-[26%] w-[40%] min-h-[60%] bg-wht border-2 border-mint z-50"
@@ -14,7 +24,7 @@ const Window = (content) => {
           X
         </button>
       </div>
-      {/* {content} */}
+      {whatToRender(content)}
     </div>
   );
 };

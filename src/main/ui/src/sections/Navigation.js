@@ -17,8 +17,8 @@ const Navigation = () => {
 			</div>
 
 			<div className="register">
-				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} onClick={() => openWindow({})}/>
-				<Button text={"Prijava"} />
+				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} onClick={() => openWindow(3)}/>
+				<Button text={"Prijava"} onClick={() => openWindow(2)}/>
 			</div>
 		</div>
 	)

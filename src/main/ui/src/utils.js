@@ -15,3 +15,5 @@ export const openWindow = (content) => {
 
   forWin.render(<Window content={content}/>)
 };
+
+export const EMPTY_FUNCTION = () => {};
