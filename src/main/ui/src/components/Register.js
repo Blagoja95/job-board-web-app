@@ -16,7 +16,7 @@ const Register = () => {
         className="w-96 m-auto flex flex-col gap-5 mt-6"
         onSubmit={handleSubmit}
       >
-        <h3>Registracija</h3>
+        <h3 >Registracija</h3>
         <input type="text" placeholder="Ime kompanije" name='name' className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
         <input type="text" placeholder="Korisničko ime" name='username' className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
         <input type="text" placeholder="Grad" name='city' className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>

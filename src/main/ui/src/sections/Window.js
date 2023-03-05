@@ -1,19 +1,23 @@
 import { closeWindow } from "../utils";
 
 import Login from "../components/Login";
-import Register from '../components/Register';
+import Register from "../components/Register";
+import CreatePost from "../components/CreatePost";
 
 const whatToRender = (what) => {
   switch (what) {
+    case 1:
+      return <CreatePost />;
+
     case 2:
       return <Login />;
-    
-      case 3:
-        return <Register/>
+
+    case 3:
+      return <Register />;
   }
 };
 
-const Window = ({content}) => {
+const Window = ({ content }) => {
   return (
     <div
       className="fixed top-40 left-[26%] w-[40%] min-h-[60%] bg-wht border-2 border-mint z-50"
