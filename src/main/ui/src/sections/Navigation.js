@@ -1,6 +1,8 @@
 import Button from "../components/Button";
 import NavItem from "../components/NavItem";
 
+import {openWindow} from '../utils'
+
 const navItemsText = [{ text: "Početna", href: "" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
 
 const Navigation = () => {
@@ -15,7 +17,7 @@ const Navigation = () => {
 			</div>
 
 			<div className="register">
-				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} />
+				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} onClick={() => openWindow({})}/>
 				<Button text={"Prijava"} />
 			</div>
 		</div>

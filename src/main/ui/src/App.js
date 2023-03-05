@@ -6,6 +6,7 @@ import Footer from './sections/Footer';
 import Posts from './sections/Posts';
 import DetaildPost from './components/DetailedPost';
 import Users from './sections/Users';
+import Window from './sections/Window';
 
 const posts = [
 	{
@@ -55,11 +56,11 @@ function App() {
 	return (
 		<div>
 			<Navigation />
-			<Users users={users}/>
-			{/* <Header />
+			<div id="forWindow"></div>
+			<Header />
 			<SearchBar />
 			<Posts posts={posts} />
-			<Footer /> */}
+			<Footer />
 		</div>
 	);
 }
