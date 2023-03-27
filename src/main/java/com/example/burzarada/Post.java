@@ -2,6 +2,8 @@ package com.example.burzarada;
 
 import org.json.simple.JSONObject;
 
+import java.util.Date;
+
 public class Post {
     private int id;
     private int companyID;
@@ -12,7 +14,7 @@ public class Post {
     private String qual;
     private Date date;
 
-    public Post(int id, int companyID, String title, String type, String city, String about, String qual) {
+    public Post(int id, int companyID, String title, String type, String city, String about, String qual, Date date) {
         this.id = id;
         this.companyID = companyID;
         this.title = title;
@@ -20,6 +22,7 @@ public class Post {
         this.city = city;
         this.about = about;
         this.qual = qual;
+        this.date = date;
     };
 
     public int getId() {
@@ -70,6 +73,14 @@ public class Post {
         this.qual = qual;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public JSONObject getPost(){
         JSONObject post = new JSONObject();
 
@@ -80,6 +91,7 @@ public class Post {
         post.put("city", getCity());
         post.put("about", getAbout());
         post.put("qual", getQual());
+        post.put("date", getDate().toString());
 
         return post;
     }

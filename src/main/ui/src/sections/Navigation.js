@@ -18,7 +18,7 @@ const buttonState = () => { // TODO: fix sessions, log in state ...
 const Navigation = () => {
 	return (
 		<div className="flex flex-row justify-between pt-8 pb-12 px-24">
-			<div className="image"></div>
+			<div className="image"><span className="text-mint">Trebaš posao?</span></div>
 
 			<div className="w-2/6 flex flex-row justify-around align-center">
 				{

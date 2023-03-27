@@ -17,6 +17,10 @@ public class PostsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
+        // security risk, change wildcard to something more secure
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+
         if (request.getParameterMap().size() == 0) {
             response.getWriter().println(returnAllPosts());
 

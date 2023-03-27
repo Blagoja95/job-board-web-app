@@ -38,9 +38,11 @@ const ShortPost = ({ post }) => {
             <h3 className="text-coolGray-normal">Datum objave</h3>
           </div>
 
-          <p>{`${post.date.toLocaleTimeString(
-            "en-US"
-          )} ${post.date.getMonth()} ${post.date.getYear()}`}</p>
+          {/*<p>{`${post.date.toLocaleTimeString(*/}
+          {/*  "en-US"*/}
+          {/*)} ${post.date.getMonth()} ${post.date.getYear()}`}</p>*/}
+
+          <p>{`${post.date}`}</p>
         </div>
       </div>
     </a>

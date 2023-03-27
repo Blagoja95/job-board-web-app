@@ -154,7 +154,7 @@ public class DbAccess {
 
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("date")));
             }
 
             connection.close();
@@ -183,7 +183,7 @@ public class DbAccess {
 
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
             }
 
             connection.close();
