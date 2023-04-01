@@ -70,9 +70,13 @@ function App() {
 		<div>
 			<Navigation />
 			<div id="forWindow"></div>
-			<Header />
-			<SearchBar />
-			<Posts posts={posts} setPosts={setPosts} />
+			
+			<div className="forInner">
+				<Header />
+				<SearchBar />
+				<Posts posts={posts1} setPosts={setPosts} />
+			</div>
+			
 			<Footer />
 		</div>
 	);

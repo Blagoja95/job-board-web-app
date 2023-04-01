@@ -5,7 +5,7 @@ const Footer = () => {
 			<div className="flex flex-row justify-between w-5/6 px-16 py-10 border-t-2">
 				<div className="flex flex-row gap-4">
 					<img src="" alt="logo" />
-					<p>&#169;{new Date().getFullYear()} Ime firme. Sva prava zadrzana</p>
+					<p>&#169;{new Date().getFullYear()} Trebas posao. Sva prava zadržana</p>
 				</div>
 
 				<div className="flex flex-row gap-4">
