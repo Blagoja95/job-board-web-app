@@ -8,13 +8,6 @@ const makeShortPosts = (posts) => {
   ));
 };
 
-// const getPosts = (setPosts) => fetch('http://localhost:8080/posts')
-// 	.then(res => res.json())
-// 	.then(ob => {
-// 		console.log(ob);
-// 		setPosts(ob.posts)
-// 	});
-
 const post = {
   // TODO: remove later
   id: 1000,
@@ -45,7 +38,9 @@ const openDetailedPost = (id) => {
 };
 
 const Posts = ({ posts, setPosts }) => {
-	 
-  return <div className="py-20 postContainer">{makeShortPosts(posts)}</div>;
+
+  return <div className="py-20">
+	{makeShortPosts(posts)}
+	</div>;
 };
 export default Posts;

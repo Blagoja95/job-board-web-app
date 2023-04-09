@@ -3,7 +3,7 @@ import NavItem from "../components/NavItem";
 
 import {openWindow} from '../utils'
 
-const navItemsText = [{ text: "Početna", href: "" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
+const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
 
 const buttonState = () => { // TODO: fix sessions, log in state ...
 	const session = "";
@@ -13,6 +13,7 @@ const buttonState = () => { // TODO: fix sessions, log in state ...
 
 	else
 		return<Button text={"Prijava"} onClick={() => openWindow(2)}/>
+		// return<Button text={"Registracija"} onClick={() => openWindow(3)}/>
 };
 
 const Navigation = () => {

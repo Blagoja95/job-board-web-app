@@ -50,13 +50,7 @@ const ShortPost = ({ post, openDetailedPost }) => {
             <h3 className="text-coolGray-normal">Datum objave</h3>
           </div>
 
-          <p>{`${post.date.toLocaleTimeString("sh-SH", {
-            month: "long",
-            day: "2-digit",
-            year: "numeric",
-          })}`}</p>
-
-          {/* <p>{`${post.date}`}</p> */}
+          <p>{`${post.date}`}</p>
         </div>
       </div>
     </a>

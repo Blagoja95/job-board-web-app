@@ -60,3 +60,4 @@ public class HelloServlet extends HttpServlet {
     public void destroy() {
     }
 }
+// insert into posts (id, title, type, city, about, qual, companyID, date) values (12301, "Potreban WEB programer", "Remote", "Banja Luka", "InterPO je u potrazi za strucnim i motivisanim web programerom koji ce se pridruziti našem timu. Kao web programer u InterPO-u, vasa uloga bice da radite na razvoju i održavanju visokokvalitetnih web aplikacija za nase klijente. Vaše zaduzenje će obuhvatiti pisanje cistog i efikasnog koda, razumevanje potreba klijenata i kreiranje funkcionalnih i skalabilnih web resenja.", "Trazimo osobu koja poseduje iskustvo u programiranju na front-end i/ili back-endu i koja poznaje razlicite tehnologije kao sto su HTML, CSS, JavaScript, PHP i MySQL. Takodje, vazno nam je da imate iskustvo u radu sa razlicitim razvojnim alatima i okvirima kao sto su React, Angular, Vue.js, Laravel, Symfony i slicno.", 109, '2022-08-15 12:33:33');
