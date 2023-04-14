@@ -18,6 +18,10 @@ public class UsersServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers",
+            "Origin, X-Requested-With, Content-Type, Accept");
+
         if (request.getParameterMap().size() == 0) {
             response.getWriter().println(returnAllUsers());
 
