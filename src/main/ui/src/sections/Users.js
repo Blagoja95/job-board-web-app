@@ -6,9 +6,17 @@ import {
 import Button from "../components/Button";
 
 import { openMail } from '../utils';
+import { useEffect, useState } from "react";
 
 const makeShortUsers = (users) => {
 	return users.map(user => <User user={user} key={user.id} />)
+};
+
+const getUsers = (setUsers) => {
+	fetch('http://localhost:8080/users')
+.then(response => response.json())
+	.then(data => setUsers(data.users));
+	
 }
 
 const User = ({ user }) => {
@@ -39,6 +47,12 @@ const User = ({ user }) => {
 };
 
 const Users = () => {
+
+	const [users, setUser] = useState([]);
+
+	useEffect(() => {
+		getUsers(setUser);
+	}, [])
 	return (
 		<div className="mt-20 w-2/3 m-auto grid grid-cols-3 gap-x-2 gap-y-8">
 			{makeShortUsers(users)}
@@ -47,50 +61,3 @@ const Users = () => {
 }
 
 export default Users
-
-// TODO: remove later
-
-const users = [
-	{
-		id: 2022,
-		name: "Tritol",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		city: "Doboj",
-	},
-	{
-		id: 231,
-		name: "Comp1",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		city: "Banja Luka",
-	},
-	{
-		id: 1873,
-		name: "TriBi",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-		city: "Prijedor",
-	},
-	{
-		id: 156,
-		name: "ITAll",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-		city: "Zvornik",
-	},
-	{
-		id: 123,
-		name: "InterPRO",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		city: "Banja Luka",
-	},
-	{
-		id: 33,
-		name: "Klik tel",
-		email: "some@mail.com",
-		about: "Lorem ipsum dolor sit amet,  consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		city: "Banja Luka",
-	}
-];
