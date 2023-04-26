@@ -3,25 +3,20 @@ import { useNavigate } from 'react-router-dom';
 const About = () => {
 	const navigate = useNavigate();
 	return (
-		<div className="mx-auto w-10/12">
-			<button className="btn" onClick={() => navigate(-1)}>
-				Go Back
-			</button>
-			<div className="title">
-				<h1>About</h1>
-			</div>
-			<div className="about-container">
+		<div className="mx-auto w-10/12 flex justify-center">
+			<div className="max-w-[50%] flex flex-col gap-4">
+				<h1 className="text-mint">O autoru</h1>
+
 				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum
-					eos tenetur beatae nihil dolorum possimus voluptate esse voluptatibus,
-					aliquid ratione facere enim eveniet modi necessitatibus quas
-					asperiores pariatur, amet velit?
+					Boris Blagojević rođen je 22. septembra 1995. godine u Banjoj Luci. Završio je osnovnu školu u Banjoj Luci, nakon čega je upisao Srednju elektrotehničku školu "Nikola Tesla" takođe u Banjoj Luci, gdje je stekao zvanje tehničara telekomunikacija i maturirao 2014. godine.
 				</p>
+
 				<p>
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum
-					eos tenetur beatae nihil dolorum possimus voluptate esse voluptatibus,
-					aliquid ratione facere enim eveniet modi necessitatibus quas
-					asperiores pariatur, amet velit?
+				Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo studije poslovne informatike. Kasnije se prebacio na novi smjer inženjering informacionih tehnologija u akademskoj 2019-2020. godini.
+				</p>
+
+				<p>
+					Trenutno je Boris zaposlen kao programer. Tokom svog akademskog i profesionalnog puta, Boris je pokazao veliki interes prema tehnologiji i sklonost ka rješavanju problema u oblasti informacionih tehnologija.
 				</p>
 			</div>
 		</div>

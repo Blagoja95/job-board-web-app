@@ -20,7 +20,7 @@ const getUsers = (setUsers) => {
 }
 
 const User = ({ user }) => {
-	return <div className="flex flex-col gap-4 border rounded-xl w-80 m-auto py-2 px-4 hover:border-mint hover:border-2">
+	return <div className="flex flex-col gap-4 border rounded-xl w-80 m-auto py-2 px-4 hover:border-mint hover:border-2 min-h-[300px]">
 		<h3 className="text-mint">{user.name}</h3>
 
 		<div className="flex flex-row gap-5">

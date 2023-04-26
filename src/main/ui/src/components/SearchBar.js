@@ -17,6 +17,19 @@ const handleChange = async (value, param, setPosts) => {
 		setPosts(posts);
 };
 
+const onSearch = (setPosts) => {
+	const val = document.querySelector('.searchInput')?.value
+
+	if(!val && val?.length <= 1){
+		document.querySelector('.searchInput').value = '';
+		document.querySelector('.searchInput').placeholder = 'Polje ne moze biti prazno';
+	}
+	else{
+		handleChange(val, 'title', setPosts);
+		document.querySelector('.searchInput').placeholder = '';
+	}
+}
+
 const SearchBar = () => {
 	const {setPosts, types, cities} = useContext(PostsContext);
 
@@ -29,10 +42,15 @@ const SearchBar = () => {
 			<input
 				type="text"
 				placeholder="Pretraga po naslovu ..."
-				className="border-2 focus:border-mint outline-none pl-2 rounded-xl h-[40px] w-64"
+				className="searchInput border-2 focus:border-mint outline-none pl-2 rounded-xl h-[40px] w-64"
+				onKeyDown={(e) => {
+					if(e.key === 'Enter')
+						onSearch(setPosts)
+				}
+				}
 			></input>
 
-			<Button text={"Pretraži"} className="bg-mint text-wht" onClick={(value) => handleChange(value, 'title', setPosts)}/>
+			<Button text={"Pretraži"} className="bg-mint text-wht" onClick={() => onSearch(setPosts)}/>
 		</div>
 	);
 };
