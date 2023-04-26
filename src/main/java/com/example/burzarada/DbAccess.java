@@ -198,6 +198,34 @@ public class DbAccess {
             return null;
     }
 
+    public List<Post> searchPost(String value) {
+        List<Post> posts = new LinkedList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            Statement statement = connection.createStatement();
+
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE title LIKE '%" + value + "%';");
+
+            while (resultSet.next()) {
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
+            }
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (posts.size() > 0)
+            return posts;
+        else
+            return null;
+    }
+
     public void updatePost(String what, String value1, String where, String value2) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

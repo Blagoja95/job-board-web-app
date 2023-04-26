@@ -6,7 +6,8 @@ import {
 import Button from "../components/Button";
 
 import { openMail } from '../utils';
-import { useEffect, useState } from "react";
+import {useContext, useEffect} from "react";
+import {UsersContext} from "../App";
 
 const makeShortUsers = (users) => {
 	return users.map(user => <User user={user} key={user.id} />)
@@ -16,11 +17,10 @@ const getUsers = (setUsers) => {
 	fetch('http://localhost:8080/users')
 .then(response => response.json())
 	.then(data => setUsers(data.users));
-	
 }
 
 const User = ({ user }) => {
-	return <div className="flex flex-col gap-4 border rounded-xl w-80 m-auto py-2 px-4 hover:border-mint hover:border-2">
+	return <div className="flex flex-col gap-4 border rounded-xl w-80 m-auto py-2 px-4 hover:border-mint hover:border-2 min-h-[300px]">
 		<h3 className="text-mint">{user.name}</h3>
 
 		<div className="flex flex-row gap-5">
@@ -47,12 +47,12 @@ const User = ({ user }) => {
 };
 
 const Users = () => {
-
-	const [users, setUser] = useState([]);
+const {users, setUsers} = useContext(UsersContext);
 
 	useEffect(() => {
-		getUsers(setUser);
-	}, [])
+		getUsers(setUsers);
+	}, []);
+
 	return (
 		<div className="mt-20 w-2/3 m-auto grid grid-cols-3 gap-x-2 gap-y-8">
 			{makeShortUsers(users)}
