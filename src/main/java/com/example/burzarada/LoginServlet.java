@@ -12,9 +12,15 @@ import java.util.List;
 public class LoginServlet extends HelloServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        //TODO: more research on CORS topic; GITHUB isue #11
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
+
         response.setContentType("application/json");
 
         JSONObject respJson = new JSONObject();
+        System.out.println(request.getParameter("username"));
 
         if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password")) {
             respJson.put(false, "pogresna lozinka / ime");
