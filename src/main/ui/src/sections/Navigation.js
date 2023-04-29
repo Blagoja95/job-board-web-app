@@ -2,7 +2,7 @@ import Button from "../components/Button";
 import NavItem from "../components/NavItem";
 
 import {useNavigate} from "react-router-dom";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {LoginContext} from "../App";
 
 const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];

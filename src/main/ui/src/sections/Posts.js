@@ -1,8 +1,7 @@
-import DetaildPost from "../components/DetailedPost";
 import ShortPost from "../components/ShortPost";
-import ReactDOM from "react-dom";
 import {useContext, useEffect} from "react";
 import {PostsContext} from "../App";
+import {useNavigate} from "react-router-dom";
 
 const removeDuplicates = (items) => {
 	return items.filter((item,index) => items.indexOf(item) === index);
@@ -23,34 +22,22 @@ const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080
 		setTypes(removeDuplicates(types));
 	});
 
-const makeShortPosts = (posts) => {
+const makeShortPosts = (posts, nav) => {
 	return posts.map((post) => (
-		<ShortPost post={post} key={post.id} openDetailedPost={openDetailedPost} />
+		<ShortPost post={post} key={post.id} openDetailedPost={() => nav('/detailed' + '?id=' + post.id)} />
 	));
-};
-const openDetailedPost = (id) => {
-	const innerContent = document.querySelector(".forInner");
-
-	fetch("http://localhost:8080/post?id=" + id)
-		.then((res) => res.json())
-		.then((detaildPost) => {
-			while (innerContent.firstChild) {
-				innerContent.removeChild(innerContent.firstChild);
-			}
-
-			ReactDOM.render(<DetaildPost post={detaildPost} />, innerContent);
-		});
 };
 
 const Posts = () => {
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
+	const nav = useNavigate();
 
 	useEffect(() => {
 		getPosts(setPosts, setCities, setTypes);
 	}, []);
 
 	return <div className="py-20">
-		{makeShortPosts(posts)}
+		{makeShortPosts(posts, nav)}
 	</div>;
 };
 

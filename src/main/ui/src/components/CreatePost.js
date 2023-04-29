@@ -21,7 +21,7 @@ const handleSubmit = (e, nav) => {
 		.then(res => res.json())
 		.then(data => {
 			if(data['success']) {
-				nav('/posts'); // TODO: switch to detailed post
+				nav('/detailed?id=' + data['success']);
 			}
 		})
 };
