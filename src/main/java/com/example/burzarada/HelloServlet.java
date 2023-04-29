@@ -19,7 +19,7 @@ import jakarta.servlet.annotation.*;
 // alter table users add column city varchar(40);
 //update users set city="Banja Luka" where id=1123;
 
-// tritol22 123456789
+// tritol22 || besttri === 123456789
 @WebServlet("/test")
 public class HelloServlet extends HttpServlet {
     private String message;

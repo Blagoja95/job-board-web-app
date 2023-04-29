@@ -4,25 +4,27 @@ import Button from "./Button";
 const handleSubmit = (e) => {
 	e.preventDefault();
 
-	const username = document.getElementsByName("username")[0]['value'];
-	const password = document.getElementsByName("password")[0]['value'];
+	const params = new URLSearchParams();
+	params.append('username', document.getElementsByName("username")[0]['value']);
+	params.append('password', document.getElementsByName("password")[0]['value']);
 
 	fetch('http://localhost:8080/login', {
 		method: "POST",
-		body: JSON.stringify({
-			password: password,
-			username: username
-		})
+		body: params
 	})
-
-	closeWindow();
+		.then(res => res.json())
+		.then(data => {
+			if(data['success']) {
+				localStorage.setItem('login', data['success'])
+				closeWindow();
+			}
+		})
 };
 
 const Login = () => {
 	return (
 		<div className="">
 			<form
-				action=""
 				className="w-96 m-auto flex flex-col gap-5 mt-20 logForm"
 				onSubmit={handleSubmit}
 			>
