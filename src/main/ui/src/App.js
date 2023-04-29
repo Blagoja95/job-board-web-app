@@ -10,6 +10,7 @@ import CreatePost from "./components/CreatePost";
 import { Routes, Route } from "react-router-dom";
 import { useState, createContext } from "react";
 import Register from "./components/Register";
+import DetailedPost from "./components/DetailedPost";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -42,6 +43,7 @@ function App() {
 							<Route path="/login" element={<Login />} />
 							<Route path="/npost" element={<CreatePost />} />
 							<Route path="/register" element={<Register />} />
+							<Route path="/detailed" element={<DetailedPost />} />
 						</Routes>
 
 						<Footer />

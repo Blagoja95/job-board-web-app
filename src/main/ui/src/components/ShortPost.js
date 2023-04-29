@@ -8,10 +8,9 @@ import {
 const ShortPost = ({ post, openDetailedPost }) => {
 	return (
 		<a
-			href={"/post?id=" + post.id}
 			onClick={(e) => {
 				e.preventDefault();
-				openDetailedPost(post.id);
+				openDetailedPost();
 			}}
 		>
 			<div className="flex flex-row justify-around text-center border rounded-xl sm w-4/5 m-auto py-10 mb-4 hover:border-mint hover:border-2">

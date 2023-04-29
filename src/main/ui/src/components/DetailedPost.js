@@ -5,106 +5,146 @@ import {
 	faClock,
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
-
 import Button from "./Button";
-
 import { openMail } from "../utils";
+import {useEffect, useState} from "react";
 
-const DetaildPost = ({ post }) => {
-	return (
-		<>
-			<section className="bg-gray-light h-96 z-10" id="top">
-				<div className="pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0">
-					<h2 className="text-mint hover:underline">
-						<a className="" href={"/user?id=" + post.companyID}>
-							{post.company}
-						</a>
-						<FontAwesomeIcon className="ml-1 pb-2" icon={faLink} />
-					</h2>
-					<h1 className="md:text-4xl md:leading-snug pb-4 font-semibold text-coolGray-dark">
-						{post.title}
-					</h1>
-					<div className="m-auto">
-						<div className="flex flex-row justify-center items-center gap-2 text-coolGray-dark">
-							<span>Rad na lokaciji</span>
-							<span>|</span>
-							<span>{post.city}</span>
-							<FontAwesomeIcon
-								icon={faLocationArrow}
-								className="text-coolGray-normal"
-							/>
-						</div>
-					</div>
+const DetaildPost = () => {
+	const [detailed, setDetailed] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-					<div className="mt-20">
-						<div className="flex flex-row justify-around text-center">
-							<div>
-								<div className="flex flex-row items-center gap-2">
-									<h3 className="text-coolGray-normal">Angažman</h3>
-									<FontAwesomeIcon
-										icon={faClipboard}
-										className="text-coolGray-dark"
-									/>
-								</div>
+	useEffect(() => async () => {
+		const id = new URLSearchParams(window.location.search).get('id');
 
-								<p className="text-airForceBlue text-sm">
-									{post.type.charAt(0).toUpperCase() + post.type.slice(1)}
-								</p>
-							</div>
+		const post = await fetch('http://localhost:8080/posts?id=' + id)
+			.then(response => response.json())
+			.then(data => data.posts[0]);
 
-							<div>
-								<div className="flex flex-row items-center gap-2">
-									<h3 className="text-coolGray-normal">Datum objave</h3>
-									<FontAwesomeIcon
-										icon={faClock}
-										className="text-coolGray-dark"
-									/>
-								</div>
+		const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
+			.then(response => response.json())
+			.then(data => data.users[0]);
 
-								<p className="text-airForceBlue text-sm">{`${post.date.toLocaleTimeString(
-									"en-US"
-								)} ${post.date.getMonth()} ${post.date.getYear()}`}</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+		setDetailed({...post,
+			company: user.name,
+			companyAbout: user.about,
+			email: user.email
+		});
+		setLoading(false);
+	}, []);
 
-			<section>
-				<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
-					<h3 className="text-2xl font-semibold">O nama</h3>
+	if (loading)
+		return <div className={"text-mint font-bold text-2xl text-center pt-64 h-[70vh]"}>Loading ...</div>
 
-					<p className="mt-2 text-coolGray-dark">{post.companyAbout}</p>
-				</div>
-			</section>
-
-			<section>
-				<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
-					<h3 className="text-2xl font-semibold">Opis posla</h3>
-
-					<p className="mt-2 text-coolGray-dark">{post.about}</p>
-				</div>
-			</section>
-
-			<section>
-				<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
-					<h3 className="text-2xl font-semibold">Kvalifikacije</h3>
-
-					<p className="mt-2 text-coolGray-dark">{post.qual}</p>
-				</div>
-			</section>
-
-			<section>
-				<div className=" mt-10 text-center max-w-screen-sm m-auto px-6 lg:px-0">
-					<Button
-						text="Kontaktiraj"
-						className="text-wht bg-mint"
-						onClick={() => openMail(post.email)}
-					/>
-				</div>
-			</section>
-		</>
-	);
+	return PostJSX(detailed);
 };
 
 export default DetaildPost;
+
+const PostJSX = (detailed) => {
+	return <>
+		<section className="bg-gray-light h-96 z-10" id="top">
+			<div className="pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0">
+				<h2 className="text-mint hover:underline">
+					<a className="" href={"/user?id=" + detailed.companyID}>
+						{detailed.company}
+					</a>
+					<FontAwesomeIcon className="ml-1 pb-2" icon={faLink} />
+				</h2>
+				<h1 className="md:text-4xl md:leading-snug pb-4 font-semibold text-coolGray-dark">
+					{detailed.title}
+				</h1>
+				<div className="m-auto">
+					<div className="flex flex-row justify-center items-center gap-2 text-coolGray-dark">
+						<span>Rad na lokaciji</span>
+						<span>|</span>
+						<span>{detailed.city}</span>
+						<FontAwesomeIcon
+							icon={faLocationArrow}
+							className="text-coolGray-normal"
+						/>
+					</div>
+				</div>
+
+				<div className="mt-20">
+					<div className="flex flex-row justify-around text-center">
+						<div>
+							<div className="flex flex-row items-center gap-2">
+								<h3 className="text-coolGray-normal">Angažman</h3>
+								<FontAwesomeIcon
+									icon={faClipboard}
+									className="text-coolGray-dark"
+								/>
+							</div>
+
+							<p className="text-airForceBlue text-sm">
+								{detailed.type.charAt(0).toUpperCase() + detailed.type.slice(1)}
+							</p>
+						</div>
+
+						<div>
+							<div className="flex flex-row items-center gap-2">
+								<h3 className="text-coolGray-normal">Datum objave</h3>
+								<FontAwesomeIcon
+									icon={faClock}
+									className="text-coolGray-dark"
+								/>
+							</div>
+
+							<p className="text-airForceBlue text-sm">{`${detailed.date}`}</p>
+
+							{/*<p className="text-airForceBlue text-sm">{`${detailed.date.toLocaleTimeString(*/}
+							{/*	"en-US"*/}
+							{/*)} ${detailed.date.getMonth()} ${detailed.date.getYear()}`}</p>*/}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
+				<h3 className="text-2xl font-semibold">O nama</h3>
+
+				<p className="mt-2 text-coolGray-dark">{detailed.companyAbout}</p>
+			</div>
+		</section>
+
+		<section>
+			<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
+				<h3 className="text-2xl font-semibold">Opis posla</h3>
+
+				<p className="mt-2 text-coolGray-dark">{detailed.about}</p>
+			</div>
+		</section>
+
+		<section>
+			<div className=" mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
+				<h3 className="text-2xl font-semibold">Kvalifikacije</h3>
+
+				<p className="mt-2 text-coolGray-dark">{detailed.qual}</p>
+			</div>
+		</section>
+
+		<section>
+			<div className=" mt-10 text-center max-w-screen-sm m-auto px-6 lg:px-0">
+				<Button
+					text="Kontaktiraj"
+					className="text-wht bg-mint"
+					onClick={() => openMail(detailed.email)}
+				/>
+			</div>
+		</section>
+	</>};
+
+/*
+title
+type
+city
+about
+qual
+companyID
+date
+company / name
+companyAbout / about
+email
+ */
