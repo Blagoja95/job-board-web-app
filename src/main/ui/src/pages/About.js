@@ -1,9 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-
 const About = () => {
-	const navigate = useNavigate();
 	return (
-		<div className="mx-auto w-10/12 flex justify-center">
+		<div className="mx-auto w-10/12 flex justify-center h-[60vh]">
 			<div className="max-w-[50%] flex flex-col gap-4">
 				<h1 className="text-mint">O autoru</h1>
 

@@ -9,14 +9,14 @@ const handleSubmit = (e) => {
 // TODO: probably will need id to place in hidden fields
 const CreatePost = () => {
 	return (
-		<div className="">
+		<div className="h-[60vh]">
 			<form
 				action="/createPost"
 				method="POST"
 				className="w-96 m-auto flex flex-col gap-5 mt-6"
 				onSubmit={handleSubmit}
 			>
-				<h3>Objavi oglas</h3>
+				<h3 className="text-mint">Objavi oglas</h3>
 				<input type="hidden" value="userId" name="companyID" />
 				<input type="text" placeholder="Naslov" name='title' className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" />
 				<input type="text" placeholder="Angažmana" name='type' className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" />

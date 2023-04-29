@@ -1,22 +1,16 @@
 import Button from "../components/Button";
 import NavItem from "../components/NavItem";
 
-import {openWindow} from '../utils'
+import {useNavigate} from "react-router-dom";
+import {useContext, useState} from "react";
+import {LoginContext} from "../App";
 
 const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
 
-const buttonState = () => { // TODO: fix sessions, log in state ...
-	const session = "";
-
-	if(session === "Something to fix")
-		return<Button text={"Odjavi se"} onClick={() => openWindow(2)}/>
-
-	else
-		return<Button text={"Prijava"} onClick={() => openWindow(2)}/>
-		// return<Button text={"Registracija"} onClick={() => openWindow(3)}/>
-};
-
 const Navigation = () => {
+	const nav = useNavigate();
+	const {logged, setLogged} = useContext(LoginContext);
+
 	return (
 		<div className="flex flex-row justify-between pt-8 pb-12 px-24">
 			<div className="image"><span className="text-mint">Trebaš posao?</span></div>
@@ -28,8 +22,35 @@ const Navigation = () => {
 			</div>
 
 			<div className="register">
-				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} onClick={() => openWindow(1)}/>
-				{buttonState()}
+				<Button text={"Objavi oglas"} className={"mr-2 bg-mint text-wht"} onClick={() => {
+					if (logged.length > 0)
+						nav('/npost');
+					else
+						nav('/login');
+				}
+				}/>
+
+				{
+					logged.length > 0 ?
+					<Button text={"Odjavi se"} onClick={() => {
+						const user = logged ? logged[0] : '';
+					setLogged([]);
+					localStorage.removeItem('login');
+
+						const inner = document.querySelector('.forInner');
+
+						inner.insertAdjacentHTML('beforeend', `
+						<p class="py-4"> Hvala na posjeti 
+						<span class="text-mint">${user}</span>!
+						</p>`);
+
+						setTimeout(() => {
+							while (inner.firstChild) inner.removeChild(inner.firstChild);
+						}, 2000);
+
+				}}/> :
+					<Button text={"Prijava"} onClick={() => nav('/login')}/>
+				}
 			</div>
 		</div>
 	)
