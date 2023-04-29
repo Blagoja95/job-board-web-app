@@ -7,11 +7,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 @WebServlet("/register")
 public class RegiserUserServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO: more research on CORS topic; GITHUB isue #11
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
+
         response.setContentType("application/json");
 
         JSONObject respJson = new JSONObject();
@@ -19,7 +26,7 @@ public class RegiserUserServlet extends HttpServlet {
         String pass = request.getParameter("password");
 
         if (pass.length() == 0) {
-            respJson.put("user", "pogresna lozinka");
+            respJson.put("wrongPass", "pogresna lozinka");
             response.getWriter().println(respJson);
             return;
         }
@@ -42,7 +49,7 @@ public class RegiserUserServlet extends HttpServlet {
 
         db.createUser(user);
 
-        respJson.put(true, "korisnički nalog uspješno napravljen");
+        respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
 
         response.getWriter().println(respJson);
     }

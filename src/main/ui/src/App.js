@@ -8,45 +8,46 @@ import Login from "./components/Login";
 import CreatePost from "./components/CreatePost";
 
 import { Routes, Route } from "react-router-dom";
-import {useState,  createContext} from "react";
+import { useState, createContext } from "react";
+import Register from "./components/Register";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
 export const LoginContext = createContext(null);
 
 function App() {
-console.log(localStorage.getItem('login'));
 	const [posts, setPosts] = useState([]);
 	const [users, setUsers] = useState([]);
 	const [cities, setCities] = useState([]);
 	const [types, setTypes] = useState([]);
 	const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('login')) || []);
 
-	const postsValue = {posts, setPosts, cities, setCities, types, setTypes};
+	const postsValue = { posts, setPosts, cities, setCities, types, setTypes };
 
 	return (
 		<>
 			<PostsContext.Provider value={postsValue}>
-			<UsersContext.Provider value={{users, setUsers}}>
-			<LoginContext.Provider value={{logged, setLogged}}>
+				<UsersContext.Provider value={{ users, setUsers }}>
+					<LoginContext.Provider value={{ logged, setLogged }}>
 
-			<Navigation />
+						<Navigation />
 
-			<div className="forInner flex flex-row justify-center"></div>
+						<div className="forInner flex flex-row justify-center"></div>
 
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/posts" element={<Home />} />
-				<Route path="/users" element={<Companies />} />
-				<Route path="/about" element={<About />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/npost" element={<CreatePost />} />
-			</Routes>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/posts" element={<Home />} />
+							<Route path="/users" element={<Companies />} />
+							<Route path="/about" element={<About />} />
+							<Route path="/login" element={<Login />} />
+							<Route path="/npost" element={<CreatePost />} />
+							<Route path="/register" element={<Register />} />
+						</Routes>
 
-			<Footer />
+						<Footer />
 
-			</LoginContext.Provider>
-			</UsersContext.Provider>
+					</LoginContext.Provider>
+				</UsersContext.Provider>
 			</PostsContext.Provider>
 
 		</>

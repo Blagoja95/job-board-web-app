@@ -1,10 +1,9 @@
-import { EMPTY_FUNCTION, closeWindow } from "../utils";
+import { EMPTY_FUNCTION} from "../utils";
 import Button from "./Button";
 
 const handleSubmit = (e) => {
 	e.preventDefault();
 
-	closeWindow();
 };
 // TODO: probably will need id to place in hidden fields
 const CreatePost = () => {

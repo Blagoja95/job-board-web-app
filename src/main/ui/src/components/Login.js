@@ -1,8 +1,8 @@
-import { EMPTY_FUNCTION, closeWindow } from "../utils";
+import { EMPTY_FUNCTION} from "../utils";
 import Button from "./Button";
-import {useContext} from "react";
-import {LoginContext} from "../App";
-import {useNavigate} from "react-router-dom";
+import { useContext } from "react";
+import { LoginContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const handleSubmit = (e, setLogged, nav) => {
 	e.preventDefault();
@@ -18,7 +18,7 @@ const handleSubmit = (e, setLogged, nav) => {
 	})
 		.then(res => res.json())
 		.then(data => {
-			if(data['success']) {
+			if (data['success']) {
 				localStorage.setItem('login', JSON.stringify(data['success']));
 				setLogged(data['success']);
 				nav('/posts');
@@ -27,7 +27,7 @@ const handleSubmit = (e, setLogged, nav) => {
 };
 
 const Login = () => {
-	const {setLogged} = useContext(LoginContext);
+	const { setLogged } = useContext(LoginContext);
 
 	const nav = useNavigate();
 
@@ -38,8 +38,8 @@ const Login = () => {
 				onSubmit={(e) => handleSubmit(e, setLogged, nav)}
 			>
 				<h3 className="text-mint">Prijava</h3>
-				<input type="text" placeholder="Korisničko ime" name="username" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4}/>
-				<input type="password" placeholder="Lozinka" name="password" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4}/>
+				<input type="text" placeholder="Korisničko ime" name="username" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
+				<input type="password" placeholder="Lozinka" name="password" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
 
 				<Button
 					text={"Prijavi se"}
@@ -48,6 +48,10 @@ const Login = () => {
 					onClick={EMPTY_FUNCTION}
 				/>
 			</form>
+
+			<div className={"flex flex-row justify-center mt-10"}>
+				Niste registrovani? Napravite novi <span className="text-mint ml-1 cursor-pointer" onClick={() => nav('/register')}>Nalog</span>
+			</div>
 		</div>
 	);
 };
