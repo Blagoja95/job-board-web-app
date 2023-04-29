@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/posts")
@@ -89,9 +90,10 @@ public class PostsServlet extends HttpServlet {
         List<Post> posts = db.getAllPosts();
 
         if (posts == null) {
-            respJson.put("posts", null);
+            respJson.put("posts", new ArrayList<>());
             return respJson;
         }
+
 
         for (Post post : posts) {
             resArr.add(post.getPost());
@@ -108,11 +110,15 @@ public class PostsServlet extends HttpServlet {
         JSONArray resArr = new JSONArray();
 
         JSONObject respJson = new JSONObject();
+        List<Post> posts;
 
-        List<Post> posts = db.getPost(parameter, value);
+        if(parameter.equals("title"))
+            posts = db.searchPost(value);
+        else
+            posts = db.getPost(parameter, value);
 
         if (posts == null) {
-            respJson.put("posts", null);
+            respJson.put("posts", new ArrayList<>());
             return respJson;
         }
 
@@ -121,7 +127,7 @@ public class PostsServlet extends HttpServlet {
         }
 
         if (resArr.size() == 0)
-            respJson.put("posts", null);
+            respJson.put("posts", new ArrayList<>());
         else
             respJson.put("posts", resArr);
 

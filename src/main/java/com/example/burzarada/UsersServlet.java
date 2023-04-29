@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class UsersServlet extends HttpServlet {
         List<User> users = db.getAllUsers();
 
         if (users == null) {
-            respJson.put("users", null);
+            respJson.put("users", new ArrayList<>());
             return respJson;
         }
 
@@ -88,7 +89,7 @@ public class UsersServlet extends HttpServlet {
         }
 
         if (resArr.size() == 0)
-            respJson.put("users", null);
+            respJson.put("users", new ArrayList<>());
         else
             respJson.put("users", resArr);
 
@@ -105,7 +106,7 @@ public class UsersServlet extends HttpServlet {
         List<User> users = db.getUser(parameter, value);
 
         if (users == null) {
-            respJson.put("users", null);
+            respJson.put("users", new ArrayList<>());
             return respJson;
         }
 
@@ -114,7 +115,7 @@ public class UsersServlet extends HttpServlet {
         }
 
         if (resArr.size() == 0)
-            respJson.put("users", null);
+            respJson.put("users", new ArrayList<>());
         else
             respJson.put("users", resArr);
 

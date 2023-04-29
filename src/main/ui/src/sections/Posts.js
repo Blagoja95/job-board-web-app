@@ -1,18 +1,29 @@
 import DetaildPost from "../components/DetailedPost";
 import ShortPost from "../components/ShortPost";
 import ReactDOM from "react-dom";
-import { useState, useEffect } from "react";
+import {useContext, useEffect} from "react";
+import {PostsContext} from "../App";
 
-const getPosts = (setPosts) => fetch('http://localhost:8080/posts')
+const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080/posts')
 	.then(response => response.json())
-	.then(data => setPosts(data.posts));
+	.then(data => {
+		const types = [], cities = [];
+
+		data.posts.forEach(post => {
+			types.push(post.type);
+			cities.push(post.city);
+		});
+
+		setPosts(data.posts);
+		setCities(cities);
+		setTypes(types);
+	});
 
 const makeShortPosts = (posts) => {
 	return posts.map((post) => (
 		<ShortPost post={post} key={post.id} openDetailedPost={openDetailedPost} />
 	));
 };
-
 const openDetailedPost = (id) => {
 	const innerContent = document.querySelector(".forInner");
 
@@ -28,12 +39,11 @@ const openDetailedPost = (id) => {
 };
 
 const Posts = () => {
-	const [posts, setPosts] = useState([]);
+	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 
 	useEffect(() => {
-			getPosts(setPosts);
-		}, []);
-		
+		getPosts(setPosts, setCities, setTypes);
+	}, []);
 
 	return <div className="py-20">
 		{makeShortPosts(posts)}
