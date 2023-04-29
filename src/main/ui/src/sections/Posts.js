@@ -4,6 +4,10 @@ import ReactDOM from "react-dom";
 import {useContext, useEffect} from "react";
 import {PostsContext} from "../App";
 
+const removeDuplicates = (items) => {
+	return items.filter((item,index) => items.indexOf(item) === index);
+};
+
 const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080/posts')
 	.then(response => response.json())
 	.then(data => {
@@ -15,8 +19,8 @@ const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080
 		});
 
 		setPosts(data.posts);
-		setCities(cities);
-		setTypes(types);
+		setCities(removeDuplicates(cities));
+		setTypes(removeDuplicates(types));
 	});
 
 const makeShortPosts = (posts) => {

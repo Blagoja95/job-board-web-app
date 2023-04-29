@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/posts")
@@ -155,8 +156,35 @@ public class PostsServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
 
+        //TODO: more research on CORS topic; GITHUB isue #11
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
+
         JSONObject respJson = new JSONObject();
 
-        // todo
+        int id = (int) (Math.random() * 10000) + 100;
+
+        Post post = new Post(
+                id,
+                request.getParameter("companyID"),
+                request.getParameter("title"),
+                request.getParameter("type"),
+                request.getParameter("city"),
+                request.getParameter("about"),
+                request.getParameter("qual"),
+                new Date()
+        );
+
+        System.out.println(post.getPost());
+
+        DbAccess db = new DbAccess();
+
+        db.createPost(post);
+
+        respJson.put("success", post.getId());
+
+        response.getWriter().println(respJson);
+
     }
 }

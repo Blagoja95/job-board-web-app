@@ -10,11 +10,9 @@ const handleSubmit = (e, setLogged, nav) => {
 	const params = new URLSearchParams();
 	const form = document.querySelector('.regForm');
 
-	for (let item of document.querySelector('.regForm').elements ){
-		if(item['name'] !== 'skip'){
-		params.append(item['name'], item.value);
-		}
-	}
+	for (let item of form.elements )
+		if(item['name'] !== 'skip')
+			params.append(item['name'], item.value);
 
 	fetch('http://localhost:8080/register', {
 		method: "POST",
