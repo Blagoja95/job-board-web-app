@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Post {
     private int id;
-    private int companyID;
+    private String companyID;
     private String title;
     private String type;
     private String city;
@@ -14,7 +14,7 @@ public class Post {
     private String qual;
     private Date date;
 
-    public Post(int id, int companyID, String title, String type, String city, String about, String qual, Date date) {
+    public Post(int id, String companyID, String title, String type, String city, String about, String qual, Date date) {
         this.id = id;
         this.companyID = companyID;
         this.title = title;
@@ -25,11 +25,14 @@ public class Post {
         this.date = date;
     };
 
+    public Post(int id, String companyID, String title, String type, String city, String about, String qual) {
+    }
+
     public int getId() {
         return id;
     }
 
-    public int getCompanyID() {
+    public String getCompanyID() {
         return companyID;
     }
 

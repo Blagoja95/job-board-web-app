@@ -1,6 +1,8 @@
 package com.example.burzarada;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -154,7 +156,14 @@ public class DbAccess {
 
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("date")));
+                posts.add(new Post(resultSet.getInt("id"),
+                        resultSet.getString("companyID"),
+                        resultSet.getString("title"),
+                        resultSet.getString("type"),
+                        resultSet.getString("city"),
+                        resultSet.getString("about"),
+                        resultSet.getString("qual"),
+                        resultSet.getDate("date")));
             }
 
             connection.close();
@@ -183,7 +192,7 @@ public class DbAccess {
 
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
             }
 
             connection.close();
@@ -211,7 +220,7 @@ public class DbAccess {
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE title LIKE '%" + value + "%';");
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getInt("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
             }
 
             connection.close();
@@ -259,6 +268,37 @@ public class DbAccess {
             );
 
             preparedStatement.setString(1, id);
+
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createPost(Post post) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into posts (id, title, type, city, about, qual, companyID, date) values (?, ?, ?, ?, ?, ?, ?, ?);"
+            );
+
+            preparedStatement.setInt(1, post.getId());
+            preparedStatement.setString(2, post.getTitle());
+            preparedStatement.setString(3, post.getType());
+            preparedStatement.setString(4, post.getCity());
+            preparedStatement.setString(5, post.getAbout());
+            preparedStatement.setString(6, post.getQual());
+            preparedStatement.setString(7, post.getCompanyID());
+
+            // TODO: how to set time (hh:mm:ss)
+            preparedStatement.setDate(8, java.sql.Date.valueOf(java.time.LocalDate.now()));
 
             preparedStatement.executeUpdate();
 
