@@ -6,18 +6,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HelloServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        //TODO: more research on CORS topic; GITHUB isue #11
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
+
         response.setContentType("application/json");
 
         JSONObject respJson = new JSONObject();
 
         if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password")) {
-            respJson.put(false, "pogresna lozinka / ime");
+            respJson.put("empty", "pogresna lozinka / ime");
 
             response.getWriter().println(respJson);
 
@@ -34,7 +40,7 @@ public class LoginServlet extends HelloServlet {
         if (users != null && users.size() >= 1) {
             user = users.get(0);
         } else {
-            respJson.put(false, "nema korisnika sa ovim imenom");
+            respJson.put("wrongName", "nema korisnika sa ovim imenom");
 
             response.getWriter().println(respJson);
 
@@ -42,11 +48,11 @@ public class LoginServlet extends HelloServlet {
         }
 
         if (user.getHashPass() == hash) {
-            respJson.put(true, true);
+            respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
 
             request.getSession().setAttribute(user.getUsername(), user.getId());
         } else
-            respJson.put(false, "pogresna lozinka");
+            respJson.put("wrongpassword", "pogresna lozinka");
 
         response.getWriter().println(respJson);
 
