@@ -29,6 +29,7 @@ target/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
+!**/src/main/**/build/
 !**/src/test/**/build/
 
 ### VS Code ###
@@ -37,7 +38,6 @@ build/
 ### NODEJS ###
 node_modules/
 build/
-public/
 
 ### Mac OS ###
 .DS_Store

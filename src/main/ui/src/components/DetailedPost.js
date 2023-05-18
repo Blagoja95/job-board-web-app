@@ -9,6 +9,12 @@ import Button from "./Button";
 import { openMail } from "../utils";
 import {useEffect, useState} from "react";
 
+const handleDelete = (id) => {
+	console.log(id);
+
+	
+}
+
 const DetaildPost = () => {
 	const [detailed, setDetailed] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -41,6 +47,8 @@ const DetaildPost = () => {
 export default DetaildPost;
 
 const PostJSX = (detailed) => {
+	const userID = JSON.parse(localStorage.getItem('login'));
+
 	return <>
 		<section className="bg-gray-light h-96 z-10" id="top">
 			<div className="pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0">
@@ -127,11 +135,20 @@ const PostJSX = (detailed) => {
 
 		<section>
 			<div className=" mt-10 text-center max-w-screen-sm m-auto px-6 lg:px-0">
-				<Button
+				{
+					(Array.isArray(userID) && userID[1] === Number.parseInt(detailed.companyID)) ?
+						 <Button
+					text="Obriši oglas"
+					className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
+					onClick={() => handleDelete(detailed.id)}
+					/>
+					:
+					<Button
 					text="Kontaktiraj"
 					className="text-wht bg-mint"
 					onClick={() => openMail(detailed.email)}
-				/>
+					/>
+				}
 			</div>
 		</section>
 	</>};

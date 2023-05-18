@@ -32,4 +32,4 @@ calling /login via POST is used for login authentication
 
 {simular use for /users (delete or update)}
 
-/posts via POST method  to create a new post (TODO)
+/posts via POST method  to create a new post
