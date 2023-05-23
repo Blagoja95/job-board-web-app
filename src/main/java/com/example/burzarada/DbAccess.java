@@ -152,12 +152,14 @@ public class DbAccess {
 
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts;");
-
+            // TODO: if necessary make a new method
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts;");
+            ResultSet resultSet = statement.executeQuery("select posts.id, posts.title, posts.type, posts.city, posts.about, posts.qual, posts.companyID, posts.date, users.name from posts join users on users.id = posts.companyID;");
 
             while (resultSet.next()) {
                 posts.add(new Post(resultSet.getInt("id"),
                         resultSet.getString("companyID"),
+                        resultSet.getString("name"),
                         resultSet.getString("title"),
                         resultSet.getString("type"),
                         resultSet.getString("city"),
@@ -192,7 +194,7 @@ public class DbAccess {
 
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"), resultSet.getString("qual"), resultSet.getDate("Date")));
             }
 
             connection.close();
@@ -217,10 +219,10 @@ public class DbAccess {
 
             Statement statement = connection.createStatement();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE title LIKE '%" + value + "%';");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE title LIKE '%" + value + "%';");
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"),  resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"), resultSet.getString("qual"), resultSet.getDate("Date")));
             }
 
             connection.close();

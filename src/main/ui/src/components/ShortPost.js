@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/fontawesome-free-solid";
 
 const ShortPost = ({ post, openDetailedPost }) => {
+
 	return (
 		<a
 			onClick={(e) => {
@@ -14,12 +15,14 @@ const ShortPost = ({ post, openDetailedPost }) => {
 			}}
 		>
 			<div className="flex flex-row justify-around text-center border rounded-xl sm w-4/5 m-auto py-10 mb-4 hover:border-mint hover:border-2">
-				<div className="text-left">
+				<img src={"https://picsum.photos/64?random=" + post.id}></img>
+
+				<div className="text-left flex flex-col items-left gap-2">
 					<h3 className="text-mint">{post.title}</h3>
 					<p>{post.companyName}</p>
 				</div>
 
-				<div>
+				<div className="flex flex-col items-center">
 					<div className="flex flex-row items-center gap-2">
 						<FontAwesomeIcon
 							icon={faLocationArrow}
@@ -31,7 +34,7 @@ const ShortPost = ({ post, openDetailedPost }) => {
 					<p>{post.city}</p>
 				</div>
 
-				<div>
+				<div className="flex flex-col items-center">
 					<div className="flex flex-row items-center gap-2">
 						<FontAwesomeIcon
 							icon={faClipboard}
@@ -43,7 +46,7 @@ const ShortPost = ({ post, openDetailedPost }) => {
 					<p>{post.type.charAt(0).toUpperCase() + post.type.slice(1)}</p>
 				</div>
 
-				<div>
+				<div className="flex flex-col items-center">
 					<div className="flex flex-row items-center gap-2">
 						<FontAwesomeIcon icon={faClock} className="text-coolGray-normal" />
 						<h3 className="text-coolGray-normal">Datum objave</h3>

@@ -10,11 +10,14 @@ public class User {
     private int hashPass;
     private String email;
     private String about;
-    private  String username;
+    private String username;
 
     private String city;
 
-    public User () {};
+    public User() {
+    }
+
+    ;
 
     public User(int id, String name, int hashPass, String email, String about, String username, String city) {
         this.id = id;
@@ -66,20 +69,20 @@ public class User {
         return id;
     }
 
-    public JSONObject getUser(){
-     JSONObject user = new JSONObject();
+    public JSONObject getUser() {
+        JSONObject user = new JSONObject();
 
-     user.put("id", getId());
-     user.put("name", getName());
-     user.put("username", getUsername());
-     user.put("email", getEmail());
-     user.put("about", getAbout());
-     user.put("city", getCity());
+        user.put("id", getId());
+        user.put("name", getName());
+        user.put("username", getUsername());
+        user.put("email", getEmail());
+        user.put("about", getAbout());
+        user.put("city", getCity());
 
-     return user;
+        return user;
     }
 
-    public JSONArray getUserLogin (){
+    public JSONArray getUserLogin() {
         JSONArray userLogin = new JSONArray();
 
         userLogin.add(getUsername());
