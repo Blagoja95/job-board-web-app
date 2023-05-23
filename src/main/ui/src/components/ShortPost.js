@@ -4,8 +4,13 @@ import {
 	faClipboard,
 	faClock,
 } from "@fortawesome/fontawesome-free-solid";
+import { useContext } from "react";
+import { UsersContext } from "../App";
 
 const ShortPost = ({ post, openDetailedPost }) => {
+	const {users} = useContext(UsersContext);
+	const user = users.find(user => user.id === post.id) ?? "Company Name e.g.";
+
 	return (
 		<a
 			onClick={(e) => {
@@ -14,9 +19,11 @@ const ShortPost = ({ post, openDetailedPost }) => {
 			}}
 		>
 			<div className="flex flex-row justify-around text-center border rounded-xl sm w-4/5 m-auto py-10 mb-4 hover:border-mint hover:border-2">
-				<div className="text-left">
+				<img src="https://picsum.photos/64/64"></img>
+
+				<div className="text-left flex flex-col items-left gap-2">
 					<h3 className="text-mint">{post.title}</h3>
-					<p>{post.companyName}</p>
+					<p>{user.name}</p>
 				</div>
 
 				<div>
