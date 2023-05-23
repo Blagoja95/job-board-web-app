@@ -6,13 +6,13 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "./Button";
-import { openMail } from "../utils";
+import {openMail} from "../utils";
 import {useEffect, useState} from "react";
+import Modal from "./Modal";
+import {createPortal} from "react-dom";
 
 const handleDelete = (id) => {
-	console.log(id);
-
-	
+	createPortal (<Modal/>, document.getElementById('root'))
 }
 
 const DetaildPost = () => {
@@ -152,16 +152,3 @@ const PostJSX = (detailed) => {
 			</div>
 		</section>
 	</>};
-
-/*
-title
-type
-city
-about
-qual
-companyID
-date
-company / name
-companyAbout / about
-email
- */
