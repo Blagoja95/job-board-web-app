@@ -21,7 +21,7 @@ public class UsersServlet extends HttpServlet {
 
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept");
+                "Origin, X-Requested-With, Content-Type, Accept");
 
         if (request.getParameterMap().size() == 0) {
             response.getWriter().println(returnAllUsers());

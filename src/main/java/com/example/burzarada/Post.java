@@ -7,12 +7,25 @@ import java.util.Date;
 public class Post {
     private int id;
     private String companyID;
+    private String companyName;
     private String title;
     private String type;
     private String city;
     private String about;
     private String qual;
     private Date date;
+
+    public Post(int id, String companyID, String companyName, String title, String type, String city, String about, String qual, Date date) {
+        this.id = id;
+        this.companyID = companyID;
+        this.companyName = companyName;
+        this.title = title;
+        this.type = type;
+        this.city = city;
+        this.about = about;
+        this.qual = qual;
+        this.date = date;
+    }
 
     public Post(int id, String companyID, String title, String type, String city, String about, String qual, Date date) {
         this.id = id;
@@ -23,9 +36,21 @@ public class Post {
         this.about = about;
         this.qual = qual;
         this.date = date;
-    };
+    }
 
     public Post(int id, String companyID, String title, String type, String city, String about, String qual) {
+    }
+
+    ;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    ;
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public int getId() {
@@ -84,11 +109,12 @@ public class Post {
         this.date = date;
     }
 
-    public JSONObject getPost(){
+    public JSONObject getPost() {
         JSONObject post = new JSONObject();
 
         post.put("id", getId());
         post.put("companyID", getCompanyID());
+        post.put("companyName", getCompanyName());
         post.put("title", getTitle());
         post.put("type", getType());
         post.put("city", getCity());

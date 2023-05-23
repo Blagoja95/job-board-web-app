@@ -22,7 +22,7 @@ public class PostsServlet extends HttpServlet {
         //TODO: more research on CORS topic; GITHUB isue #11
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept");
+                "Origin, X-Requested-With, Content-Type, Accept");
 
         if (request.getParameterMap().size() == 0) {
             response.getWriter().println(returnAllPosts());
@@ -113,7 +113,7 @@ public class PostsServlet extends HttpServlet {
         JSONObject respJson = new JSONObject();
         List<Post> posts;
 
-        if(parameter.equals("title"))
+        if (parameter.equals("title"))
             posts = db.searchPost(value);
         else
             posts = db.getPost(parameter, value);
@@ -168,6 +168,7 @@ public class PostsServlet extends HttpServlet {
         Post post = new Post(
                 id,
                 request.getParameter("companyID"),
+                request.getParameter("companyName"),
                 request.getParameter("title"),
                 request.getParameter("type"),
                 request.getParameter("city"),
@@ -175,8 +176,6 @@ public class PostsServlet extends HttpServlet {
                 request.getParameter("qual"),
                 new Date()
         );
-
-        System.out.println(post.getPost());
 
         DbAccess db = new DbAccess();
 

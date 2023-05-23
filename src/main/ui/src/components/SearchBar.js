@@ -1,7 +1,7 @@
 import { Combobox } from "react-widgets";
 import Button from "./Button";
 import {useContext} from "react";
-import {PostsContext} from "../App";
+import {PostsContext, UsersContext} from "../App";
 
 const getPosts = (value = '') => fetch('http://localhost:8080/posts' + value)
 	.then(response => response.json())
