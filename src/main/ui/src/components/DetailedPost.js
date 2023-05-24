@@ -7,17 +7,20 @@ import {
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "./Button";
 import {openMail} from "../utils";
-import {useEffect, useState} from "react";
-import Modal from "./Modal";
-import {createPortal} from "react-dom";
+import {useContext, useEffect, useState} from "react";
+import { ModalContext } from "../App";
 
-const handleDelete = (id) => {
-	createPortal (<Modal/>, document.getElementById('root'))
+const handleDelete = (detaild) => {
+	// modal.setModal({
+
+	// })
 }
 
 const DetaildPost = () => {
 	const [detailed, setDetailed] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const { setModal } = useContext(ModalContext);
+
 
 	useEffect(() => async () => {
 		const id = new URLSearchParams(window.location.search).get('id');
@@ -33,7 +36,8 @@ const DetaildPost = () => {
 		setDetailed({...post,
 			company: user.name,
 			companyAbout: user.about,
-			email: user.email
+			email: user.email,
+			modal: setModal
 		});
 		setLoading(false);
 	}, []);
@@ -47,6 +51,7 @@ const DetaildPost = () => {
 export default DetaildPost;
 
 const PostJSX = (detailed) => {
+	console.log(detailed)
 	const userID = JSON.parse(localStorage.getItem('login'));
 
 	return <>
@@ -140,7 +145,7 @@ const PostJSX = (detailed) => {
 						 <Button
 					text="Obriši oglas"
 					className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
-					onClick={() => handleDelete(detailed.id)}
+					onClick={() => handleDelete(detailed)}
 					/>
 					:
 					<Button
