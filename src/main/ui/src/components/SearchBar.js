@@ -34,7 +34,7 @@ const SearchBar = () => {
 	const {setPosts, types, cities} = useContext(PostsContext);
 
 	return (
-		<div className="flex flex-row justify-between gap-8 search-shadow border max-w-screen-lg m-auto -mt-9 py-7 md:py-10 px-6 border job-shadow rounded-3xl bg-white border-gray-light ">
+		<div className="flex flex-col md:flex-row justify-between gap-8 search-shadow border max-w-screen-lg m-auto -mt-9 py-7 md:py-10 px-6 job-shadow rounded-3xl bg-white border-gray-light">
 			<Combobox placeholder={"Pretraga po lokaciji"} data={['Sve', ...cities]} onChange={value => handleChange(value, 'city', setPosts)}/>
 
 			<Combobox placeholder={"Pretraga po angažman"} data={['Sve', ...types]} onChange={value => handleChange(value, 'type', setPosts)}/>
@@ -42,7 +42,7 @@ const SearchBar = () => {
 			<input
 				type="text"
 				placeholder="Pretraga po naslovu ..."
-				className="searchInput border-2 focus:border-mint outline-none pl-2 rounded-xl h-[40px] w-64"
+				className="searchInput border-2 focus:border-mint outline-none pl-2 rounded-xl h-[40px] md:w-64"
 				onKeyDown={(e) => {
 					if(e.key === 'Enter')
 						onSearch(setPosts)

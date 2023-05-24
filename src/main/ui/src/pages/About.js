@@ -1,7 +1,7 @@
 const About = () => {
 	return (
-		<div className="mx-auto w-10/12 flex justify-center h-[60vh]">
-			<div className="max-w-[50%] flex flex-col gap-4">
+		<div className="mx-auto w-3/4 flex justify-center md:h-[60vh]">
+			<div className="flex flex-col gap-4">
 				<h1 className="text-mint">O autoru</h1>
 
 				<p>
@@ -9,7 +9,7 @@ const About = () => {
 				</p>
 
 				<p>
-				Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo studije poslovne informatike. Kasnije se prebacio na novi smjer inženjering informacionih tehnologija u akademskoj 2019-2020. godini.
+					Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo studije poslovne informatike. Kasnije se prebacio na novi smjer inženjering informacionih tehnologija u akademskoj 2019-2020. godini.
 				</p>
 
 				<p>
