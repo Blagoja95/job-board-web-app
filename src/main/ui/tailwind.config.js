@@ -13,7 +13,12 @@ module.exports = {
 				coolGray: {
 					"light": '#B9BCCA',
 					"normal": '#8B90A7',
-					"dark": '464A5D'
+					"dark": '#464A5D'
+				},
+				redwood: {
+					'light': '#CF8C8C',
+					'normal': '#AD4848',
+					'dark': '#481E1E'
 				}
 			}
 		},

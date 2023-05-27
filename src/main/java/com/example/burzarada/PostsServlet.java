@@ -58,6 +58,7 @@ public class PostsServlet extends HttpServlet {
             response.getWriter().println(returnPost("type", type));
 
         } else if (!request.getParameterMap().containsKey("delete") && request.getParameterMap().containsKey("id")) {
+            // This branch return detailed post by ID
             String id = request.getParameter("id");
 
             if (id.length() == 0) {
@@ -70,11 +71,9 @@ public class PostsServlet extends HttpServlet {
         } else if (request.getParameterMap().containsKey("update")) {
             updatePost(request);
             response.setStatus(200);
-
         } else if (request.getParameterMap().containsKey("delete")) {
             deletePost(request);
-            response.setStatus(200);
-
+            response.sendRedirect(request.getHeader("origin"));
         } else {
             response.setStatus(404);
             response.getWriter().println(new JSONObject().put("bad request!", false));
@@ -148,10 +147,6 @@ public class PostsServlet extends HttpServlet {
     public void deletePost(HttpServletRequest request) throws IOException {
         new DbAccess().deletePost(request.getParameter("id"));
     }
-
-    // ########################################
-    // $$$$$ CREATE POST
-    // ########################################
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
