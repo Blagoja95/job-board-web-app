@@ -252,7 +252,7 @@ public class DbAccess {
             return null;
     }
 
-    public void updatePost(String what, String value1, String where, String value2) {
+    public void updatePostSingle(String what, String value1, String where, String value2) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -265,6 +265,31 @@ public class DbAccess {
             preparedStatement.setString(1, value1);
             preparedStatement.setString(2, value2);
 
+            preparedStatement.executeUpdate();
+
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePost(Post post) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(CONNECTIONURL, USERNAME, PASSWORD);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE posts SET title=?, type=?, city=?, qual=?, about=? WHERE id=?"
+            );
+
+            preparedStatement.setString(1, post.getTitle());
+            preparedStatement.setString(2, post.getType());
+            preparedStatement.setString(3, post.getCity());
+            preparedStatement.setString(4, post.getQual());
+            preparedStatement.setString(5, post.getAbout());
+            preparedStatement.setInt(6, post.getId());
             preparedStatement.executeUpdate();
 
             connection.close();

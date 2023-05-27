@@ -5,9 +5,13 @@ export const openMail = (mail) => {
 
 export const blurRoot = () => {
 	const root = document.getElementById('root'),
-		blur = root.style.filter;
+		classes = root.classList;
+	console.log(classes.contains('blur-lg'))
 
-	root.style.filter = blur ? '' : 'blur(16px)';
+	if(classes.contains('blur-lg'))
+		classes.remove('blur-lg');
+	else
+		classes.add('blur-lg');
 };
 
 export const EMPTY_FUNCTION = () => { };

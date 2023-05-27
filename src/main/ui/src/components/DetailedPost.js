@@ -6,31 +6,35 @@ import {
 import Button from "./Button";
 import {openMail, blurRoot} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
-import {ModalContext} from "../App";
+import {DetailContext, ModalContext} from "../App";
+import {useNavigate} from "react-router-dom";
 
 const DetaildPost = () => {
-	const [detailed, setDetailed] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const {setModal} = useContext(ModalContext);
+	const {detailed, setDetailed} = useContext(DetailContext);
+	const nav = useNavigate();
 
 	useEffect(() => async () => {
 		const id = new URLSearchParams(window.location.search).get('id');
 
-		const post = await fetch('http://localhost:8080/posts?id=' + id)
+		await fetch('http://localhost:8080/posts?id=' + id)
 			.then(response => response.json())
-			.then(data => data.posts[0]);
+			.then(async data => {
+				const post = data.posts[0];
 
-		const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
-			.then(response => response.json())
-			.then(data => data.users[0]);
+				const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
+					.then(response => response.json())
+					.then(data => data.users[0]);
 
-		setDetailed({
-			...post,
-			company: user.name,
-			companyAbout: user.about,
-			email: user.email
-		});
-		setLoading(false);
+				setDetailed({
+					...post,
+					company: user.name,
+					companyAbout: user.about,
+					email: user.email
+				});
+				setLoading(false);
+			});
 	}, []);
 
 	const handleDelete = (id) => {
@@ -110,11 +114,18 @@ const DetaildPost = () => {
 			<section>
 				<div className="mt-10 text-center max-w-screen-sm m-auto px-6 lg:px-0">
 					{Array.isArray(userID) && userID[1] === Number.parseInt(detailed.companyID) ? (
-						<Button
-							text="Obriši oglas"
-							className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
-							onClick={() => handleDelete(detailed.id)}
-						/>
+						<>
+							<Button
+								text="Uredi oglas"
+								className="text-wht bg-mint mr-5"
+								onClick={() => 	nav('/update' + '?id=' + detailed.id)}
+							/>
+							<Button
+								text="Obriši oglas"
+								className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
+								onClick={() => handleDelete(detailed.id)}
+							/>
+						</>
 					) : (
 						<Button
 							text="Kontaktiraj"
