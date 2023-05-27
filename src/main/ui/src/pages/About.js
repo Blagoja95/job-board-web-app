@@ -1,8 +1,8 @@
 const About = () => {
 	return (
 		<div className="mx-auto w-3/4 flex justify-center md:h-[60vh]">
-			<div className="flex flex-col gap-4">
-				<h1 className="text-mint">O autoru</h1>
+			<div className="flex flex-col gap-4 mt-6 border-t-2">
+				<h1 className="text-mint text-center md:text-left pt-4 md:pt-24">O autoru</h1>
 
 				<p>
 					Boris Blagojević rođen je 22. septembra 1995. godine u Banjoj Luci. Završio je osnovnu školu u Banjoj Luci, nakon čega je upisao Srednju elektrotehničku školu "Nikola Tesla" takođe u Banjoj Luci, gdje je stekao zvanje tehničara telekomunikacija i maturirao 2014. godine.

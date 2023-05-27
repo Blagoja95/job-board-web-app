@@ -5,7 +5,7 @@ const Footer = () => {
 			<div className="flex flex-col-reverse md:flex-row justify-between w-5/6 px-4 sm:px-16 py-10 border-t-2 items-center gap-8 md:gap-0 text-xs lg:text-base">
 				<div className="flex flex-col-reverse items-center sm:flex-row gap-4">
 					<img src="" alt="logo" />
-					<p>&#169;{new Date().getFullYear()} Trebas posao. Sva prava zadržana</p>
+					<p className="text-center">&#169;{new Date().getFullYear()} Trebas posao. Sva prava zadržana</p>
 				</div>
 
 				<div className="flex flex-col md:flex-row gap-1 items-center md:gap-4">
