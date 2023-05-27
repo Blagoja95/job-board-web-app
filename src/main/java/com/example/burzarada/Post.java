@@ -27,15 +27,13 @@ public class Post {
         this.date = date;
     }
 
-    public Post(int id, String companyID, String title, String type, String city, String about, String qual, Date date) {
+    public Post(int id, String title, String type, String city, String about, String qual) {
         this.id = id;
-        this.companyID = companyID;
         this.title = title;
         this.type = type;
         this.city = city;
         this.about = about;
         this.qual = qual;
-        this.date = date;
     }
 
     public Post(int id, String companyID, String title, String type, String city, String about, String qual) {

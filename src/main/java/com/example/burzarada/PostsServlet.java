@@ -141,7 +141,7 @@ public class PostsServlet extends HttpServlet {
         String where = request.getParameter("where");
         String value2 = request.getParameter("value2");
 
-        new DbAccess().updatePost(what, value1, where, value2);
+        new DbAccess().updatePostSingle(what, value1, where, value2);
     }
 
     public void deletePost(HttpServletRequest request) throws IOException {
