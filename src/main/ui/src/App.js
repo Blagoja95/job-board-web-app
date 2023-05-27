@@ -37,7 +37,7 @@ function App() {
 						<ModalContext.Provider value={{ modal, setModal }}>
 
 							<Navigation />
-							{(modal && Object.keys(modal).length > 0) ? createPortal(<Modal />, document.getElementById('modal')) : null}
+							{(modal && Object.keys(modal).length > 0) ? createPortal(<Modal modalObj={modal}/>, document.getElementById('modal')) : null}
 							<div className="forInner flex flex-row justify-center"></div>
 
 							<Routes>
