@@ -190,11 +190,18 @@ public class DbAccess {
 
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE " + parameter + "='" + value + "';");
-
+            ResultSet resultSet = statement.executeQuery("SELECT posts.id, posts.title, posts.type, posts.city, posts.about, posts.qual, posts.companyID, posts.date, users.name FROM posts JOIN users ON users.id = posts.companyID WHERE posts." + parameter + "='" + value + "';");
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"), resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"),
+                        resultSet.getString("companyID"),
+                        resultSet.getString("name"),
+                        resultSet.getString("title"),
+                        resultSet.getString("type"),
+                        resultSet.getString("city"),
+                        resultSet.getString("about"),
+                        resultSet.getString("qual"),
+                        resultSet.getDate("date")));
             }
 
             connection.close();
@@ -219,10 +226,18 @@ public class DbAccess {
 
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM posts WHERE title LIKE '%" + value + "%';");
+            ResultSet resultSet = statement.executeQuery("SELECT posts.id, posts.title, posts.type, posts.city, posts.about, posts.qual, posts.companyID, posts.date, users.name FROM posts JOIN users ON users.id = posts.companyID WHERE posts.title LIKE '%" + value + "%';");
 
             while (resultSet.next()) {
-                posts.add(new Post(resultSet.getInt("id"), resultSet.getString("companyID"), resultSet.getString("title"), resultSet.getString("type"), resultSet.getString("city"), resultSet.getString("about"), resultSet.getString("qual"), resultSet.getDate("Date")));
+                posts.add(new Post(resultSet.getInt("id"),
+                        resultSet.getString("companyID"),
+                        resultSet.getString("name"),
+                        resultSet.getString("title"),
+                        resultSet.getString("type"),
+                        resultSet.getString("city"),
+                        resultSet.getString("about"),
+                        resultSet.getString("qual"),
+                        resultSet.getDate("date")));
             }
 
             connection.close();
