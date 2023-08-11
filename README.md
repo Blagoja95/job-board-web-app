@@ -1,5 +1,5 @@
-# job-posting-web-app
-Job posting web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySql as DBMS.
+# Job board
+Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySql as DBMS.
 
 ## Colors
 
