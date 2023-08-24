@@ -34,6 +34,26 @@ public class UsersServlet extends HttpServlet {
 
             response.getWriter().println(returnUser("name", name));
 
+        } else if (request.getParameterMap().containsKey("email")) {
+            String email = request.getParameter("email");
+
+            if (email.length() == 0) {
+                response.getWriter().println(new JSONObject().put("email", "email!"));
+                return;
+            }
+
+            response.getWriter().println(returnUser("email", email));
+
+        } else if (request.getParameterMap().containsKey("city")) {
+            String city = request.getParameter("city");
+
+            if (city.length() == 0) {
+                response.getWriter().println(new JSONObject().put("city", "city!"));
+                return;
+            }
+
+            response.getWriter().println(returnUser("city", city));
+
         } else if (request.getParameterMap().containsKey("username")) {
             String username = request.getParameter("username");
 

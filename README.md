@@ -5,27 +5,66 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 
 [Colors](https://coolors.co/d8ddef-a0a4b8-7293a0-45b69c-21d19f)
 
-## URI
+## API
 
-/users
+### Read
 
-return all users
+**Currently it's run locally !!!**
 
-/users with parameters can be use to find specific user, update or delete user
+`/users`
+get all users
 
-calling /register via POST method is used to create a new user
+    curl localhost:8080/users
+
+`/users` with parameters can be used to find specific user
+
+Parameters: *id*, *username*, *name*, *email*, *city*.
+
+    curl localhost:8080/users?name=GuitarPro GET user GuitarPro
+
+    curl localhost:8080/users?email=me@longolo.com GET user Langolo
+
+    curl localhost:8080/users?city=Banja%20Luka GET users from Banja Luka(encode url!)
+
+`/posts`
+get all posts
+
+    curl localhost:8080/posts
+
+Parameters: *id* *title* *city* *type*
+
+    curl localhost:8080/posts?city=Banja%20Luka GET posts from Banja Luka(encode url!)
+
 
 calling /login via POST is used for login authentication
 
 
-/posts get json of all available  posts
-
-/posts?param=val to search for specific search
-
 /update via POST to update post data (params : {id, title, qual, about, city, type})
 
-/post?delete=true&id=val to delete post 
+
+### Register
+calling /register via POST method is used to create a new user
+
+    curl -X POST -d "name=MojaKompanija&username=mycomp11&city=Derventa&email=info@mycomp.com&about=empty&password=123456789" localhost:8080/register
+
+If successful this JSON is returned:
+
+    {"success":["mycomp11",1232]}
+
+
+### Create post
+
+### Delete
+
+/post?delete=true&id=val to delete post
 
 {simular use for /users (delete or update)}
 
 /posts via POST method  to create a new post
+
+
+### Update
+
+#### User
+
+#### Post
