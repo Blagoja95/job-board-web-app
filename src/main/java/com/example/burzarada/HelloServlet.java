@@ -9,17 +9,6 @@ import org.json.simple.JSONObject;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
-// create table post
-//create table posts (id int, title VARCHAR(120), type varchar(120), city varchar(120), about TEXT, qual TEXT);
-// insert into posts (id, title, type, city, about, qual, companyID) values (10000, "Trazi se programer", "Stalno zaposlenje", "Laktasi", "Trazi se programer sa 2 godine iskustva u java i java script tehnologijama", "srednja strucna sprema", 293);
-
-// insert row in users
-// insert into users (id, name, hashPass, email, about, username) values (1123, "Tritol Banja Luka", -831574497, "email@tritol.me","Tritol kompanija Banja Luka", "tritol22");
-// alter table users add column city varchar(40);
-//update users set city="Banja Luka" where id=1123;
-
-// tritol22 || besttri === 123456789
 @WebServlet("/test")
 public class HelloServlet extends HttpServlet {
     private String message;

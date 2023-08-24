@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.util.Date;
 
 @WebServlet("/update")
 public class UpdateServlet extends HelloServlet {

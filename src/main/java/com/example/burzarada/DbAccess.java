@@ -1,15 +1,13 @@
 package com.example.burzarada;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DbAccess {
-    private final String CONNECTIONURL = "jdbc:mysql://localhost:3306/jobPostingsDB",
+    private final String CONNECTIONURL = "jdbc:mysql://localhost:3307/jobPostingsDB", // TODO: change port if necessary (this is primitive will be updated when docker container for tomcat is made and docker compose is used)
             USERNAME = "root",
-            PASSWORD = "";
+            PASSWORD = "mydbpassword";
 
     public List<User> getAllUsers() {
 
