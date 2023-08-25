@@ -7,9 +7,8 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 
 ## API
 
-### Read
-
-**Currently it's run locally !!!**
+**Examples are run local for now!!!**
+### GET
 
 `/users`
 get all users
@@ -26,6 +25,22 @@ Parameters: *id*, *username*, *name*, *email*, *city*.
 
     curl localhost:8080/users?city=Banja%20Luka GET users from Banja Luka(encode url!)
 
+Response JSON:
+
+    {
+        "results": 1,
+        "users": [
+            {
+                "city": "Banja Luka",
+                "name": "GuitarPro",
+                "about": "Prodajemo gitare!",
+                "id": 1881,
+                "email": "info@guitarpro.com",
+                "username": "guitar22"
+            }
+        ]
+    }
+
 `/posts`
 get all posts
 
@@ -41,7 +56,21 @@ calling /login via POST is used for login authentication
 
 /update via POST to update post data (params : {id, title, qual, about, city, type})
 
+If no user or posts are found, users or posts property with empty array is returned.
 
+    curl localhost:8080/users?name=notAnUser
+
+    {
+        "results": 0,
+        "posts": []
+    }
+
+If using incorrect request following response is returned:
+
+    {
+        "results": 0,
+        "info": "Wrong request!"
+    }
 ### Register
 calling /register via POST method is used to create a new user
 
@@ -60,7 +89,7 @@ If successful this JSON is returned:
 
 {simular use for /users (delete or update)}
 
-/posts via POST method  to create a new post
+/posts via POST method to create a new post
 
 
 ### Update
