@@ -4,8 +4,8 @@
 
 IN CLI type these commands: 
 
-1`docker build -t jobpostingdb .`
-2. `docker run -d -p 3306 --name jobPostingsDB -e MYSQL_ROOT_PASSWORD=mydbpassword jobpostingdb`
+1. `docker build -t jobpostingdb .`
+2. `docker run -d -p 3306:3306 --name jobPostingsDB -e MYSQL_ROOT_PASSWORD=mydbpassword jobpostingdb`
 
 Docker image created (for now manually run Tomcat server)
 
