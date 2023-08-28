@@ -84,11 +84,6 @@ public class PostsServlet extends HttpServlet
 			response.getWriter().println(returnPost("id", id));
 
 		}
-		else if (request.getParameterMap().containsKey("delete"))
-		{
-			deletePost(request);
-			response.sendRedirect(request.getHeader("origin"));
-		}
 		else
 		{
 			response.getWriter().println(getEmptyResponse("Wrong request!"));
@@ -155,45 +150,6 @@ public class PostsServlet extends HttpServlet
 		return respJson;
 	}
 
-	@WebServlet("/update")
-	public class UpdateServlet extends HttpServlet
-	{
-		public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		{
-			response.setContentType("application/json");
-
-			//TODO: more research on CORS topic; GITHUB isue #11
-			response.addHeader("Access-Control-Allow-Origin", "*");
-			response.addHeader("Access-Control-Allow-Headers",
-					"Origin, X-Requested-With, Content-Type, Accept");
-
-			JSONObject respJson = new JSONObject();
-
-			PostModel post = new PostModel(
-					Integer.parseInt(request.getParameter("id")),
-					request.getParameter("title"),
-					request.getParameter("type"),
-					request.getParameter("city"),
-					request.getParameter("about"),
-					request.getParameter("qual")
-			);
-
-			DbAccess db = new DbAccess();
-
-			db.updatePost(post);
-
-			respJson.put("success", post.getId());
-
-			response.getWriter().println(respJson);
-		}
-	}
-
-
-	public void deletePost(HttpServletRequest request) throws IOException
-	{
-		new DbAccess().deletePost(request.getParameter("id"));
-	}
-
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		response.setContentType("application/json");
@@ -228,7 +184,7 @@ public class PostsServlet extends HttpServlet
 		response.getWriter().println(respJson);
 	}
 
-	public JSONObject getEmptyResponse (String input)
+	public JSONObject getEmptyResponse(String input)
 	{
 		JSONObject returnObj = new JSONObject();
 
@@ -244,5 +200,45 @@ public class PostsServlet extends HttpServlet
 		}
 
 		return returnObj;
+	}
+
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
+
+		JSONObject jsonRes = new JSONObject();
+
+		jsonRes.put("response", sqlResInt);
+
+		response.getWriter().println(jsonRes);
+	}
+
+	public void doUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		response.setContentType("application/json");
+
+		//TODO: more research on CORS topic; GITHUB isue #11
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Headers",
+				"Origin, X-Requested-With, Content-Type, Accept");
+
+		JSONObject respJson = new JSONObject();
+
+		PostModel post = new PostModel(
+				Integer.parseInt(request.getParameter("id")),
+				request.getParameter("title"),
+				request.getParameter("type"),
+				request.getParameter("city"),
+				request.getParameter("about"),
+				request.getParameter("qual")
+		);
+
+		DbAccess db = new DbAccess();
+
+		db.updatePost(post);
+
+		respJson.put("success", post.getId());
+
+		response.getWriter().println(respJson);
 	}
 }

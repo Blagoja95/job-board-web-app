@@ -1,6 +1,7 @@
 package com.example.posting.user;
 
 import com.example.posting.database.DbAccess;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -92,11 +93,6 @@ public class UsersServlet extends HttpServlet
 			updateUser(request);
 			response.setStatus(200);
 		}
-		else if (request.getParameterMap().containsKey("delete"))
-		{
-			deleteUser(request);
-			response.setStatus(200);
-		}
 		else
 		{
 			response.getWriter().println(getEmptyResponse("Wrong request!"));
@@ -165,11 +161,6 @@ public class UsersServlet extends HttpServlet
 		new DbAccess().updateUser(what, value1, where, value2);
 	}
 
-	public void deleteUser(HttpServletRequest request) throws IOException
-	{
-		new DbAccess().deleteUser(request.getParameter("id"));
-	}
-
 	public JSONObject getEmptyResponse (String input)
 	{
 		JSONObject returnObj = new JSONObject();
@@ -178,7 +169,7 @@ public class UsersServlet extends HttpServlet
 
 		if (input == null || input.isEmpty())
 		{
-			returnObj.put("posts", new ArrayList<>());
+			returnObj.put("users", new ArrayList<>());
 		}
 		else
 		{
@@ -186,5 +177,16 @@ public class UsersServlet extends HttpServlet
 		}
 
 		return returnObj;
+	}
+
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		int sqlResInt = new DbAccess().deleteUser(request.getParameter("id"));
+
+		JSONObject jsonRes = new JSONObject();
+
+		jsonRes.put("response", sqlResInt);
+
+		response.getWriter().println(jsonRes);
 	}
 }

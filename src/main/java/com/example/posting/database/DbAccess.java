@@ -144,7 +144,7 @@ public class DbAccess
 		}
 	}
 
-	public void deleteUser(String id)
+	public int deleteUser(String id)
 	{
 		try
 		{
@@ -158,14 +158,18 @@ public class DbAccess
 
 			preparedStatement.setString(1, id);
 
-			preparedStatement.executeUpdate();
+			int resp = preparedStatement.executeUpdate();
 
 			connection.close();
+
+			return resp;
 
 		} catch (ClassNotFoundException | SQLException e)
 		{
 			e.printStackTrace();
 		}
+
+		return 0;
 	}
 
 	public List<PostModel> getAllPosts()
@@ -356,7 +360,7 @@ public class DbAccess
 		}
 	}
 
-	public void deletePost(String id)
+	public int deletePost(String id)
 	{
 		try
 		{
@@ -370,14 +374,18 @@ public class DbAccess
 
 			preparedStatement.setString(1, id);
 
-			preparedStatement.executeUpdate();
+			int response = preparedStatement.executeUpdate();
 
 			connection.close();
+
+			return response;
 
 		} catch (ClassNotFoundException | SQLException e)
 		{
 			e.printStackTrace();
 		}
+
+		return 0;
 	}
 
 	public void createPost(PostModel post)

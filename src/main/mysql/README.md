@@ -14,6 +14,5 @@ Docker image created (for now manually run Tomcat server)
 1. `docker exec -it jobPostingsDB bash`
 2. `mysql -u root -p` -> then type password `mydbpassword`
 
-- [ ] Docker repo image soon
-- [ ] Persistence data thanks to volumes
+- [x] Persistence data thanks to volumes
 - [ ] Docker compose
