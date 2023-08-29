@@ -24,15 +24,22 @@ public class LoginServlet extends HttpServlet
 
 		response.setContentType("application/json");
 
-		JSONObject respJson = new JSONObject();
 
 		if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password"))
 		{
-			respJson.put("empty", "pogresna lozinka / ime");
-
-			response.getWriter().println(respJson);
+			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
 
 			return;
+		}
+
+		for (String i : request.getParameterMap().keySet())
+		{
+			if (request.getParameter(i).isEmpty())
+			{
+				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+
+				return;
+			}
 		}
 
 		String username = request.getParameter("username");
@@ -48,12 +55,12 @@ public class LoginServlet extends HttpServlet
 		}
 		else
 		{
-			respJson.put("wrongName", "nema korisnika sa ovim imenom");
-
-			response.getWriter().println(respJson);
+			response.getWriter().println(this.getErrorJSON("There is no user with provided credentials!"));
 
 			return;
 		}
+
+		JSONObject respJson = new JSONObject();
 
         if (user.getHashPass() == hash)
         {
@@ -68,5 +75,18 @@ public class LoginServlet extends HttpServlet
 
 		response.getWriter().println(respJson);
 
+	}
+
+	private JSONObject getErrorJSON (String info)
+	{
+		JSONObject innerJSON = new JSONObject();
+		JSONObject response = new JSONObject();
+
+		innerJSON.put("status", 0);
+		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
+
+		response.put("register", innerJSON);
+
+		return response;
 	}
 }
