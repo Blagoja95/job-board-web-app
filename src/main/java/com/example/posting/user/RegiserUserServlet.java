@@ -29,7 +29,7 @@ public class RegiserUserServlet extends HttpServlet
 
 		if (request.getParameterMap().keySet().isEmpty())
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
+			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
 
 			return;
 		}
@@ -76,7 +76,12 @@ public class RegiserUserServlet extends HttpServlet
 
 		db.createUser(user);
 
-		respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+		JSONObject resjson = new JSONObject();
+
+		resjson.put("status", 1);
+		resjson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+
+		respJson.put("register", resjson);
 
 		response.getWriter().println(respJson);
 	}

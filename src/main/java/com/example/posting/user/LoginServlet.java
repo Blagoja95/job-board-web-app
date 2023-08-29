@@ -60,21 +60,24 @@ public class LoginServlet extends HttpServlet
 			return;
 		}
 
-		JSONObject respJson = new JSONObject();
+		JSONObject resjson = new JSONObject();
 
         if (user.getHashPass() == hash)
         {
-            respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+			JSONObject innerJson = new JSONObject();
+
+			innerJson.put("status", 1);
+			innerJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+			resjson.put("login", innerJson);
 
             request.getSession().setAttribute(user.getUsername(), user.getId());
         }
         else
         {
-            respJson.put("wrongpassword", "pogresna lozinka");
+            resjson = this.getErrorJSON("Incorrect password!");
         }
 
-		response.getWriter().println(respJson);
-
+		response.getWriter().println(resjson);
 	}
 
 	private JSONObject getErrorJSON (String info)
@@ -85,7 +88,7 @@ public class LoginServlet extends HttpServlet
 		innerJSON.put("status", 0);
 		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
 
-		response.put("register", innerJSON);
+		response.put("login", innerJSON);
 
 		return response;
 	}

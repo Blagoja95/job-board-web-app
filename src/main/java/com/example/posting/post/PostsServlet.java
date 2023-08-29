@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/posts")
@@ -196,7 +197,12 @@ public class PostsServlet extends HttpServlet
 
 		db.createPost(post);
 
-		respJson.put("success", post.getId());
+		JSONObject resjson = new JSONObject();
+
+		resjson.put("status", 1);
+		resjson.put("id", post.getId());
+
+		respJson.put("posts", resjson);
 
 		response.getWriter().println(respJson);
 	}

@@ -54,7 +54,12 @@ public class UpdatePostServlet extends HttpServlet
 
 		db.updatePost(post);
 
-		respJson.put("success", post.getId());
+		JSONObject resjson = new JSONObject();
+
+		resjson.put("status", 1);
+		resjson.put("id", post.getId());
+		resjson.put("info", "Post is successfully updated!");
+		respJson.put("update", resjson);
 
 		response.getWriter().println(respJson);
 	}
@@ -67,7 +72,7 @@ public class UpdatePostServlet extends HttpServlet
 		innerJSON.put("status", 0);
 		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
 
-		response.put("register", innerJSON);
+		response.put("update", innerJSON);
 
 		return response;
 	}

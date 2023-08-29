@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 
-@WebServlet("/user/update")
+@WebServlet("/users/update")
 public class UpdateUserServlet extends HttpServlet
 {
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -55,7 +55,12 @@ public class UpdateUserServlet extends HttpServlet
 
 		db.updateUser(user);
 
-		respJson.put("success", user.getId());
+		JSONObject resjson = new JSONObject();
+
+		resjson.put("status", 1);
+		resjson.put("id", user.getId());
+		resjson.put("info", "User profile is successfully updated!");
+		respJson.put("update", resjson);
 
 		response.getWriter().println(respJson);
 	}
@@ -68,7 +73,7 @@ public class UpdateUserServlet extends HttpServlet
 		innerJSON.put("status", 0);
 		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
 
-		response.put("register", innerJSON);
+		response.put("update", innerJSON);
 
 		return response;
 	}
