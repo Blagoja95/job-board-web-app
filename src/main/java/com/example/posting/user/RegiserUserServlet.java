@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,18 +27,36 @@ public class RegiserUserServlet extends HttpServlet
 
 		JSONObject respJson = new JSONObject();
 
-		String pass = request.getParameter("password");
 
-		if (pass.length() == 0)
+		for (String i : request.getParameterMap().keySet())
 		{
-			respJson.put("wrongPass", "pogresna lozinka");
-			response.getWriter().println(respJson);
+			if (request.getParameter(i).isEmpty())
+			{
+				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+
+				return;
+			}
+		}
+
+		int hashPass = request.getParameter("password").hashCode();
+
+		int id = (int) (Math.random() * 1800) + 100;
+
+		DbAccess db = new DbAccess();
+
+		if(db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
+		{
+			response.getWriter().println(this.getErrorJSON("Username already exist!"));
+
 			return;
 		}
 
-		int hashPass = pass.hashCode();
+		if(db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
+		{
+			response.getWriter().println(this.getErrorJSON("Email address already exist!"));
 
-		int id = (int) (Math.random() * 1800) + 100;
+			return;
+		}
 
 		User user = new User(
 				id,
@@ -49,8 +68,6 @@ public class RegiserUserServlet extends HttpServlet
 				request.getParameter("city")
 		);
 
-		DbAccess db = new DbAccess();
-
 		db.createUser(user);
 
 		respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
@@ -58,4 +75,16 @@ public class RegiserUserServlet extends HttpServlet
 		response.getWriter().println(respJson);
 	}
 
+	private JSONObject getErrorJSON (String info)
+	{
+		JSONObject innerJSON = new JSONObject();
+		JSONObject response = new JSONObject();
+
+		innerJSON.put("status", 0);
+		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
+
+		response.put("register", innerJSON);
+
+		return response;
+	}
 }

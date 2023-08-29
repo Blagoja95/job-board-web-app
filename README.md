@@ -177,7 +177,6 @@ Use this as a binary confirmation.
 #### User
 
 ```powershell
-
 ```
 
 #### Post
