@@ -174,7 +174,7 @@ curl -X POST localhost:8080/register
 
 ```
 
-error json response is returned
+error JSON response is returned
 
 ```JSON
 {
@@ -188,7 +188,7 @@ error json response is returned
 
 ##### Empty parameters value
 
-If any of paramater is empty string
+If any of paramaters is empty string
 
 ```powershell
 curl -X POST -d "name=Tritol&email=" localhost:8080/register
@@ -208,7 +208,7 @@ Error JSON response is returned
 
 ##### No user
 
-On login if no user is found following json response is returned
+On login if no user is found following JSON response is returned
 
 ```JSON
 {
@@ -222,7 +222,7 @@ On login if no user is found following json response is returned
 
 #### Incorect password
 
-If password is wrong following json response is returned
+If password is wrong following JSON response is returned
 
 ```JSON
 {
@@ -244,7 +244,7 @@ Requested parameters: *companyID*, *companyName*, *title*, *type*, *city*, *abou
 curl -X POST -d "companyID=1123&companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&qual=Java" localhost:8080/posts
 ```
 
-If successful response JSON with new post ID will return
+If successful response JSON with new post ID will return with success status
 
 ```JSON
 {
@@ -256,7 +256,7 @@ If successful response JSON with new post ID will return
 }
 ```
 
-If no parameters provided
+If no parameter is provided
 
 ```JSON
 {
@@ -268,7 +268,7 @@ If no parameters provided
 }
 ```
 
-If any of parameter is empty:
+If any parameter value is empty:
 
 ```JSON
 {
@@ -283,7 +283,7 @@ If any of parameter is empty:
 
 Create network request using DELETE method
 
-Request parameter is *id* of the desired post or user.
+Request parameter is *id* of the desired post or user for delete.
 
 #### Post
 
@@ -329,9 +329,9 @@ Paramaters that can be updated[^3]: *name*, *email*, *about* and *city*
 curl -X POST -d "id=1123&name=NEW NAME&email=new@new.com&about=...&city=NEW CITY" localhost:8080/users/update
 ```
 
-Response json:
+Response JSON:
 
-```json
+```JSON
 {
     "update":
     {
@@ -352,7 +352,7 @@ curl localhost:8080/users?id=1123
 
 Before:
 
-```json
+```JSON
 {
     "results":1,
     "users":
@@ -371,7 +371,7 @@ Before:
 
 After update:
 
-```json
+```JSON
 {
     "results":1,
     "users":
@@ -396,7 +396,7 @@ Paramaters that can be updated[^3]: *title*, *type*, *about*, *city* and *qual* 
  curl -X POST -d "id=10000&title=NEW TITLE&type=NEW TYPE&city=Laktasi&about=...&qual=..." localhost:8080/posts/update
 ```
 
-Response json:
+Response JSON:
 ```JSON
 {
     "update":
@@ -418,7 +418,7 @@ curl localhost:8080/posts?id=10000
 
 Before
 
-```json
+```JSON
 {
     "results":1,
     "posts":
@@ -440,7 +440,7 @@ Before
 
 After update
 
-```json
+```JSON
 {
     "results":1,
     "posts":[
@@ -461,7 +461,8 @@ After update
 
 #### Handling incorrect requests
 
-When no parmaters is provided
+When no parmater is provided
+
 ```JSON
 {
     "update":
@@ -483,8 +484,6 @@ When any of a parameters are empty
     }
 }
 ```
-
-/update via POST to update post data (params : {id, title, qual, about, city, type})
 
 [^1]: **Examples are run locally for now!!!**
 
