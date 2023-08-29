@@ -88,11 +88,6 @@ public class UsersServlet extends HttpServlet
 
 			response.getWriter().println(returnUser("id", id));
 		}
-		else if (request.getParameterMap().containsKey("update"))
-		{
-			updateUser(request);
-			response.setStatus(200);
-		}
 		else
 		{
 			response.getWriter().println(getEmptyResponse("Wrong request!"));
@@ -149,16 +144,6 @@ public class UsersServlet extends HttpServlet
 		respJson.put("users", resArr);
 
 		return respJson;
-	}
-
-	public void updateUser(HttpServletRequest request) throws IOException
-	{
-		String what = request.getParameter("what");
-		String value1 = request.getParameter("value1");
-		String where = request.getParameter("where");
-		String value2 = request.getParameter("value2");
-
-		new DbAccess().updateUser(what, value1, where, value2);
 	}
 
 	public JSONObject getEmptyResponse (String input)

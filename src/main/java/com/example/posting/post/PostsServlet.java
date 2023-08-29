@@ -159,6 +159,23 @@ public class PostsServlet extends HttpServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
+		if (request.getParameterMap().keySet().isEmpty())
+		{
+			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
+
+			return;
+		}
+
+		for (String i : request.getParameterMap().keySet())
+		{
+			if (request.getParameter(i).isEmpty())
+			{
+				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+
+				return;
+			}
+		}
+
 		JSONObject respJson = new JSONObject();
 
 		int id = (int) (Math.random() * 10000) + 100;
@@ -213,32 +230,16 @@ public class PostsServlet extends HttpServlet
 		response.getWriter().println(jsonRes);
 	}
 
-	public void doUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	private JSONObject getErrorJSON (String info)
 	{
-		response.setContentType("application/json");
+		JSONObject innerJSON = new JSONObject();
+		JSONObject response = new JSONObject();
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		innerJSON.put("status", 0);
+		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
 
-		JSONObject respJson = new JSONObject();
+		response.put("register", innerJSON);
 
-		PostModel post = new PostModel(
-				Integer.parseInt(request.getParameter("id")),
-				request.getParameter("title"),
-				request.getParameter("type"),
-				request.getParameter("city"),
-				request.getParameter("about"),
-				request.getParameter("qual")
-		);
-
-		DbAccess db = new DbAccess();
-
-		db.updatePost(post);
-
-		respJson.put("success", post.getId());
-
-		response.getWriter().println(respJson);
+		return response;
 	}
 }

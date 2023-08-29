@@ -120,7 +120,7 @@ public class DbAccess
 		}
 	}
 
-	public void updateUser(String what, String value1, String where, String value2)
+	public void updateUser(User user)
 	{
 		try
 		{
@@ -129,12 +129,14 @@ public class DbAccess
 			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"UPDATE users SET " + what + "=? WHERE " + where + "=?"
+					"UPDATE users SET name=?, email=?, city=?, about=? WHERE id=?"
 			);
 
-			preparedStatement.setString(1, value1);
-			preparedStatement.setString(2, value2);
-
+			preparedStatement.setString(1, user.getName());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, user.getCity());
+			preparedStatement.setString(4, user.getAbout());
+			preparedStatement.setInt(5, user.getId());
 			preparedStatement.executeUpdate();
 
 			connection.close();

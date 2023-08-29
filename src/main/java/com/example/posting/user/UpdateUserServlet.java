@@ -1,6 +1,7 @@
 package com.example.posting.user;
 
 import com.example.posting.database.DbAccess;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,24 +9,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
-@WebServlet("/register")
-public class RegiserUserServlet extends HttpServlet
+@WebServlet("/user/update")
+public class UpdateUserServlet extends HttpServlet
 {
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		response.setContentType("application/json");
+
 		//TODO: more research on CORS topic; GITHUB isue #11
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
-
-		response.setContentType("application/json");
-
-		JSONObject respJson = new JSONObject();
 
 		if (request.getParameterMap().keySet().isEmpty())
 		{
@@ -44,39 +39,23 @@ public class RegiserUserServlet extends HttpServlet
 			}
 		}
 
-		int hashPass = request.getParameter("password").hashCode();
-
-		int id = (int) (Math.random() * 1800) + 100;
-
-		DbAccess db = new DbAccess();
-
-		if(db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Username already exist!"));
-
-			return;
-		}
-
-		if(db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Email address already exist!"));
-
-			return;
-		}
+		JSONObject respJson = new JSONObject();
 
 		User user = new User(
-				id,
+				Integer.parseInt(request.getParameter("id")),
 				request.getParameter("name"),
-				hashPass,
+				0,
 				request.getParameter("email"),
 				request.getParameter("about"),
-				request.getParameter("username"),
+				"fake",
 				request.getParameter("city")
 		);
 
-		db.createUser(user);
+		DbAccess db = new DbAccess();
 
-		respJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+		db.updateUser(user);
+
+		respJson.put("success", user.getId());
 
 		response.getWriter().println(respJson);
 	}
