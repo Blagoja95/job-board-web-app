@@ -48,8 +48,15 @@ const DetaildPost = () => {
 			btn1Fn() {
 				blurRoot();
 				setModal(null);
-				fetch('http://localhost:8080/posts?id=' + id + '&delete=true')
-					.then(res => window.location = res.url);
+				const params = new URLSearchParams();
+
+				params.append('id', id);
+
+				fetch('http://localhost:8080/posts', {
+					body: params,
+					method: "DELETE",
+				})
+					.then(res => console.log(res));
 			},
 			btn2Fn() {
 				blurRoot();

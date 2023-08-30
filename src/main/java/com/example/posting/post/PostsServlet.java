@@ -176,9 +176,9 @@ public class PostsServlet extends OverrideServlet
 
 		String companyID = request.getParameter("companyID");
 
-		if (db.checkIfExist(List.of("posts", "id", companyID)) != 1)
+		if (db.checkIfExist(List.of("users", "id", companyID)) != 1)
 		{
-			response.getWriter().println(this.getErrorJSON("Post with id " + companyID + " does not exist!"));
+			response.getWriter().println(this.getErrorJSON("Company with id " + companyID + " does not exist!"));
 
 			return;
 		}
@@ -231,6 +231,13 @@ public class PostsServlet extends OverrideServlet
 
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		response.setContentType("application/json");
+
+		//TODO: more research on CORS topic; GITHUB isue #11
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Headers",
+				"Origin, X-Requested-With, Content-Type, Accept");
+
 		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
 
 		JSONObject jsonRes = new JSONObject();

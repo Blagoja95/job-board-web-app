@@ -18,11 +18,14 @@ const handleSubmit = (e, setLogged, nav) => {
 	})
 		.then(res => res.json())
 		.then(data => {
-			if (data['success']) {
-				localStorage.setItem('login', JSON.stringify(data['success']));
-				setLogged(data['success']);
+			if (data?.login?.success?.length === 2)
+			{
+				localStorage.setItem('login', JSON.stringify(data.login.success));
+				setLogged(data.login.success);
 				nav('/posts');
 			}
+
+			// TODO: fail state
 		})
 };
 
