@@ -232,11 +232,10 @@ public class PostsServlet extends OverrideServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		response.setContentType("application/json");
-
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"		);
+		response.setHeader("Access-Control-Allow-Methods", "DELETE");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+		response.setStatus(HttpServletResponse.SC_OK);
 
 		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
 

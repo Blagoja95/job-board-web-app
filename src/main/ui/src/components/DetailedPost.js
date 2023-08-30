@@ -48,13 +48,12 @@ const DetaildPost = () => {
 			btn1Fn() {
 				blurRoot();
 				setModal(null);
-				const params = new URLSearchParams();
+				// const params = new URLSearchParams();
 
-				params.append('id', id);
+				// params.append('id', id);
 
-				fetch('http://localhost:8080/posts', {
-					body: params,
-					method: "DELETE",
+				fetch('http://localhost:8080/posts?id=' + id, {
+					method: "DELETE"
 				})
 					.then(res => console.log(res));
 			},
