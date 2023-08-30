@@ -1,6 +1,6 @@
-# Job board
+# Job board web app
 
-Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySql as DBMS.
+Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySQL as DBMS.
 
 ## Colors
 
@@ -19,7 +19,7 @@ curl localhost:8080/users
 
 `/users` with parameters can be used to find specific user
 
-Parameters: *id*, *username*, *name*, *email*, *city*.
+Parameters: *id*, *username*, *name*, *email* and *city*.
 
 ```powershell
 
@@ -56,7 +56,8 @@ get all posts
 curl localhost:8080/posts
 ```
 
-Parameters: *id* *title* *city* *type*
+Parameters: *id*, *title*, *city*, *type* and *companyID*.
+
 
 ```powershell
 
@@ -99,10 +100,12 @@ If no user or posts are found, users or posts property with empty array is retur
 curl localhost:8080/users?name=notAnUser
 ```
 
+#### Error response specific for GET method
+
 ```JSON
 {
   "results": 0,
-  "posts": []
+  "users": []
 }
 ```
 
@@ -157,56 +160,10 @@ curl -X POST -d "username=tritol22&password=123456789" localhost:8080/login
 }
 ```
 
-New session is created for loged user
+New session is created for logged user
 
-#### Hendling wrong requests
-
-##### No paramateres
-
-If login or register request is send without parameters
-
-```powershell
-curl -X POST localhost:8080/login
-
-// or
-
-curl -X POST localhost:8080/register
-
-```
-
-error JSON response is returned
-
-```JSON
-{
-  "register": // or login
-  {
-    "status": 0,
-    "info": "Incorrect or missing parameters!"
-  }
-}
-```
-
-##### Empty parameters value
-
-If any of paramaters is empty string
-
-```powershell
-curl -X POST -d "name=Tritol&email=" localhost:8080/register
-```
-
-Error JSON response is returned
-
-```JSON
-{
-  "register": 
-    {
-      "status": 0,
-      "info": "Email is empty!"
-    }
-}
-```
-
-##### No user
+##### Error response specific for login
+###### No user
 
 On login if no user is found following JSON response is returned
 
@@ -220,7 +177,7 @@ On login if no user is found following JSON response is returned
 }
 ```
 
-#### Incorect password
+###### Incorrect password
 
 If password is wrong following JSON response is returned
 
@@ -256,29 +213,6 @@ If successful response JSON with new post ID will return with success status
 }
 ```
 
-If no parameter is provided
-
-```JSON
-{
-    "register":
-    {
-        "status":0,
-        "info":"No parameters provided!"
-    }
-}
-```
-
-If any parameter value is empty:
-
-```JSON
-{
-    "register":
-    {
-        "status":0,
-        "info":"About is empty!"
-    }
-}
-```
 ### Delete [^2]
 
 Create network request using DELETE method
@@ -390,7 +324,7 @@ After update:
 
 #### Post
 
-Paramaters that can be updated[^3]: *title*, *type*, *about*, *city* and *qual* (qualification). 
+Parameters that can be updated[^3]: *title*, *type*, *about*, *city* and *qual* (qualification).
 
 ```powershell
  curl -X POST -d "id=10000&title=NEW TITLE&type=NEW TYPE&city=Laktasi&about=...&qual=..." localhost:8080/posts/update
@@ -459,23 +393,66 @@ After update
 }
 ```
 
-#### Handling incorrect requests
+### Handling incorrect requests
 
-When no parmater is provided
+Wrong or incorrect requests are handled, and proper response is return in JSON format. These are common responses for all POST requests (Register, Login, Update and Creation of users and posts).
+
+#### No parameters
+
+When request is sent without parameters
+
+```powershell
+curl -X POST localhost:8080/login
+
+// or
+
+curl -X POST localhost:8080/register
+
+```
+
+error JSON response is returned
 
 ```JSON
 {
-    "update":
-    {
-        "status":0,
-        "info":"No parameters provided!"
-    }
+  "register": // or login
+  {
+    "status": 0,
+    "info": "Incorrect or missing parameters!"
+  }
 }
 ```
 
-When any of a parameters are empty
+#### Empty parameters value
+
+If any of parameters is empty string
+
+```powershell
+curl -X POST -d "name=Tritol&email=" localhost:8080/users
+```
+
+Error JSON response is returned
 
 ```JSON
+{
+  "users":
+    {
+      "status": 0,
+      "info": "Email is empty!"
+    }
+}
+
+// Other examples of JSON formated response
+
+{
+    "register":
+    {
+        "status":0,
+        "info":"About is empty!"
+    }
+}
+
+// or
+
 {
     "update":
     {
@@ -485,9 +462,79 @@ When any of a parameters are empty
 }
 ```
 
+#### Missing required parameter
+
+If one or more parameters that is required is missing error JSON response is returned.
+
+Following request is missing `companyID` parameter and its value:
+
+```powershell
+curl -X POST -d "companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&q
+ual=Java" localhost:8080/posts
+```
+
+To create a new post [these](###Create-post) parameters are required.
+
+```JSON
+{
+    "update":
+    {
+        "status":0,
+        "info":"Some required parameters are missing! Please check documentation!"
+    }
+}
+```
+
+#### Not existing ID
+
+When updating users or posts, or when creating new post and using incorrect (none existing ID [^4]) following response is returned:
+
+
+Update of post and user with none existing IDs:
+```JSON
+{
+    "update": // or posts
+    {
+        "status":0,
+        "info":"Post with id 1001 does not exist!"
+    }
+}
+
+{
+    "update":
+    {
+        "status":0,
+        "info":"User with id 1302 does not exist!"
+    }
+}
+```
+
+Example of network request where `companyID` (1003) does not exist:
+
+```powershell
+curl -X POST -d "companyID=1003&companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&
+qual=Java" localhost:8080/posts
+```
+
+```JSON
+{
+    "posts":
+    {
+        "status":0,
+        "info":"Post with id 1003 does not exist!"
+    }
+}
+```
+
 [^1]: **Examples are run locally for now!!!**
 
 [^2]: **Currently unsafe!** this issue will be addressed
 in [#42](https://github.com/Blagoja95/job-board-web-app/issues/42)
 
-[^3]: **PRONE TO CHANGE** What can be update and how it will be updated will probably be changed in future
+[^3]: **PRONE TO CHANGE** What can be updated and how it will be updated will probably be changed in future
+
+[^4]: **IDs** must exist when they are used for update or creation. New Posts use existing `companyID`, update use corresponding IDs for post and user row.
+
+### Documentation
+
+If you found documentation or software errors please feel free to [contact me](mailto:boris.blagojevicc@hotmail.com) or raise an [issue](https://github.com/Blagoja95/job-board-web-app/issues).

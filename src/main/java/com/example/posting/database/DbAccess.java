@@ -2,8 +2,6 @@ package com.example.posting.database;
 
 import com.example.posting.post.PostModel;
 import com.example.posting.user.User;
-import jdk.jfr.Label;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;

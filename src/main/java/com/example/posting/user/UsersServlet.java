@@ -1,21 +1,25 @@
 package com.example.posting.user;
 
+import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/users")
-public class UsersServlet extends HttpServlet
+public class UsersServlet extends OverrideServlet
 {
+	public UsersServlet () {
+		super();
+
+		requestName = "users";
+	}
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		response.setContentType("application/json");
@@ -24,69 +28,39 @@ public class UsersServlet extends HttpServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
-		if (request.getParameterMap().size() == 0)
+		for (String i : request.getParameterMap().keySet())
+		{
+			if (request.getParameter(i).isEmpty())
+			{
+				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " parameter is empty!"));
+
+				return;
+			}
+		}
+
+		if (request.getParameterMap().isEmpty())
 		{
 			response.getWriter().println(returnAllUsers());
 		}
 		else if (request.getParameterMap().containsKey("name"))
 		{
-			String name = request.getParameter("name");
-
-			if (name.length() == 0)
-			{
-				response.getWriter().println(new JSONObject().put("users", "name!"));
-				return;
-			}
-
-			response.getWriter().println(returnUser("name", name));
+			response.getWriter().println(returnUser("name", request.getParameter("name")));
 		}
 		else if (request.getParameterMap().containsKey("email"))
 		{
-			String email = request.getParameter("email");
-
-			if (email.length() == 0)
-			{
-				response.getWriter().println(new JSONObject().put("email", "email!"));
-				return;
-			}
-
-			response.getWriter().println(returnUser("email", email));
+			response.getWriter().println(returnUser("email", request.getParameter("email")));
 		}
 		else if (request.getParameterMap().containsKey("city"))
 		{
-			String city = request.getParameter("city");
-
-			if (city.length() == 0)
-			{
-				response.getWriter().println(new JSONObject().put("city", "city!"));
-				return;
-			}
-
-			response.getWriter().println(returnUser("city", city));
+			response.getWriter().println(returnUser("city", request.getParameter("city")));
 		}
 		else if (request.getParameterMap().containsKey("username"))
 		{
-			String username = request.getParameter("username");
-
-			if (username.length() == 0)
-			{
-				response.getWriter().println(new JSONObject().put("users", "korisnicko ime!"));
-				return;
-			}
-
-			response.getWriter().println(returnUser("username", username));
+			response.getWriter().println(returnUser("username", request.getParameter("username")));
 		}
 		else if (!request.getParameterMap().containsKey("delete") && request.getParameterMap().containsKey("id"))
 		{
-			String id = request.getParameter("id");
-
-			if (id.length() == 0)
-			{
-				response.getWriter().println(new JSONObject().put("users", "id!"));
-				return;
-			}
-
-			response.getWriter().println(returnUser("id", id));
+			response.getWriter().println(returnUser("id", request.getParameter("id")));
 		}
 		else
 		{
@@ -162,16 +136,5 @@ public class UsersServlet extends HttpServlet
 		}
 
 		return returnObj;
-	}
-
-	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		int sqlResInt = new DbAccess().deleteUser(request.getParameter("id"));
-
-		JSONObject jsonRes = new JSONObject();
-
-		jsonRes.put("response", sqlResInt);
-
-		response.getWriter().println(jsonRes);
 	}
 }

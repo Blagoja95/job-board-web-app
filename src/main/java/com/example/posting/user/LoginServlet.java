@@ -1,19 +1,24 @@
 package com.example.posting.user;
 
+import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet
+public class LoginServlet extends OverrideServlet
 {
+
+	public LoginServlet () {
+		super();
+
+		requestName = "login";
+	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
@@ -78,18 +83,5 @@ public class LoginServlet extends HttpServlet
         }
 
 		response.getWriter().println(resjson);
-	}
-
-	private JSONObject getErrorJSON (String info)
-	{
-		JSONObject innerJSON = new JSONObject();
-		JSONObject response = new JSONObject();
-
-		innerJSON.put("status", 0);
-		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
-
-		response.put("login", innerJSON);
-
-		return response;
 	}
 }

@@ -2,7 +2,6 @@ package com.example.posting.user;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.util.Objects;
 
 public class User

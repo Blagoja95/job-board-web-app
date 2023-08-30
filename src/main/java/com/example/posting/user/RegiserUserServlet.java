@@ -1,20 +1,23 @@
 package com.example.posting.user;
 
+import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @WebServlet("/register")
-public class RegiserUserServlet extends HttpServlet
+public class RegiserUserServlet extends OverrideServlet
 {
+
+	public RegiserUserServlet () {
+		super();
+
+		requestName = "register";
+	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
@@ -44,20 +47,34 @@ public class RegiserUserServlet extends HttpServlet
 			}
 		}
 
+		Set<String> requiredParameters = new HashSet<>(List.of("name",
+				"password",
+				"email",
+				"about",
+				"username",
+				"city"));
+
+		if (!requiredParameters.equals(request.getParameterMap().keySet()))
+		{
+			response.getWriter().println(this.getErrorJSON("Some required parameters are missing! Please check documentation!"));
+
+			return;
+		}
+
 		int hashPass = request.getParameter("password").hashCode();
 
 		int id = (int) (Math.random() * 1800) + 100;
 
 		DbAccess db = new DbAccess();
 
-		if(db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
+		if (db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
 		{
 			response.getWriter().println(this.getErrorJSON("Username already exist!"));
 
 			return;
 		}
 
-		if(db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
+		if (db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
 		{
 			response.getWriter().println(this.getErrorJSON("Email address already exist!"));
 
@@ -84,18 +101,5 @@ public class RegiserUserServlet extends HttpServlet
 		respJson.put("register", resjson);
 
 		response.getWriter().println(respJson);
-	}
-
-	private JSONObject getErrorJSON (String info)
-	{
-		JSONObject innerJSON = new JSONObject();
-		JSONObject response = new JSONObject();
-
-		innerJSON.put("status", 0);
-		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
-
-		response.put("register", innerJSON);
-
-		return response;
 	}
 }

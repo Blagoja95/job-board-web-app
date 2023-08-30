@@ -1,19 +1,28 @@
 package com.example.posting.user;
 
+import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
-
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @WebServlet("/users/update")
-public class UpdateUserServlet extends HttpServlet
+public class UpdateUserServlet extends OverrideServlet
 {
-	public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+
+	public UpdateUserServlet () {
+		super();
+
+		requestName = "update";
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		response.setContentType("application/json");
 
@@ -39,10 +48,35 @@ public class UpdateUserServlet extends HttpServlet
 			}
 		}
 
+		Set<String> requiredParameters = new HashSet<>(List.of(
+				"id",
+				"name",
+				"email",
+				"about",
+				"city"));
+
+		if (!requiredParameters.equals(request.getParameterMap().keySet()))
+		{
+			response.getWriter().println(this.getErrorJSON("Some required parameters are missing! Please check documentation!"));
+
+			return;
+		}
+
+		DbAccess db = new DbAccess();
+
+		String id = request.getParameter("id");
+
+		if (db.checkIfExist(List.of("posts", "id", id)) != 1)
+		{
+			response.getWriter().println(this.getErrorJSON("User with id " + id + " does not exist!"));
+
+			return;
+		}
+
 		JSONObject respJson = new JSONObject();
 
 		User user = new User(
-				Integer.parseInt(request.getParameter("id")),
+				Integer.parseInt(id),
 				request.getParameter("name"),
 				0,
 				request.getParameter("email"),
@@ -51,7 +85,6 @@ public class UpdateUserServlet extends HttpServlet
 				request.getParameter("city")
 		);
 
-		DbAccess db = new DbAccess();
 
 		db.updateUser(user);
 
@@ -63,18 +96,5 @@ public class UpdateUserServlet extends HttpServlet
 		respJson.put("update", resjson);
 
 		response.getWriter().println(respJson);
-	}
-
-	private JSONObject getErrorJSON (String info)
-	{
-		JSONObject innerJSON = new JSONObject();
-		JSONObject response = new JSONObject();
-
-		innerJSON.put("status", 0);
-		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
-
-		response.put("update", innerJSON);
-
-		return response;
 	}
 }
