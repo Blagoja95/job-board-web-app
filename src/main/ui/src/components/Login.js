@@ -18,10 +18,24 @@ const handleSubmit = (e, setLogged, nav) => {
 	})
 		.then(res => res.json())
 		.then(data => {
-			if (data['success']) {
-				localStorage.setItem('login', JSON.stringify(data['success']));
-				setLogged(data['success']);
-				nav('/posts');
+			if (data?.login?.success?.length === 2)
+			{
+				localStorage.setItem('login', JSON.stringify(data.login.success));
+				setLogged(data.login.success);
+
+				const loginLabel = document.querySelector('.lgn-status');
+				loginLabel.innerText = 'Welcome ' + (data.login.success[0] ? data.login.success[0] : 'back');
+				loginLabel.className = 'lgn-status text-center text-mint';
+
+				setTimeout(() => nav('/posts'), 500);
+			}
+
+			if (data?.login?.status === 0)
+			{
+				const loginLabel = document.querySelector('.lgn-status');
+				loginLabel.innerText = data.login?.info?.length > 0 ? data.login.info : 'Something went wrong!'
+
+				setTimeout(() => loginLabel.className = 'lgn-status text-center text-redwood-normal', 100);
 			}
 		})
 };
@@ -34,12 +48,13 @@ const Login = () => {
 	return (
 		<div className="h-[60vh]">
 			<form
-				className="w-96 m-auto flex flex-col gap-5 mt-20 logForm"
+				className="w-96 m-auto flex flex-col gap-5 mt-20 logForm "
 				onSubmit={(e) => handleSubmit(e, setLogged, nav)}
 			>
 				<h3 className="text-mint">Prijava</h3>
 				<input type="text" placeholder="Korisničko ime" name="username" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
 				<input type="password" placeholder="Lozinka" name="password" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
+				<p className="lgn-status hidden">Content</p>
 
 				<Button
 					text={"Prijavi se"}

@@ -10,7 +10,7 @@ import {useContext, useEffect} from "react";
 import {UsersContext} from "../App";
 
 const makeShortUsers = (users) => {
-    return users.map(user => <User user={user} key={user.id}/>)
+    return users.map((user, i) => <User user={user} key={user.id + '_' + user.name.replace(' ', '_') + '_' + i}/>)
 };
 
 const getUsers = (setUsers) => {
