@@ -232,7 +232,7 @@ public class PostsServlet extends OverrideServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		response.setContentType("application/json");
-		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"		);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "DELETE");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 		response.setStatus(HttpServletResponse.SC_OK);

@@ -4,7 +4,7 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "./Button";
-import {openMail, blurRoot} from "../utils";
+import {openMail, blurRoot, EMPTY_FUNCTION} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext} from "../App";
 import {useNavigate} from "react-router-dom";
@@ -21,8 +21,12 @@ const DetaildPost = () => {
 		await fetch('http://localhost:8080/posts?id=' + id)
 			.then(response => response.json())
 			.then(async data => {
-				const post = data.posts[0];
+				if (!data || data?.results === 0)
+				{
+					return;
+				}
 
+				const post = data.posts[0];
 				const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
 					.then(response => response.json())
 					.then(data => data.users[0]);
@@ -48,14 +52,25 @@ const DetaildPost = () => {
 			btn1Fn() {
 				blurRoot();
 				setModal(null);
-				// const params = new URLSearchParams();
 
-				// params.append('id', id);
-
-				fetch('http://localhost:8080/posts?id=' + id, {
+				fetch('posts?id=' + id, {
 					method: "DELETE"
-				})
-					.then(res => console.log(res));
+				}).then(res => res.json())
+					.then(res => {
+						if (res?.response === 1)
+						{
+							nav('/');
+
+							const inner = document.querySelector('.forInner');
+
+							inner.insertAdjacentHTML('beforeend', `
+							<p class="py-4">Oglas uspješno obrisan!</p>`);
+
+							setTimeout(() => {
+								while (inner.firstChild) inner.removeChild(inner.firstChild);
+							}, 2000);
+						}
+					});
 			},
 			btn2Fn() {
 				blurRoot();
@@ -124,7 +139,7 @@ const DetaildPost = () => {
 							<Button
 								text="Uredi oglas"
 								className="text-wht bg-mint mr-5"
-								onClick={() => 	nav('/update' + '?id=' + detailed.id)}
+								onClick={() => nav('/update' + '?id=' + detailed.id)}
 							/>
 							<Button
 								text="Obriši oglas"
@@ -145,7 +160,9 @@ const DetaildPost = () => {
 	};
 
 	if (loading)
+	{
 		return <div className={"text-mint font-bold text-2xl text-center pt-64 h-[70vh]"}>Loading ...</div>
+	}
 
 	return PostJSX(detailed);
 };
