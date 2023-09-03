@@ -3,6 +3,10 @@ import {useContext, useEffect} from "react";
 import {PostsContext} from "../App";
 import {useNavigate} from "react-router-dom";
 
+export const removeDuplicates = (items) => {
+	return items.filter((item,index) => items.indexOf(item) === index);
+};
+
 const Posts = () => {
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 	const nav = useNavigate();
@@ -11,9 +15,6 @@ const Posts = () => {
 		getPosts(setPosts, setCities, setTypes);
 	}, []);
 
-	const removeDuplicates = (items) => {
-		return items.filter((item,index) => items.indexOf(item) === index);
-	};
 
 	const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080/posts')
 		.then(response => response.json())

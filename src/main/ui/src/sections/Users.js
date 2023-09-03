@@ -54,6 +54,9 @@ const Users = () => {
         getUsers(setUsers);
     }, []);
 
+    if(!Array.isArray(users) || users.length < 1)
+        return <p className={"text-mint font-bold text-2xl text-center py-20"}>Currently there is no users to show!</p>
+
     return (
         <div className="mt-20 sm:w-2/3 m-auto grid min-[1000px]:grid-cols-2 2xl:grid-cols-3 gap-x-2 gap-y-8">
             {makeShortUsers(users)}
