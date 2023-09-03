@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../App";
 
-const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
+const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
 
 const Navigation = () => {
 	const nav = useNavigate();

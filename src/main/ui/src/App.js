@@ -44,8 +44,8 @@ function App() {
 									modalObj={modal}/>, document.getElementById('modal')) : null}
 								<div className="forInner flex flex-row justify-center"></div>
 
-								<Routes>
-									<Route path="/" element={<Home/>}/>
+								<Routes basename="/job-board-web-app">
+									<Route path="" element={<Home/>}/>
 									<Route path="/posts" element={<Home/>}/>
 									<Route path="/users" element={<Companies/>}/>
 									<Route path="/about" element={<About/>}/>
