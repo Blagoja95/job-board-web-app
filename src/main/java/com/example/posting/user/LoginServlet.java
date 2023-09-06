@@ -1,5 +1,6 @@
 package com.example.posting.user;
 
+import org.mindrot.jbcrypt.BCrypt;
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.annotation.WebServlet;
@@ -48,7 +49,6 @@ public class LoginServlet extends OverrideServlet
 		}
 
 		String username = request.getParameter("username");
-		int hash = request.getParameter("password").hashCode();
 
 		List<User> users = new DbAccess().getUser("username", username);
 
@@ -67,7 +67,7 @@ public class LoginServlet extends OverrideServlet
 
 		JSONObject resjson = new JSONObject();
 
-        if (user.getHashPass() == hash)
+        if (BCrypt.checkpw(request.getParameter("password"), user.getHashPass()))
         {
 			JSONObject innerJson = new JSONObject();
 

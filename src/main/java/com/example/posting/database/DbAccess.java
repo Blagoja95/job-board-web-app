@@ -30,7 +30,7 @@ public class DbAccess
 
 			while (resultSet.next())
 			{
-				users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("hashPass"), resultSet.getString("email"), resultSet.getString("about"), resultSet.getString("username"), resultSet.getString("city")));
+				users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("hashPass"), resultSet.getString("email"), resultSet.getString("about"), resultSet.getString("username"), resultSet.getString("city")));
 			}
 
 			connection.close();
@@ -67,7 +67,7 @@ public class DbAccess
 
 			while (resultSet.next())
 			{
-				users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getInt("hashPass"), resultSet.getString("email"), resultSet.getString("about"), resultSet.getString("username"), resultSet.getString("city")));
+				users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("hashPass"), resultSet.getString("email"), resultSet.getString("about"), resultSet.getString("username"), resultSet.getString("city")));
 			}
 
 			connection.close();
@@ -102,7 +102,7 @@ public class DbAccess
 
 			preparedStatement.setInt(1, user.getId());
 			preparedStatement.setString(2, user.getName());
-			preparedStatement.setInt(3, user.getHashPass());
+			preparedStatement.setString(3, user.getHashPass());
 			preparedStatement.setString(4, user.getEmail());
 			preparedStatement.setString(5, user.getAbout());
 			preparedStatement.setString(6, user.getUsername());
