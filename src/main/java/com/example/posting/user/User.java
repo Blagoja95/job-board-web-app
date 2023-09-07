@@ -9,7 +9,7 @@ public class User
 
 	private int id;
 	private String name;
-	private int hashPass;
+	private String hashPass;
 	private String email;
 	private String about;
 	private String username;
@@ -19,7 +19,7 @@ public class User
     public User() {
     }
 
-	public User(int id, String name, int hashPass, String email, String about, String username, String city)
+	public User(int id, String name, String hashPass, String email, String about, String username, String city)
 	{
 		this.id = id;
 		this.name = name;
@@ -60,7 +60,7 @@ public class User
 		this.email = email;
 	}
 
-	public int getHashPass()
+	public String getHashPass()
 	{
 		return hashPass;
 	}

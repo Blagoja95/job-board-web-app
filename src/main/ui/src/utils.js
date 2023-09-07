@@ -6,7 +6,7 @@ export const blurRoot = () => {
 	const root = document.getElementById('root'),
 		classes = root.classList;
 
-	if(classes.contains('blur-lg'))
+	if (classes.contains('blur-lg'))
 	{
 		classes.remove('blur-lg');
 	}
@@ -17,3 +17,15 @@ export const blurRoot = () => {
 };
 
 export const EMPTY_FUNCTION = () => { };
+
+let debounceId = null; // uff
+
+export const debounce = (fn, timeout = 500) => {
+
+	return (...args) => {
+		clearTimeout(debounceId);
+		debounceId = setTimeout(() => {
+			fn.apply(this, args)
+		}, timeout);
+	};
+}

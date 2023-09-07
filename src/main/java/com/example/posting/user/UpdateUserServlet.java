@@ -78,7 +78,7 @@ public class UpdateUserServlet extends OverrideServlet
 		User user = new User(
 				Integer.parseInt(id),
 				request.getParameter("name"),
-				0,
+				"notthepassword",
 				request.getParameter("email"),
 				request.getParameter("about"),
 				"fake",

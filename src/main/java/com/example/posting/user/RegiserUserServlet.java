@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -61,7 +63,8 @@ public class RegiserUserServlet extends OverrideServlet
 			return;
 		}
 
-		int hashPass = request.getParameter("password").hashCode();
+		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
+
 
 		int id = (int) (Math.random() * 1800) + 100;
 
