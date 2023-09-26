@@ -1,5 +1,7 @@
 FROM node:latest
 
+LABEL maintainer="Boris Blagojević <boris.blagojevicc@hotmail.com>"
+
 WORKDIR /usr/src/app
 
 COPY public/ ./public
