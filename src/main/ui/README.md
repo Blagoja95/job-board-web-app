@@ -2,11 +2,11 @@
 
 ## Create image
 
-`docker image build -t job_board_front_end .`
+`docker image build -t job-board-node-image .`
 
 ## Run container
 
-`docker run -dp 3000:3000 --name job_posting_app job_posting_fornt_end`
+`docker run -dp 3000:3000 --name job-board-node job-board-node-image`
 
 ## Open Browser
 
