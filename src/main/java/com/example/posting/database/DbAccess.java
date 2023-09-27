@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DbAccess
 {
-	private final String CONNECTIONURL = "jdbc:mysql://jobPostingsDB:3306/jobPostingsDB", // TODO: change port if necessary (this is primitive will be updated when docker container for tomcat is made and docker compose is used)
+	private final String CONNECTIONURL = "jdbc:mysql://job-board-mysql:3306/jobPostingsDB", // TODO: change port if necessary (this is primitive will be updated when docker container for tomcat is made and docker compose is used)
 			USERNAME = "root",
 			PASSWORD = "mydbpassword";
 

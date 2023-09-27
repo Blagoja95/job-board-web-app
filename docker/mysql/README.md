@@ -4,10 +4,10 @@
 
 IN CLI type these commands: 
 
-1. `docker build -t jobpostingdb .`
-2. `docker run -d -p 3306:3306 --name jobPostingsDB -e MYSQL_ROOT_PASSWORD=mydbpassword jobpostingdb`
+1. `docker build -t job-board-mysql-image .`
+2. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword job-board-mysql-image`
 
-Docker image created (for now manually run Tomcat server)
+MYSQL container is now running -> next step is to create Tomcat container
 
 ## To access mysql cli
 
