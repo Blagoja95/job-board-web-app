@@ -1,30 +1,32 @@
-import { EMPTY_FUNCTION} from "../utils";
+import {EMPTY_FUNCTION} from "../utils";
 import Button from "./Button";
-import { useContext } from "react";
-import { LoginContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import {useContext} from "react";
+import {LoginContext} from "../App";
+import {useNavigate} from "react-router-dom";
 
 const handleSubmit = (e, setLogged, nav) => {
 	e.preventDefault();
 
 	const params = new URLSearchParams();
+	const username = document.getElementsByName("username")[0]['value'];
 
-	params.append('username', document.getElementsByName("username")[0]['value']);
+	params.append('username', username);
 	params.append('password', document.getElementsByName("password")[0]['value']);
 
 	fetch('http://localhost:8080/login', {
 		method: "POST",
-		body: params
+		body: params,
+		credentials: 'include'
 	})
 		.then(res => res.json())
 		.then(data => {
-			if (data?.login?.success?.length === 2)
+			if (data?.login?.status === 1)
 			{
-				localStorage.setItem('login', JSON.stringify(data.login.success));
-				setLogged(data.login.success);
+				console.log(document.cookie)
+				setLogged([username, 1234234]);
 
 				const loginLabel = document.querySelector('.lgn-status');
-				loginLabel.innerText = 'Welcome ' + (data.login.success[0] ? data.login.success[0] : 'back');
+				loginLabel.innerText = 'Welcome ' + (username ? username : 'back');
 				loginLabel.className = 'lgn-status text-center text-mint';
 
 				setTimeout(() => nav('/posts'), 500);
@@ -41,7 +43,7 @@ const handleSubmit = (e, setLogged, nav) => {
 };
 
 const Login = () => {
-	const { setLogged } = useContext(LoginContext);
+	const {setLogged} = useContext(LoginContext);
 
 	const nav = useNavigate();
 
@@ -52,8 +54,12 @@ const Login = () => {
 				onSubmit={(e) => handleSubmit(e, setLogged, nav)}
 			>
 				<h3 className="text-mint">Prijava</h3>
-				<input type="text" placeholder="Korisničko ime" name="username" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
-				<input type="password" placeholder="Lozinka" name="password" className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint" required minLength={4} />
+				<input type="text" placeholder="Korisničko ime" name="username"
+					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"
+					   required minLength={4}/>
+				<input type="password" placeholder="Lozinka" name="password"
+					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"
+					   required minLength={4}/>
 				<p className="lgn-status hidden">Content</p>
 
 				<Button
@@ -65,7 +71,8 @@ const Login = () => {
 			</form>
 
 			<div className={"flex flex-row justify-center mt-10"}>
-				Niste registrovani? Napravite novi <span className="text-mint ml-1 cursor-pointer" onClick={() => nav('/register')}>Nalog</span>
+				Niste registrovani? Napravite novi <span className="text-mint ml-1 cursor-pointer"
+														 onClick={() => nav('/register')}>Nalog</span>
 			</div>
 		</div>
 	);

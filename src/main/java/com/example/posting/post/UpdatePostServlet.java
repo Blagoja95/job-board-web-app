@@ -25,26 +25,22 @@ public class UpdatePostServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkSession(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
-
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+			return;
+		}
 
-				return;
-			}
+		if(this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of(

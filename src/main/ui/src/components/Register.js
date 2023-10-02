@@ -16,10 +16,12 @@ const handleSubmit = (e, setLogged, nav) => {
 
 	fetch('http://localhost:8080/register', {
 		method: "POST",
+		credentials: 'include',
 		body: params
 	})
 		.then(res => res.json())
 		.then(data => {
+			// TODO: handle client side registration
 			if (data?.register?.success?.length === 2)
 			{
 				localStorage.setItem('login', JSON.stringify(data.register.success));

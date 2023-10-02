@@ -8,13 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.*;
 
 @WebServlet("/posts")
 public class PostsServlet extends OverrideServlet
 {
-	public PostsServlet () {
+	public PostsServlet()
+	{
 		super();
 
 		requestName = "posts";
@@ -29,17 +31,15 @@ public class PostsServlet extends OverrideServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
-		for (String i : request.getParameterMap().keySet())
+		if (!request.getParameterMap().isEmpty())
 		{
-			if (request.getParameter(i).isEmpty())
+			if (this.checkIfEmptyParametersValues(request, response))
 			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
 				return;
 			}
 		}
 
-		if (request.getParameterMap().size() == 0)
+		if (request.getParameterMap().isEmpty())
 		{
 			response.getWriter().println(returnAllPosts());
 		}
@@ -135,15 +135,16 @@ public class PostsServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkSession(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
+			return;
+		}
 
+		if (this.checkIfEmptyParameters(request, response))
+		{
 			return;
 		}
 
@@ -162,19 +163,14 @@ public class PostsServlet extends OverrideServlet
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParametersValues(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
-				return;
-			}
+			return;
 		}
 
 		DbAccess db = new DbAccess();
 
-		String companyID = request.getParameter("companyID");
+		String companyID = this.getCookieValue(request, "userID");
 
 		if (db.checkIfExist(List.of("users", "id", companyID)) != 1)
 		{
@@ -231,11 +227,27 @@ public class PostsServlet extends OverrideServlet
 
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		System.out.println(request.getHeader("Origin"));
 		response.setContentType("application/json");
-		response.setHeader("Access-Control-Allow-Origin", "*");
+
 		response.setHeader("Access-Control-Allow-Methods", "DELETE");
-		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-		response.setStatus(HttpServletResponse.SC_OK);
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
+
+		if (this.checkSession(request, response))
+		{
+			return;
+		}
+
+		if (this.checkIfEmptyParameters(request, response))
+		{
+			return;
+		}
+
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
+		}
 
 		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
 

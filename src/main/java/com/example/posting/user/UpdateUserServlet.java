@@ -31,21 +31,14 @@ public class UpdateUserServlet extends OverrideServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
-
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if(this.checkIfEmptyParametersValues(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
-				return;
-			}
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of(

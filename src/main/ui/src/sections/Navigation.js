@@ -4,6 +4,7 @@ import NavItem from "../components/NavItem";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { LoginContext } from "../App";
+import {deleteCookie} from '../cookie'
 
 const navItemsText = [{ text: "Početna", href: "/" }, { text: "Poslovi", href: "/posts" }, { text: "Kompanije", href: "/users" }, { text: "Informacije", href: "/about" }];
 
@@ -33,7 +34,8 @@ const Navigation = () => {
 								<Button text={"Odjavi se"} onClick={() => {
 									const user = logged ? logged[0] : '';
 									setLogged([]);
-									localStorage.removeItem('login');
+									deleteCookie('username');
+									deleteCookie('userID');
 
 									const inner = document.querySelector('.forInner');
 
@@ -84,7 +86,8 @@ const Navigation = () => {
 							<Button text={"Odjavi se"} onClick={() => {
 								const user = logged ? logged[0] : '';
 								setLogged([]);
-								localStorage.removeItem('login');
+								deleteCookie('username');
+								deleteCookie('userID');
 
 								const inner = document.querySelector('.forInner');
 

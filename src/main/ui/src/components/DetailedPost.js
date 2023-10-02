@@ -4,9 +4,9 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "./Button";
-import {openMail, blurRoot, EMPTY_FUNCTION} from "../utils";
+import {openMail, blurRoot} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
-import {DetailContext, ModalContext} from "../App";
+import {DetailContext, ModalContext, LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
 
 const DetaildPost = () => {
@@ -14,6 +14,7 @@ const DetaildPost = () => {
 	const {setModal} = useContext(ModalContext);
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const nav = useNavigate();
+	const {logged} = useContext(LoginContext);
 
 	useEffect(() => async () => {
 		const id = new URLSearchParams(window.location.search).get('id');
@@ -53,8 +54,9 @@ const DetaildPost = () => {
 				blurRoot();
 				setModal(null);
 
-				fetch('posts?id=' + id, {
-					method: "DELETE"
+			fetch('http://localhost:8080/posts?id=' + id, {
+					method: "DELETE",
+					credentials: 'include'
 				}).then(res => res.json())
 					.then(res => {
 						if (res?.response === 1)
@@ -80,7 +82,6 @@ const DetaildPost = () => {
 	};
 
 	const PostJSX = (detailed) => {
-		const userID = JSON.parse(localStorage.getItem('login'));
 
 		return <>
 			<section className="bg-gray-light h-96 z-10" id="top">
@@ -134,7 +135,7 @@ const DetaildPost = () => {
 
 			<section>
 				<div className="mt-10 text-center max-w-screen-sm m-auto px-6 lg:px-0">
-					{Array.isArray(userID) && userID[1] === Number.parseInt(detailed.companyID) ? (
+					{Array.isArray(logged) && logged[1] === detailed.companyID ? (
 						<>
 							<Button
 								text="Uredi oglas"

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 @WebServlet("/users")
 public class UsersServlet extends OverrideServlet
 {
-	public UsersServlet () {
+	public UsersServlet()
+	{
 		super();
 
 		requestName = "users";
@@ -28,12 +30,10 @@ public class UsersServlet extends OverrideServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
-		for (String i : request.getParameterMap().keySet())
+		if (!request.getParameterMap().isEmpty())
 		{
-			if (request.getParameter(i).isEmpty())
+			if (this.checkIfEmptyParametersValues(request, response))
 			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " parameter is empty!"));
-
 				return;
 			}
 		}
@@ -120,7 +120,7 @@ public class UsersServlet extends OverrideServlet
 		return respJson;
 	}
 
-	public JSONObject getEmptyResponse (String input)
+	public JSONObject getEmptyResponse(String input)
 	{
 		JSONObject returnObj = new JSONObject();
 

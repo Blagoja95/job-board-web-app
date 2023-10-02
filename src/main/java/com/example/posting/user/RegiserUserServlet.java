@@ -3,6 +3,7 @@ package com.example.posting.user;
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
@@ -15,7 +16,8 @@ import java.util.*;
 public class RegiserUserServlet extends OverrideServlet
 {
 
-	public RegiserUserServlet () {
+	public RegiserUserServlet()
+	{
 		super();
 
 		requestName = "register";
@@ -23,30 +25,21 @@ public class RegiserUserServlet extends OverrideServlet
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
 		response.setContentType("application/json");
 
 		JSONObject respJson = new JSONObject();
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
-
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParametersValues(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
-				return;
-			}
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of("name",
@@ -64,7 +57,6 @@ public class RegiserUserServlet extends OverrideServlet
 		}
 
 		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
-
 
 		int id = (int) (Math.random() * 1800) + 100;
 
@@ -84,6 +76,9 @@ public class RegiserUserServlet extends OverrideServlet
 			return;
 		}
 
+		// todo: handle server side registration
+		// todo: check if already singed in
+		
 		User user = new User(
 				id,
 				request.getParameter("name"),
@@ -97,12 +92,26 @@ public class RegiserUserServlet extends OverrideServlet
 		db.createUser(user);
 
 		JSONObject resjson = new JSONObject();
+		JSONObject innerJson = new JSONObject();
 
-		resjson.put("status", 1);
-		resjson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
 
-		respJson.put("register", resjson);
+		innerJson.put("status", 1);
+		innerJson.put("info", "Wellcome " + user.getName());
 
-		response.getWriter().println(respJson);
+		request.getSession().setAttribute("userID", user.getId() + "");
+		request.getSession().setAttribute("username", user.getUsername());
+
+		Cookie cookie1 = new Cookie("userID", user.getId() + "");
+		Cookie cookie2 = new Cookie("username", user.getUsername());
+
+		cookie1.setMaxAge(this.EXPIRATION_TIME);
+		cookie2.setMaxAge(this.EXPIRATION_TIME);
+
+		response.addCookie(cookie1);
+		response.addCookie(cookie2);
+
+		resjson.put("register", innerJson);
+
+		response.getWriter().println(resjson);
 	}
 }
