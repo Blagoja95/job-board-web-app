@@ -13,15 +13,14 @@ Using CLI:
 1. create docker network `docker network create job-board-net`
 
 2. pull images:
-    1. `docker pull blagoja95/job-board-mysql-image:v.1.0.0`
-    2. `docker pull blagoja95/job-board-tomcat-image:v.1.0.0`
-    3. `docker pull blagoja95/job-board-node-image:v.1.0.0`
+    1. `docker pull blagoja95/job-board-mysql-image:v1.0.1`
+    2. `docker pull blagoja95/job-board-tomcat-image:v1.1.0`
+    3. `docker pull blagoja95/job-board-node-image:v1.1.0`
 
 3. create containers:
-    1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/jo
-       b-board-mysql-image:v.1.0.0`
-    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v.1.0.0`
-    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v.1.0.0`
+    1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/job-board-mysql-image:v1.0.1`
+    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.1.0`
+    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.1.0`
 
 5. In browser search `localhost:3000`
 
@@ -634,7 +633,8 @@ The following are Session errors:
 
 #### Missing cookie
 
-Trying to create, delete or update w/o being singed in or sending network request w/o required cookies will return error json.
+Trying to create, delete or update w/o being singed in or sending network request w/o required cookies will return error
+json.
 
 ```json
 {
