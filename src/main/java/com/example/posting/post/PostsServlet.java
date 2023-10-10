@@ -8,13 +8,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import javax.naming.spi.Resolver;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/posts")
 public class PostsServlet extends OverrideServlet
 {
-	public PostsServlet () {
+	public PostsServlet()
+	{
 		super();
 
 		requestName = "posts";
@@ -29,17 +34,15 @@ public class PostsServlet extends OverrideServlet
 		response.addHeader("Access-Control-Allow-Headers",
 				"Origin, X-Requested-With, Content-Type, Accept");
 
-		for (String i : request.getParameterMap().keySet())
+		if (!request.getParameterMap().isEmpty())
 		{
-			if (request.getParameter(i).isEmpty())
+			if (this.checkIfEmptyParametersValues(request, response))
 			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
 				return;
 			}
 		}
 
-		if (request.getParameterMap().size() == 0)
+		if (request.getParameterMap().isEmpty())
 		{
 			response.getWriter().println(returnAllPosts());
 		}
@@ -83,7 +86,10 @@ public class PostsServlet extends OverrideServlet
 
 		if (posts == null || posts.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (PostModel post : posts)
@@ -92,7 +98,7 @@ public class PostsServlet extends OverrideServlet
 		}
 
 		respJson.put("results", posts.size());
-		respJson.put("posts", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -117,7 +123,10 @@ public class PostsServlet extends OverrideServlet
 
 		if (posts == null || posts.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (PostModel post : posts)
@@ -126,7 +135,7 @@ public class PostsServlet extends OverrideServlet
 		}
 
 		respJson.put("results", posts.size());
-		respJson.put("posts", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -135,15 +144,16 @@ public class PostsServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkUserCookies(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
+			return;
+		}
 
+		if (this.checkIfEmptyParameters(request, response))
+		{
 			return;
 		}
 
@@ -162,25 +172,28 @@ public class PostsServlet extends OverrideServlet
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParametersValues(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
-
-				return;
-			}
+			return;
 		}
 
 		DbAccess db = new DbAccess();
 
-		String companyID = request.getParameter("companyID");
+		String companyID = this.getCookieValue(request, "userID");
 
-		if (db.checkIfExist(List.of("users", "id", companyID)) != 1)
+		try
 		{
-			response.getWriter().println(this.getErrorJSON("Company with id " + companyID + " does not exist!"));
+			ResultSet results = db.checkIfExist(List.of("users", "id", companyID));
 
-			return;
+			if (results == null || !results.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Company with id " + companyID + " does not exist!"));
+
+				return;
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
 		}
 
 		JSONObject respJson = new JSONObject();
@@ -199,14 +212,13 @@ public class PostsServlet extends OverrideServlet
 				new Date()
 		);
 
-		db.createPost(post);
+		int i = db.createPost(post);
 
 		JSONObject resjson = new JSONObject();
 
 		resjson.put("status", 1);
 		resjson.put("id", post.getId());
-
-		respJson.put("posts", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}
@@ -219,7 +231,7 @@ public class PostsServlet extends OverrideServlet
 
 		if (input == null || input.isEmpty())
 		{
-			returnObj.put("posts", new ArrayList<>());
+			returnObj.put(this.requestName, new ArrayList<>());
 		}
 		else
 		{
@@ -232,16 +244,86 @@ public class PostsServlet extends OverrideServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		response.setContentType("application/json");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "DELETE");
-		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
-		response.setStatus(HttpServletResponse.SC_OK);
 
-		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
+		response.setHeader("Access-Control-Allow-Methods", "DELETE");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
+
+		if (this.checkUserCookies(request, response))
+		{
+			return;
+		}
+
+		if (this.checkIfEmptyParameters(request, response))
+		{
+			return;
+		}
+
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
+		}
+
+		String id = request.getParameter("id");
+
+		if (id == null || id.isBlank())
+		{
+			response.getWriter().println(this.getErrorJSON("PostID parameter is missing!"));
+
+			return;
+		}
+
+		DbAccess db = new DbAccess();
+
+		String userID = this.getCookieValue(request, "userID");
+
+		if (userID.isBlank())
+		{
+			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
+
+			return;
+		}
+
+		try
+		{
+			ResultSet res = db.checkIfExist(List.of("posts", "id", id));
+
+			if(res == null || !res.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Post with ID " + id + " is not found!"));
+
+				return;
+			}
+
+			if (!res.getString("companyID").equals(userID))
+			{
+				response.getWriter().println(this.getErrorJSON("Delete action denied!"));
+
+				return;
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		int sqlResInt = db.deletePost(id);
 
 		JSONObject jsonRes = new JSONObject();
+		JSONObject jsonInner = new JSONObject();
 
-		jsonRes.put("response", sqlResInt);
+		if (sqlResInt != 0)
+		{
+			jsonInner.put("status", 1);
+			jsonInner.put("info", "Post successfully deleted!");
+		}
+		else
+		{
+			jsonInner.put("status", 0);
+			jsonInner.put("info", "Error, check post ID!");
+		}
+
+		jsonRes.put(this.requestName, jsonInner);
 
 		response.getWriter().println(jsonRes);
 	}

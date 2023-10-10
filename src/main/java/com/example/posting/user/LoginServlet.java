@@ -1,5 +1,6 @@
 package com.example.posting.user;
 
+import jakarta.servlet.http.Cookie;
 import org.mindrot.jbcrypt.BCrypt;
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
@@ -7,15 +8,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends OverrideServlet
 {
 
-	public LoginServlet () {
+	public LoginServlet()
+	{
 		super();
 
 		requestName = "login";
@@ -23,29 +25,30 @@ public class LoginServlet extends OverrideServlet
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-//        //TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
 		response.setContentType("application/json");
 
-
-		if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password"))
+		if(!request.getSession().isNew())
 		{
-			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
+			String user = this.getCookieValue(request, "username");
+
+			response.getWriter().println((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!");
 
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password"))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
 
-				return;
-			}
+			return;
+		}
+
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
 		}
 
 		String username = request.getParameter("username");
@@ -54,7 +57,7 @@ public class LoginServlet extends OverrideServlet
 
 		User user;
 
-		if (users != null && users.size() >= 1)
+		if (users != null && !users.isEmpty())
 		{
 			user = users.get(0);
 		}
@@ -67,20 +70,30 @@ public class LoginServlet extends OverrideServlet
 
 		JSONObject resjson = new JSONObject();
 
-        if (BCrypt.checkpw(request.getParameter("password"), user.getHashPass()))
-        {
+		if (BCrypt.checkpw(request.getParameter("password"), user.getHashPass()))
+		{
 			JSONObject innerJson = new JSONObject();
 
 			innerJson.put("status", 1);
-			innerJson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
-			resjson.put("login", innerJson);
+			innerJson.put("info", "Welcome " + user.getName());
+			resjson.put(this.requestName, innerJson);
 
-            request.getSession().setAttribute(user.getUsername(), user.getId());
-        }
-        else
-        {
-            resjson = this.getErrorJSON("Incorrect password!");
-        }
+			request.getSession(false).setAttribute("userID", user.getId() + "");
+			request.getSession(false).setAttribute("username", user.getUsername());
+
+			Cookie cookie1 = new Cookie("userID", user.getId() + "");
+			Cookie cookie2 = new Cookie("username", user.getUsername());
+
+			cookie1.setMaxAge(this.EXPIRATION_TIME);
+			cookie2.setMaxAge(this.EXPIRATION_TIME);
+
+			response.addCookie(cookie1);
+			response.addCookie(cookie2);
+		}
+		else
+		{
+			resjson = this.getErrorJSON("Incorrect password!");
+		}
 
 		response.getWriter().println(resjson);
 	}

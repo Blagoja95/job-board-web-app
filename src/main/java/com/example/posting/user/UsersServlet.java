@@ -2,11 +2,13 @@ package com.example.posting.user;
 
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.List;
 @WebServlet("/users")
 public class UsersServlet extends OverrideServlet
 {
-	public UsersServlet () {
+	public UsersServlet()
+	{
 		super();
 
 		requestName = "users";
@@ -25,15 +28,12 @@ public class UsersServlet extends OverrideServlet
 		response.setContentType("application/json");
 
 		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		for (String i : request.getParameterMap().keySet())
+		if (!request.getParameterMap().isEmpty())
 		{
-			if (request.getParameter(i).isEmpty())
+			if (this.checkIfEmptyParametersValues(request, response))
 			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " parameter is empty!"));
-
 				return;
 			}
 		}
@@ -64,7 +64,7 @@ public class UsersServlet extends OverrideServlet
 		}
 		else
 		{
-			response.getWriter().println(getEmptyResponse("Wrong request!"));
+			response.getWriter().println(this.getErrorJSON("Wrong request!"));
 		}
 	}
 
@@ -80,7 +80,10 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (User user : users)
@@ -89,7 +92,7 @@ public class UsersServlet extends OverrideServlet
 		}
 
 		respJson.put("results", users.size());
-		respJson.put("users", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -106,7 +109,10 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (User user : users)
@@ -115,26 +121,13 @@ public class UsersServlet extends OverrideServlet
 		}
 
 		respJson.put("results", users.size());
-		respJson.put("users", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
 
-	public JSONObject getEmptyResponse (String input)
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		JSONObject returnObj = new JSONObject();
-
-		returnObj.put("results", 0);
-
-		if (input == null || input.isEmpty())
-		{
-			returnObj.put("users", new ArrayList<>());
-		}
-		else
-		{
-			returnObj.put("info", input);
-		}
-
-		return returnObj;
+		// TODO: issue 63
 	}
 }

@@ -6,6 +6,7 @@ import Companies from "./pages/Companies"
 import About from "./pages/About";
 import Login from "./components/Login";
 import CreatePost from "./components/CreatePost";
+import Reviews from "./components/Reviews";
 
 import {Routes, Route} from "react-router-dom";
 import {useState, createContext} from "react";
@@ -13,6 +14,7 @@ import Register from "./components/Register";
 import DetailedPost from "./components/DetailedPost";
 import Modal from "./components/Modal";
 import {createPortal} from "react-dom";
+import {getLoginArray} from './cookie'
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -25,7 +27,7 @@ function App() {
 	const [users, setUsers] = useState([]);
 	const [cities, setCities] = useState([]);
 	const [types, setTypes] = useState([]);
-	const [logged, setLogged] = useState(JSON.parse(localStorage.getItem('login')) || []);
+	const [logged, setLogged] = useState(getLoginArray(['username', 'userID']));
 	const [modal, setModal] = useState(null);
 	const [detailed, setDetailed] = useState(null);
 
@@ -54,6 +56,7 @@ function App() {
 									<Route path="/register" element={<Register/>}/>
 									<Route path="/detailed" element={<DetailedPost/>}/>
 									<Route path="/update" element={<CreatePost/>}/>
+									<Route path="/reviews" element={<Reviews/>}/>
 								</Routes>
 
 								<Footer/>

@@ -7,7 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,36 +18,33 @@ import java.util.Set;
 @WebServlet("/posts/update")
 public class UpdatePostServlet extends OverrideServlet
 {
-	public UpdatePostServlet () {
+	public UpdatePostServlet()
+	{
 		super();
 
 		requestName = "update";
 	}
 
-	public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		response.setContentType("application/json");
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkUserCookies(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
-
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+			return;
+		}
 
-				return;
-			}
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of(
@@ -68,11 +68,43 @@ public class UpdatePostServlet extends OverrideServlet
 
 		String id = request.getParameter("id");
 
-		if (db.checkIfExist(List.of("posts", "id", id)) != 1)
+		if (id == null || id.isBlank())
 		{
-			response.getWriter().println(this.getErrorJSON("Post with id " + id + " does not exist!"));
+			response.getWriter().println(this.getErrorJSON("PostID parameter is missing!"));
 
 			return;
+		}
+
+		String userID = this.getCookieValue(request, "userID");
+
+		if (userID == null || userID.isEmpty())
+		{
+			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
+
+		return;
+		}
+
+		try
+		{
+			ResultSet results = db.checkIfExist(List.of("posts", "id", id));
+
+			if (results == null || !results.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Post with id " + id + " does not exist!"));
+
+				return;
+			}
+
+			if (!results.getString("companyID").equals(userID))
+			{
+				response.getWriter().println(this.getErrorJSON("Update action denied!"));
+
+				return;
+			}
+
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
 		}
 
 		PostModel post = new PostModel(
@@ -91,7 +123,7 @@ public class UpdatePostServlet extends OverrideServlet
 		resjson.put("status", 1);
 		resjson.put("id", post.getId());
 		resjson.put("info", "Post is successfully updated!");
-		respJson.put("update", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}

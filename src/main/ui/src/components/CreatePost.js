@@ -2,12 +2,13 @@ import {blurRoot, EMPTY_FUNCTION} from "../utils";
 import Button from "./Button";
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
-import {DetailContext, ModalContext} from "../App";
+import {DetailContext, LoginContext, ModalContext} from "../App";
 
 const CreatePost = ({create}) => {
     const nav = useNavigate();
     const {detailed, setDetailed} = useContext(DetailContext);
-    const {modal, setModal} = useContext(ModalContext);
+    const {setModal} = useContext(ModalContext);
+    const {logged} = useContext(LoginContext)
 
     // TODO: next method is a temp solution
     const clearFields = () => {
@@ -40,14 +41,14 @@ const CreatePost = ({create}) => {
         if (!create) {
             params.set('id', detailed?.id);
         } else {
-            const login = JSON.parse(localStorage.getItem('login'));
 
-            params.set('companyName', login[0]);
-            params.set('companyID', login[1]);
+            params.set('companyName', logged[0]);
+            params.set('companyID', logged[1]);
         }
 
         fetch(`http://localhost:8080/posts${!create ? '/update' : ''}`, {
             method: "POST",
+            credentials: 'include',
             body: params
         })
             .then(res => res.json())

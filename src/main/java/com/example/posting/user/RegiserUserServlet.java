@@ -3,19 +3,24 @@ package com.example.posting.user;
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/register")
 public class RegiserUserServlet extends OverrideServlet
 {
 
-	public RegiserUserServlet () {
+	public RegiserUserServlet()
+	{
 		super();
 
 		requestName = "register";
@@ -23,30 +28,31 @@ public class RegiserUserServlet extends OverrideServlet
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
 		response.setContentType("application/json");
 
 		JSONObject respJson = new JSONObject();
+		HttpSession session = request.getSession(false);
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (session != null && session.getId().equals(this.getCookieValue(request, "JSESSIONID")))
 		{
-			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
+			String user = this.getCookieValue(request, "username");
+
+			response.getWriter().println((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!");
 
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+			return;
+		}
 
-				return;
-			}
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of("name",
@@ -63,26 +69,36 @@ public class RegiserUserServlet extends OverrideServlet
 			return;
 		}
 
-		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
+		DbAccess db = new DbAccess();
 
+		try
+		{
+			ResultSet res1 = db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username"))));
+
+			if (res1 == null || res1.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Username already exist!"));
+
+				return;
+			}
+
+			ResultSet res2 = db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email"))));
+
+			if (res2 == null || res2.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Email address already exist!"));
+
+				return;
+			}
+
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		int id = (int) (Math.random() * 1800) + 100;
 
-		DbAccess db = new DbAccess();
-
-		if (db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Username already exist!"));
-
-			return;
-		}
-
-		if (db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Email address already exist!"));
-
-			return;
-		}
+		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
 
 		User user = new User(
 				id,
@@ -97,12 +113,30 @@ public class RegiserUserServlet extends OverrideServlet
 		db.createUser(user);
 
 		JSONObject resjson = new JSONObject();
+		JSONObject innerJson = new JSONObject();
 
-		resjson.put("status", 1);
-		resjson.put("success", new LinkedList<>(List.of(user.getUsername(), user.getId())));
+		innerJson.put("status", 1);
+		innerJson.put("info", "Wellcome " + user.getName());
 
-		respJson.put("register", resjson);
+		if(session == null)
+		{
+			session = request.getSession();
+		}
 
-		response.getWriter().println(respJson);
+		session.setAttribute("userID", user.getId() + "");
+		session.setAttribute("username", user.getUsername());
+
+		Cookie cookie1 = new Cookie("userID", user.getId() + "");
+		Cookie cookie2 = new Cookie("username", user.getUsername());
+
+		cookie1.setMaxAge(this.EXPIRATION_TIME);
+		cookie2.setMaxAge(this.EXPIRATION_TIME);
+
+		response.addCookie(cookie1);
+		response.addCookie(cookie2);
+
+		resjson.put(this.requestName, innerJson);
+
+		response.getWriter().println(resjson);
 	}
 }

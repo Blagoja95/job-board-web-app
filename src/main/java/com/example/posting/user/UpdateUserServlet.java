@@ -7,7 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +19,8 @@ import java.util.Set;
 public class UpdateUserServlet extends OverrideServlet
 {
 
-	public UpdateUserServlet () {
+	public UpdateUserServlet()
+	{
 		super();
 
 		requestName = "update";
@@ -26,30 +30,25 @@ public class UpdateUserServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
-		//TODO: more research on CORS topic; GITHUB isue #11
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (request.getParameterMap().keySet().isEmpty())
+		if (this.checkUserCookies(request, response))
 		{
-			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
-
 			return;
 		}
 
-		for (String i : request.getParameterMap().keySet())
+		if (this.checkIfEmptyParameters(request, response))
 		{
-			if (request.getParameter(i).isEmpty())
-			{
-				response.getWriter().println(this.getErrorJSON(i.substring(0, 1).toUpperCase() + i.substring(1) + " is empty!"));
+			return;
+		}
 
-				return;
-			}
+		if (this.checkIfEmptyParametersValues(request, response))
+		{
+			return;
 		}
 
 		Set<String> requiredParameters = new HashSet<>(List.of(
-				"id",
 				"name",
 				"email",
 				"about",
@@ -64,19 +63,35 @@ public class UpdateUserServlet extends OverrideServlet
 
 		DbAccess db = new DbAccess();
 
-		String id = request.getParameter("id");
+		String userID = this.getCookieValue(request, "userID");
 
-		if (db.checkIfExist(List.of("posts", "id", id)) != 1)
+		if (userID.isBlank())
 		{
-			response.getWriter().println(this.getErrorJSON("User with id " + id + " does not exist!"));
+			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
 
 			return;
+		}
+
+		try
+		{
+			ResultSet res = db.checkIfExist(List.of("users", "id", userID));
+
+			if (res == null || !res.next())
+			{
+				response.getWriter().println(this.getErrorJSON("User with id " + userID + " does not exist!"));
+
+				return;
+			}
+
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
 		}
 
 		JSONObject respJson = new JSONObject();
 
 		User user = new User(
-				Integer.parseInt(id),
+				Integer.parseInt(userID),
 				request.getParameter("name"),
 				"notthepassword",
 				request.getParameter("email"),
@@ -93,7 +108,7 @@ public class UpdateUserServlet extends OverrideServlet
 		resjson.put("status", 1);
 		resjson.put("id", user.getId());
 		resjson.put("info", "User profile is successfully updated!");
-		respJson.put("update", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}
