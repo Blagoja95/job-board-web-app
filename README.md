@@ -283,12 +283,13 @@ Also require userID cookie.
 #### Post
 
 ```powershell
-curl -X DELETE localhost:8080/posts?id=1686
+curl -X DELETE -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/posts?id=8063
 ```
 
 #### User
 
-This feature curently is missing! Will be addresed in issue <a href="https://github.com/Blagoja95/job-board-web-app/issues/63">63</a>.
+This feature curently is missing! Will be addresed in
+issue <a href="https://github.com/Blagoja95/job-board-web-app/issues/63">63</a>.
 
 #### Response
 
@@ -313,17 +314,25 @@ If unsuccessful then zero is return
   }
 }
 ```
+
 #### Errors
 
 ##### Current user does not have rights to delete post
 
-A user with a userID=1 wants to delete post with a id postID=100 which is post from a user userID=2. This is not allowed.
+A user with a userID=1 wants to delete post with a id postID=100 which is post from a user userID=2. This is not
+allowed.
+
 ```powershell
 curl -X DELETE -b "JSESSIONID=947E1129779927408BCDAF885B462C2D" -b "userID=1" localhost:8080/posts?id=100
 ```
 
 ```json
-{"posts":{"status":0,"info":"Delete action denied!"}}
+{
+  "posts": {
+    "status": 0,
+    "info": "Delete action denied!"
+  }
+}
 ```
 
 ### Update
@@ -463,14 +472,21 @@ After update
 ```
 
 #### Errors
-Only owners (and maybe admins issue <a href="https://github.com/Blagoja95/job-board-web-app/issues/63">63</a>) can update posts.
+
+Only owners (and maybe admins issue <a href="https://github.com/Blagoja95/job-board-web-app/issues/63">63</a>) can
+update posts.
 
 ```powershell
 curl -X POST -d "id=10000&title=NEW TITLE 222&type=NEW TYPE&city=Laktasi&about=...&qual=..." -b "JSESSIONID=E6FA2AABB9D7733C1E6A0841A9265D65" -b "userID=641" localhost:8080/posts/update
 ```
 
 ```json
-{"update":{"status":0,"info":"Update action denied!"}}
+{
+  "update": {
+    "status": 0,
+    "info": "Update action denied!"
+  }
+}
 ```
 
 ### Handling incorrect requests
@@ -495,10 +511,20 @@ error JSON response is returned
 
 ```JSON
 {
-  "register": // or login
-  {
+  "login": {
     "status": 0,
-    "info": "Incorrect or missing parameters!"
+    "info": "No parameters provided!"
+  }
+}
+```
+
+or
+
+```json
+{
+  "register": {
+    "status": 0,
+    "info": "No parameters provided!"
   }
 }
 ```
@@ -508,7 +534,7 @@ error JSON response is returned
 If any of parameters is empty string
 
 ```powershell
-curl -X POST -d "name=Tritol&email=" localhost:8080/users
+curl localhost:8080/users?name=Boris&email
 ```
 
 Error JSON response is returned
@@ -520,24 +546,29 @@ Error JSON response is returned
     "info": "Email is empty!"
   }
 }
+```
 
-// Other examples of JSON formated response
+Other examples of JSON formatted response
 
+```json
 {
   "register": {
     "status": 0,
     "info": "About is empty!"
   }
 }
+```
 
-// or
+or
 
+```json
 {
   "update": {
     "status": 0,
     "info": "Title is empty!"
   }
 }
+
 ```
 
 #### Missing required parameter
@@ -547,8 +578,7 @@ If one or more parameters that is required is missing error JSON response is ret
 Following request is missing `companyID` parameter and its value:
 
 ```powershell
-curl -X POST -d "companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&q
-ual=Java" localhost:8080/posts
+curl -X POST -b "JSESSIONID=368103A3BCBEBA58D9947BF0E4A0EFBD" -d "companyName=Tritol DOO&title=Test title&type=full time&&city=Trebinje&about=Loking for&ual=Java" localhost:8080/posts
 ```
 
 To create a new post [these](###Create-post) parameters are required.
@@ -571,8 +601,7 @@ Update of post and user with none existing IDs:
 
 ```JSON
 {
-  "update": // or posts
-  {
+  "update": {
     "status": 0,
     "info": "Post with id 1001 does not exist!"
   }
@@ -589,15 +618,14 @@ Update of post and user with none existing IDs:
 Example of network request where `companyID` (1003) does not exist:
 
 ```powershell
-curl -X POST -d "companyID=1003&companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&
-qual=Java" localhost:8080/posts
+curl -X POST -b "JSESSIONID=368103A3BCBEBA58D9947BF0E4A0EFBD" -d "companyID=1003&companyName=Tritol DOO&title=Test title&type=full time&city=Trebinje&about=Loking for&qual=Java" localhost:8080/posts
 ```
 
 ```JSON
 {
   "posts": {
     "status": 0,
-    "info": "Post with id 1003 does not exist!"
+    "info": "Company with id 1003 does not exist!"
   }
 }
 ```
@@ -606,43 +634,13 @@ The following are Session errors:
 
 #### Missing cookie
 
-Trying to create, delete or update w/o being singed in or missing cookies will return error json.
+Trying to create, delete or update w/o being singed in or sending network request w/o required cookies will return error json.
 
 ```json
 {
   "posts": {
     "status": 0,
     "info": "Missing Cookie!"
-  }
-}
-```
-
-###### Missing session ID
-
-```powershell
-curl -X POST -v -d "username=tritol22&password=123456789" localhost:8080/login
-```
-
-```json
-{
-  "login": {
-    "status": 0,
-    "info": "Missing session ID"
-  }
-}
-```
-
-###### Missing session ID
-
-```powershell
-curl -X POST -v -b "JSESSIONID=947E1129779927408BCDAF885B462C2D" -d "name=MojaKompanija2&username=mycomp&city=Derventa&email=info2@mycomp.com&about=empty&password=123456789" localhost:8080/register
-```
-
-```json
-{
-  "register": {
-    "status": 0,
-    "info": "Missing session ID"
   }
 }
 ```
@@ -665,11 +663,16 @@ curl -X POST -v -b "JSESSIONID=123" localhost:8080/logout
 ###### Missing UserID cookie
 
 ```powershell
-curl -X DELETE -b "JSESSIONID=947E1129779927408BCDAF885B462C2D" localhost:8080/posts?id=1
+curl -X DELETE -b "JSESSIONID=2D26293A42268F6E3AEEBF0F406FB83B" localhost:8080/posts?id=1
 ```
 
 ```json
-{"posts":{"status":0,"info":"UserID cookie is missing!"}}
+{
+  "posts": {
+    "status": 0,
+    "info": "UserID cookie is missing!"
+  }
+}
 ```
 
 ###### Post ID parameter missing
@@ -679,7 +682,12 @@ curl -X DELETE -b "JSESSIONID=947E1129779927408BCDAF885B462C2D" localhost:8080/p
 ```
 
 ```json
-{"posts":{"status":0,"info":"PostID parameter is missing!"}}
+{
+  "posts": {
+    "status": 0,
+    "info": "PostID parameter is missing!"
+  }
+}
 ```
 
 ###### Post with ID=`value` not found

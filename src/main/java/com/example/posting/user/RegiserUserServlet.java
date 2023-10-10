@@ -135,7 +135,7 @@ public class RegiserUserServlet extends OverrideServlet
 		response.addCookie(cookie1);
 		response.addCookie(cookie2);
 
-		resjson.put("register", innerJson);
+		resjson.put(this.requestName, innerJson);
 
 		response.getWriter().println(resjson);
 	}

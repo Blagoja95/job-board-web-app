@@ -108,7 +108,7 @@ public class UpdateUserServlet extends OverrideServlet
 		resjson.put("status", 1);
 		resjson.put("id", user.getId());
 		resjson.put("info", "User profile is successfully updated!");
-		respJson.put("update", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}

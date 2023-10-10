@@ -16,7 +16,7 @@ public class OverrideServlet extends HttpServlet
 		JSONObject response = new JSONObject();
 
 		innerJSON.put("status", 0);
-		innerJSON.put("info", info.isEmpty() ? "Generic Error!" : info);
+		innerJSON.put("info", (info == null || info.isEmpty()) ? "Generic Error!" : info);
 
 		response.put(this.requestName, innerJSON);
 
@@ -55,7 +55,6 @@ public class OverrideServlet extends HttpServlet
 
 		for (Cookie c : allCookies)
 		{
-			System.out.println(c.getName() + " " + c.getValue() + " " + username + " " + userID);
 			if (c.getName().equals("username"))
 			{
 				if (c.getValue().isEmpty() || !c.getValue().equals(username))

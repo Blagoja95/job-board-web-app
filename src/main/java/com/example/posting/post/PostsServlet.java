@@ -86,7 +86,10 @@ public class PostsServlet extends OverrideServlet
 
 		if (posts == null || posts.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (PostModel post : posts)
@@ -95,7 +98,7 @@ public class PostsServlet extends OverrideServlet
 		}
 
 		respJson.put("results", posts.size());
-		respJson.put("posts", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -120,7 +123,10 @@ public class PostsServlet extends OverrideServlet
 
 		if (posts == null || posts.isEmpty())
 		{
-			return getEmptyResponse(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (PostModel post : posts)
@@ -129,7 +135,7 @@ public class PostsServlet extends OverrideServlet
 		}
 
 		respJson.put("results", posts.size());
-		respJson.put("posts", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -212,8 +218,7 @@ public class PostsServlet extends OverrideServlet
 
 		resjson.put("status", 1);
 		resjson.put("id", post.getId());
-
-		respJson.put("posts", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}
@@ -226,7 +231,7 @@ public class PostsServlet extends OverrideServlet
 
 		if (input == null || input.isEmpty())
 		{
-			returnObj.put("posts", new ArrayList<>());
+			returnObj.put(this.requestName, new ArrayList<>());
 		}
 		else
 		{

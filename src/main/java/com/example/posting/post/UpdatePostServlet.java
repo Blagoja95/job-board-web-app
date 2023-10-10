@@ -77,11 +77,11 @@ public class UpdatePostServlet extends OverrideServlet
 
 		String userID = this.getCookieValue(request, "userID");
 
-		if (userID.isBlank())
+		if (userID == null || userID.isEmpty())
 		{
 			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
 
-			return;
+		return;
 		}
 
 		try
@@ -123,7 +123,7 @@ public class UpdatePostServlet extends OverrideServlet
 		resjson.put("status", 1);
 		resjson.put("id", post.getId());
 		resjson.put("info", "Post is successfully updated!");
-		respJson.put("update", resjson);
+		respJson.put(this.requestName, resjson);
 
 		response.getWriter().println(respJson);
 	}

@@ -41,7 +41,7 @@ public class LoginServlet extends OverrideServlet
 
 		if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password"))
 		{
-			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
+			response.getWriter().println(this.getErrorJSON("No parameters provided!"));
 
 			return;
 		}
@@ -76,7 +76,7 @@ public class LoginServlet extends OverrideServlet
 
 			innerJson.put("status", 1);
 			innerJson.put("info", "Welcome " + user.getName());
-			resjson.put("login", innerJson);
+			resjson.put(this.requestName, innerJson);
 
 			request.getSession(false).setAttribute("userID", user.getId() + "");
 			request.getSession(false).setAttribute("username", user.getUsername());
@@ -89,8 +89,6 @@ public class LoginServlet extends OverrideServlet
 
 			response.addCookie(cookie1);
 			response.addCookie(cookie2);
-
-			System.out.println(cookie1.getName() + " " + cookie1.getValue() + " " + request.getSession(false).getAttribute("userID") + " " + request.getSession(false).getAttribute("username"));
 		}
 		else
 		{

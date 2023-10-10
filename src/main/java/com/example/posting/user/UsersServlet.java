@@ -80,7 +80,10 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return this.getErrorJSON(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (User user : users)
@@ -89,7 +92,7 @@ public class UsersServlet extends OverrideServlet
 		}
 
 		respJson.put("results", users.size());
-		respJson.put("users", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
@@ -106,7 +109,10 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return this.getErrorJSON(null);
+			respJson.put("results", 0);
+			respJson.put(this.requestName, new ArrayList<>());
+
+			return respJson;
 		}
 
 		for (User user : users)
@@ -115,7 +121,7 @@ public class UsersServlet extends OverrideServlet
 		}
 
 		respJson.put("results", users.size());
-		respJson.put("users", resArr);
+		respJson.put(this.requestName, resArr);
 
 		return respJson;
 	}
