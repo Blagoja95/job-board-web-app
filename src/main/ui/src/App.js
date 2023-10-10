@@ -6,6 +6,7 @@ import Companies from "./pages/Companies"
 import About from "./pages/About";
 import Login from "./components/Login";
 import CreatePost from "./components/CreatePost";
+import Reviews from "./components/Reviews";
 
 import {Routes, Route} from "react-router-dom";
 import {useState, createContext} from "react";
@@ -55,6 +56,7 @@ function App() {
 									<Route path="/register" element={<Register/>}/>
 									<Route path="/detailed" element={<DetailedPost/>}/>
 									<Route path="/update" element={<CreatePost/>}/>
+									<Route path="/reviews" element={<Reviews/>}/>
 								</Routes>
 
 								<Footer/>

@@ -3,6 +3,7 @@ import Button from "./Button";
 import {useContext} from "react";
 import {LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import {getLoginArray} from '../cookie';
 
 const handleSubmit = (e, setLogged, nav) => {
 	e.preventDefault();
@@ -22,8 +23,7 @@ const handleSubmit = (e, setLogged, nav) => {
 		.then(data => {
 			if (data?.login?.status === 1)
 			{
-				console.log(document.cookie)
-				setLogged([username, 1234234]);
+				setLogged(getLoginArray(['username', 'userID']));
 
 				const loginLabel = document.querySelector('.lgn-status');
 				loginLabel.innerText = 'Welcome ' + (username ? username : 'back');

@@ -6,10 +6,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/register")
@@ -31,6 +34,16 @@ public class RegiserUserServlet extends OverrideServlet
 		response.setContentType("application/json");
 
 		JSONObject respJson = new JSONObject();
+		HttpSession session = request.getSession(false);
+
+		if (session != null && session.getId().equals(this.getCookieValue(request, "JSESSIONID")))
+		{
+			String user = this.getCookieValue(request, "username");
+
+			response.getWriter().println((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!");
+
+			return;
+		}
 
 		if (this.checkIfEmptyParameters(request, response))
 		{
@@ -56,29 +69,37 @@ public class RegiserUserServlet extends OverrideServlet
 			return;
 		}
 
-		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
+		DbAccess db = new DbAccess();
+
+		try
+		{
+			ResultSet res1 = db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username"))));
+
+			if (res1 == null || res1.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Username already exist!"));
+
+				return;
+			}
+
+			ResultSet res2 = db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email"))));
+
+			if (res2 == null || res2.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Email address already exist!"));
+
+				return;
+			}
+
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		int id = (int) (Math.random() * 1800) + 100;
 
-		DbAccess db = new DbAccess();
+		String hashPass = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
 
-		if (db.checkIfExist(new ArrayList<>(List.of("users", "username", request.getParameter("username")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Username already exist!"));
-
-			return;
-		}
-
-		if (db.checkIfExist(new ArrayList<>(List.of("users", "email", request.getParameter("email")))) != 0)
-		{
-			response.getWriter().println(this.getErrorJSON("Email address already exist!"));
-
-			return;
-		}
-
-		// todo: handle server side registration
-		// todo: check if already singed in
-		
 		User user = new User(
 				id,
 				request.getParameter("name"),
@@ -94,12 +115,16 @@ public class RegiserUserServlet extends OverrideServlet
 		JSONObject resjson = new JSONObject();
 		JSONObject innerJson = new JSONObject();
 
-
 		innerJson.put("status", 1);
 		innerJson.put("info", "Wellcome " + user.getName());
 
-		request.getSession().setAttribute("userID", user.getId() + "");
-		request.getSession().setAttribute("username", user.getUsername());
+		if(session == null)
+		{
+			session = request.getSession();
+		}
+
+		session.setAttribute("userID", user.getId() + "");
+		session.setAttribute("username", user.getUsername());
 
 		Cookie cookie1 = new Cookie("userID", user.getId() + "");
 		Cookie cookie2 = new Cookie("username", user.getUsername());

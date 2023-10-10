@@ -2,6 +2,7 @@ package com.example.posting.user;
 
 import com.example.posting.app.OverrideServlet;
 import com.example.posting.database.DbAccess;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,8 +28,7 @@ public class UsersServlet extends OverrideServlet
 		response.setContentType("application/json");
 
 		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.addHeader("Access-Control-Allow-Headers",
-				"Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 		if (!request.getParameterMap().isEmpty())
 		{
@@ -64,7 +64,7 @@ public class UsersServlet extends OverrideServlet
 		}
 		else
 		{
-			response.getWriter().println(getEmptyResponse("Wrong request!"));
+			response.getWriter().println(this.getErrorJSON("Wrong request!"));
 		}
 	}
 
@@ -80,7 +80,7 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return getEmptyResponse(null);
+			return this.getErrorJSON(null);
 		}
 
 		for (User user : users)
@@ -106,7 +106,7 @@ public class UsersServlet extends OverrideServlet
 
 		if (users == null || users.isEmpty())
 		{
-			return getEmptyResponse(null);
+			return this.getErrorJSON(null);
 		}
 
 		for (User user : users)
@@ -120,21 +120,8 @@ public class UsersServlet extends OverrideServlet
 		return respJson;
 	}
 
-	public JSONObject getEmptyResponse(String input)
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		JSONObject returnObj = new JSONObject();
-
-		returnObj.put("results", 0);
-
-		if (input == null || input.isEmpty())
-		{
-			returnObj.put("users", new ArrayList<>());
-		}
-		else
-		{
-			returnObj.put("info", input);
-		}
-
-		return returnObj;
+		// TODO: issue 63
 	}
 }

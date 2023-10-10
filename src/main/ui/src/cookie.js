@@ -19,6 +19,12 @@ export const getCookie = (name) => {
 	return null;
 };
 
+/**
+ *
+ * @param names - cookie IDs in array E.g. [cookieID1, cookieID2, ...]
+ *
+ * @returns {*[], ['cookieVal1', 'cookieVal2', '...']}
+ */
 export const getLoginArray = (names) => {
 	if (!names || names?.length < 1)
 	{
@@ -36,7 +42,6 @@ export const getLoginArray = (names) => {
 		}
 	});
 
-	console.log(arr)
 	return arr;
 };
 

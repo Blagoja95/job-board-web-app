@@ -9,7 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.naming.spi.Resolver;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/posts")
@@ -138,7 +141,7 @@ public class PostsServlet extends OverrideServlet
 		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (this.checkSession(request, response))
+		if (this.checkUserCookies(request, response))
 		{
 			return;
 		}
@@ -172,11 +175,19 @@ public class PostsServlet extends OverrideServlet
 
 		String companyID = this.getCookieValue(request, "userID");
 
-		if (db.checkIfExist(List.of("users", "id", companyID)) != 1)
+		try
 		{
-			response.getWriter().println(this.getErrorJSON("Company with id " + companyID + " does not exist!"));
+			ResultSet results = db.checkIfExist(List.of("users", "id", companyID));
 
-			return;
+			if (results == null || !results.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Company with id " + companyID + " does not exist!"));
+
+				return;
+			}
+		} catch (SQLException e)
+		{
+			throw new RuntimeException(e);
 		}
 
 		JSONObject respJson = new JSONObject();
@@ -195,7 +206,7 @@ public class PostsServlet extends OverrideServlet
 				new Date()
 		);
 
-		db.createPost(post);
+		int i = db.createPost(post);
 
 		JSONObject resjson = new JSONObject();
 
@@ -227,14 +238,13 @@ public class PostsServlet extends OverrideServlet
 
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		System.out.println(request.getHeader("Origin"));
 		response.setContentType("application/json");
 
 		response.setHeader("Access-Control-Allow-Methods", "DELETE");
 		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.addHeader("Access-Control-Allow-Credentials", "true");
 
-		if (this.checkSession(request, response))
+		if (this.checkUserCookies(request, response))
 		{
 			return;
 		}
@@ -249,11 +259,66 @@ public class PostsServlet extends OverrideServlet
 			return;
 		}
 
-		int sqlResInt = new DbAccess().deletePost(request.getParameter("id"));
+		String id = request.getParameter("id");
+
+		if (id == null || id.isBlank())
+		{
+			response.getWriter().println(this.getErrorJSON("PostID parameter is missing!"));
+
+			return;
+		}
+
+		DbAccess db = new DbAccess();
+
+		String userID = this.getCookieValue(request, "userID");
+
+		if (userID.isBlank())
+		{
+			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
+
+			return;
+		}
+
+		try
+		{
+			ResultSet res = db.checkIfExist(List.of("posts", "id", id));
+
+			if(res == null || !res.next())
+			{
+				response.getWriter().println(this.getErrorJSON("Post with ID " + id + " is not found!"));
+
+				return;
+			}
+
+			if (!res.getString("companyID").equals(userID))
+			{
+				response.getWriter().println(this.getErrorJSON("Delete action denied!"));
+
+				return;
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+
+		int sqlResInt = db.deletePost(id);
 
 		JSONObject jsonRes = new JSONObject();
+		JSONObject jsonInner = new JSONObject();
 
-		jsonRes.put("response", sqlResInt);
+		if (sqlResInt != 0)
+		{
+			jsonInner.put("status", 1);
+			jsonInner.put("info", "Post successfully deleted!");
+		}
+		else
+		{
+			jsonInner.put("status", 0);
+			jsonInner.put("info", "Error, check post ID!");
+		}
+
+		jsonRes.put(this.requestName, jsonInner);
 
 		response.getWriter().println(jsonRes);
 	}

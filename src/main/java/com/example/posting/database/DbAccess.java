@@ -2,6 +2,7 @@ package com.example.posting.database;
 
 import com.example.posting.post.PostModel;
 import com.example.posting.user.User;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,13 @@ public class DbAccess
 			USERNAME = "root",
 			PASSWORD = "mydbpassword";
 
+	private Connection getConnection() throws SQLException, ClassNotFoundException
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+
+		return DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+	}
+
 	public List<User> getAllUsers()
 	{
 
@@ -19,9 +27,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			Statement statement = connection.createStatement();
 
@@ -56,9 +62,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			Statement statement = connection.createStatement();
 
@@ -92,9 +96,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"insert into users (id, name, hashPass, email, about, username, city) values (?, ?, ?, ?, ?, ?, ?);"
@@ -122,9 +124,7 @@ public class DbAccess
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"UPDATE users SET name=?, email=?, city=?, about=? WHERE id=?"
@@ -149,9 +149,7 @@ public class DbAccess
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"DELETE FROM users WHERE id=?;"
@@ -180,9 +178,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			Statement statement = connection.createStatement();
 
@@ -226,9 +222,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			Statement statement = connection.createStatement();
 
@@ -270,9 +264,7 @@ public class DbAccess
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			Statement statement = connection.createStatement();
 
@@ -312,9 +304,7 @@ public class DbAccess
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"UPDATE posts SET " + what + "=? WHERE " + where + "=?"
@@ -337,9 +327,7 @@ public class DbAccess
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"UPDATE posts SET title=?, type=?, city=?, qual=?, about=? WHERE id=?"
@@ -365,9 +353,7 @@ public class DbAccess
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"DELETE FROM posts WHERE id=?;"
@@ -389,13 +375,11 @@ public class DbAccess
 		return 0;
 	}
 
-	public void createPost(PostModel post)
+	public int createPost(PostModel post)
 	{
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection connection = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection connection = this.getConnection();
 
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"insert into posts (id, title, type, city, about, qual, companyID, date) values (?, ?, ?, ?, ?, ?, ?, ?);"
@@ -412,14 +396,18 @@ public class DbAccess
 			// TODO: how to set time (hh:mm:ss)
 			preparedStatement.setDate(8, java.sql.Date.valueOf(java.time.LocalDate.now()));
 
-			preparedStatement.executeUpdate();
+			int status = preparedStatement.executeUpdate();
 
 			connection.close();
+
+			return status;
 
 		} catch (ClassNotFoundException | SQLException e)
 		{
 			e.printStackTrace();
 		}
+
+		return 0;
 	}
 
 	/**
@@ -433,43 +421,34 @@ public class DbAccess
 	 * 1 do exist
 	 * @Autor Boris Blagojevic
 	 */
-	public int checkIfExist(List<String> parameters)
+	public ResultSet checkIfExist(List<String> parameters)
 	{
 		if (parameters.isEmpty() || parameters.size() < 3)
 		{
-			return -1;
+			return null;
 		}
 
 		for (String i : parameters)
 		{
 			if (i == null || i.isEmpty())
 			{
-				return -1;
+				return null;
 			}
 		}
 
 		try
 		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			Connection conn = DriverManager.getConnection(this.CONNECTIONURL, this.USERNAME, this.PASSWORD);
+			Connection conn = this.getConnection();
 
 			Statement statment = conn.createStatement();
 
-
-			ResultSet resultSet = statment.executeQuery("SELECT * FROM " + parameters.get(0) + " WHERE " + parameters.get(1) + "='" + parameters.get(2) + "';");
-
-			int resp = resultSet.next() ? 1 : 0;
-
-			conn.close();
-
-			return resp;
+			return statment.executeQuery("SELECT * FROM " + parameters.get(0) + " WHERE " + parameters.get(1) + "='" + parameters.get(2) + "';");
 
 		} catch (ClassNotFoundException | SQLException e)
 		{
 			e.printStackTrace();
 		}
 
-		return 0;
+		return null;
 	}
 }

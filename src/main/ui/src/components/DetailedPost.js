@@ -55,11 +55,10 @@ const DetaildPost = () => {
 				setModal(null);
 
 			fetch('http://localhost:8080/posts?id=' + id, {
-					method: "DELETE",
-					credentials: 'include'
+				method: 'DELETE'
 				}).then(res => res.json())
 					.then(res => {
-						if (res?.response === 1)
+						if (res?.posts?.status === 1)
 						{
 							nav('/');
 
@@ -72,6 +71,8 @@ const DetaildPost = () => {
 								while (inner.firstChild) inner.removeChild(inner.firstChild);
 							}, 2000);
 						}
+
+						// todo: error handling
 					});
 			},
 			btn2Fn() {

@@ -30,6 +30,15 @@ public class LoginServlet extends OverrideServlet
 
 		response.setContentType("application/json");
 
+		if(!request.getSession().isNew())
+		{
+			String user = this.getCookieValue(request, "username");
+
+			response.getWriter().println((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!");
+
+			return;
+		}
+
 		if (!request.getParameterMap().containsKey("username") || !request.getParameterMap().containsKey("password"))
 		{
 			response.getWriter().println(this.getErrorJSON("Incorrect or missing parameters!"));
@@ -69,8 +78,8 @@ public class LoginServlet extends OverrideServlet
 			innerJson.put("info", "Welcome " + user.getName());
 			resjson.put("login", innerJson);
 
-			request.getSession().setAttribute("userID", user.getId() + "");
-			request.getSession().setAttribute("username", user.getUsername());
+			request.getSession(false).setAttribute("userID", user.getId() + "");
+			request.getSession(false).setAttribute("username", user.getUsername());
 
 			Cookie cookie1 = new Cookie("userID", user.getId() + "");
 			Cookie cookie2 = new Cookie("username", user.getUsername());
@@ -80,6 +89,8 @@ public class LoginServlet extends OverrideServlet
 
 			response.addCookie(cookie1);
 			response.addCookie(cookie2);
+
+			System.out.println(cookie1.getName() + " " + cookie1.getValue() + " " + request.getSession(false).getAttribute("userID") + " " + request.getSession(false).getAttribute("username"));
 		}
 		else
 		{

@@ -1,9 +1,6 @@
 package com.example.posting.app;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -26,7 +23,7 @@ public class OverrideServlet extends HttpServlet
 		return response;
 	}
 
-	protected boolean checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException
+	protected boolean checkUserCookies(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		Cookie[] allCookies = request.getCookies();
 
@@ -37,24 +34,33 @@ public class OverrideServlet extends HttpServlet
 			return true;
 		}
 
-		String username = request.getSession().getAttribute("username") + "";
-		String userID = request.getSession().getAttribute("userID") + "";
+		HttpSession session = request.getSession(false);
 
-		if (userID.isEmpty() || username.isEmpty())
+		if (session == null)
 		{
 			response.getWriter().println(this.getErrorJSON("You must first be logged in!"));
 
 			return true;
 		}
 
+		String username = session.getAttribute("username") + "";
+		String userID = session.getAttribute("userID") + "";
+
+		if (userID.isBlank() || username.isBlank())
+		{
+			response.getWriter().println(this.getErrorJSON("Session values missing!"));
+
+			return true;
+		}
+
 		for (Cookie c : allCookies)
 		{
+			System.out.println(c.getName() + " " + c.getValue() + " " + username + " " + userID);
 			if (c.getName().equals("username"))
 			{
-				System.out.println(c.getValue());
-				if (c.getName().equals(username))
+				if (c.getValue().isEmpty() || !c.getValue().equals(username))
 				{
-					response.getWriter().println(this.getErrorJSON("Wrong username!"));
+					response.getWriter().println(this.getErrorJSON("Cookie: Wrong or empty username! Check session and cookie!"));
 
 					return true;
 				}
@@ -62,11 +68,9 @@ public class OverrideServlet extends HttpServlet
 
 			if (c.getName().equals("userID"))
 			{
-				System.out.println(c.getValue());
-
-				if (c.getName().equals(userID))
+				if (c.getValue().isEmpty() || !c.getValue().equals(userID))
 				{
-					response.getWriter().println(this.getErrorJSON("Wrong user ID!"));
+					response.getWriter().println(this.getErrorJSON("Cookie: Wrong or empty user ID! Check session and cookie!"));
 
 					return true;
 				}
@@ -112,7 +116,8 @@ public class OverrideServlet extends HttpServlet
 
 		Cookie[] cookies = request.getCookies();
 
-		if (cookies == null || cookies.length < 1) {
+		if (cookies == null || cookies.length < 1)
+		{
 			return "";
 		}
 
@@ -125,5 +130,45 @@ public class OverrideServlet extends HttpServlet
 		}
 
 		return "";
+	}
+
+	protected boolean checkSession(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		HttpSession session = request.getSession(false);
+
+		String JSESSIONID = this.getCookieValue(request, "JSESSIONID");
+
+		if (JSESSIONID.isEmpty())
+		{
+			response.getWriter().println(this.getErrorJSON("Missing session ID"));
+
+			return true;
+		}
+
+		if (session == null)
+		{
+			response.getWriter().println(this.getErrorJSON("You must first be logged in!"));
+
+			return true;
+		}
+
+		if (!session.getId().equals(JSESSIONID))
+		{
+			response.getWriter().println(this.getErrorJSON("Wrong session ID"));
+
+			return true;
+		}
+
+		String username = session.getAttribute("username") + "";
+		String userID = session.getAttribute("userID") + "";
+
+		if (userID.isEmpty() || username.isEmpty())
+		{
+			response.getWriter().println(this.getErrorJSON("You must first be logged in!"));
+
+			return true;
+		}
+
+		return false;
 	}
 }

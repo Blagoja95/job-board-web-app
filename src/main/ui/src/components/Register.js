@@ -3,6 +3,7 @@ import Button from "./Button";
 import {useContext, useEffect, useState} from "react";
 import {LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import {getLoginArray} from "../cookie";
 
 const handleSubmit = (e, setLogged, nav) => {
 	e.preventDefault();
@@ -10,9 +11,11 @@ const handleSubmit = (e, setLogged, nav) => {
 	const params = new URLSearchParams();
 	const form = document.querySelector('.regForm');
 
-	for (let item of form.elements )
-		if(item['name'] !== 'skip')
+	for (let item of form.elements)
+		if (item['name'] !== 'skip')
+		{
 			params.append(item['name'], item.value);
+		}
 
 	fetch('http://localhost:8080/register', {
 		method: "POST",
@@ -21,15 +24,29 @@ const handleSubmit = (e, setLogged, nav) => {
 	})
 		.then(res => res.json())
 		.then(data => {
-			// TODO: handle client side registration
-			if (data?.register?.success?.length === 2)
+			if (data?.register?.status === 1)
 			{
-				localStorage.setItem('login', JSON.stringify(data.register.success));
-				setLogged(data.register.success);
-				nav('/posts');
-			}
+				setLogged(getLoginArray(['username', 'userID']));
 
-			// TODO: fail state
+				nav('/posts');
+
+				const inner = document.querySelector('.forInner');
+
+				inner.insertAdjacentHTML('beforeend', `
+											<p class="py-4 text-mint text-2xl">${data?.register?.info ? data?.register?.info : 'Welcome!'}</p>`);
+				setTimeout(() => {
+					while (inner.firstChild) inner.removeChild(inner.firstChild);
+				}, 2000);
+			}
+			else {
+				const inner = document.querySelector('.forInner');
+
+				inner.insertAdjacentHTML('beforeend', `
+											<p class="py-4">${data?.register?.info ? data?.register?.info : 'Error!'}</p>`);
+				setTimeout(() => {
+					while (inner.firstChild) inner.removeChild(inner.firstChild);
+				}, 2000);
+			}
 		})
 };
 
