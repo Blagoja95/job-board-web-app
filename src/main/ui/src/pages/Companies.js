@@ -1,11 +1,14 @@
 import Users from "../sections/Users";
 
 const Companies = () => {
-return (
-	<>
-	<Users/>
-	</>
-)
+	return (
+		<>
+			<div className="">
+
+			</div>
+			<Users/>
+		</>
+	)
 };
 
 export default Companies;

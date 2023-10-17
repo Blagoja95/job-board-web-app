@@ -54,7 +54,8 @@ function App() {
 									<Route path="/login" element={<Login/>}/>
 									<Route path="/npost" element={<CreatePost create={true}/> }/>
 									<Route path="/register" element={<Register/>}/>
-									<Route path="/detailed" element={<DetailedPost/>}/>
+									<Route path="/posts/detailed" element={<DetailedPost/>}/>
+									<Route path="/users/detailed" element={<DetailedPost/>}/>
 									<Route path="/update" element={<CreatePost/>}/>
 									<Route path="/reviews" element={<Reviews/>}/>
 								</Routes>

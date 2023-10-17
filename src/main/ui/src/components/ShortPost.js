@@ -14,7 +14,7 @@ const ShortPost = ({ post, openDetailedPost }) => {
 				openDetailedPost();
 			}}
 		>
-			<div className="grid grid-cols-5 justify-items-center border rounded-xl w-4/5 m-auto py-5 md:py-10 mb-4 hover:border-mint hover:border-2">
+			<div className="grid grid-cols-5 justify-items-center border rounded-xl w-4/5 m-auto py-5 md:py-10 mb-4 hover:border-mint hover:border-1 hover:cursor-pointer">
 				<img className="w-[44px] sm:w-[64px]" src={"https://picsum.photos/64?random=" + post.id}></img>
 
 				<div className="text-left flex flex-col items-left gap-2 w-[200px]">

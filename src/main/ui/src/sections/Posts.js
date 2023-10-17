@@ -33,7 +33,7 @@ const Posts = () => {
 
 	const makeShortPosts = (posts, nav) => {
 		return posts.map((post, i) => (
-			<ShortPost post={post} key={post.id + '-' + post.title.replace(' ', '_') + '_' + i} openDetailedPost={() => nav('/detailed' + '?id=' + post.id)} />
+			<ShortPost post={post} key={post.id + '-' + post.title.replace(' ', '_') + '_' + i} openDetailedPost={() => nav('/posts/detailed' + '?id=' + post.id)} />
 		));
 	};
 
