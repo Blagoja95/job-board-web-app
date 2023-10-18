@@ -28,4 +28,8 @@ export const debounce = (fn, timeout = 500) => {
 			fn.apply(this, args)
 		}, timeout);
 	};
-}
+};
+
+export const removeDuplicates = (items) => {
+	return items.filter((item,index) => items.indexOf(item) === index);
+};

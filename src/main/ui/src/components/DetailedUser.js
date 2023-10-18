@@ -64,7 +64,7 @@ const DetailedUser = () => {
 
 			<section>
 				<div className="mt-10 text-left max-w-screen-sm m-auto px-6 lg:px-0">
-					<h3 className="text-2xl font-semibold text-center text-min">O nama</h3>
+					<h3 className="text-2xl font-semibold text-center text-min ">O nama</h3>
 					<p className="mt-2 text-coolGray-dark text-center">{detailed.about}</p>
 				</div>
 			</section>

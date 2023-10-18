@@ -2,10 +2,7 @@ import ShortPost from "../components/ShortPost";
 import {useContext, useEffect} from "react";
 import {PostsContext} from "../App";
 import {useNavigate} from "react-router-dom";
-
-export const removeDuplicates = (items) => {
-	return items.filter((item,index) => items.indexOf(item) === index);
-};
+import {removeDuplicates} from "../utils";
 
 const Posts = ({userId = null}) => {
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
@@ -27,6 +24,7 @@ const Posts = ({userId = null}) => {
 			});
 
 			setPosts(data.posts);
+
 			setCities(removeDuplicates(cities));
 			setTypes(removeDuplicates(types));
 		});
