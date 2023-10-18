@@ -7,7 +7,7 @@ export const removeDuplicates = (items) => {
 	return items.filter((item,index) => items.indexOf(item) === index);
 };
 
-const Posts = () => {
+const Posts = ({userId = null}) => {
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 	const nav = useNavigate();
 
@@ -16,7 +16,7 @@ const Posts = () => {
 	}, []);
 
 
-	const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080/posts')
+	const getPosts = (setPosts, setCities, setTypes) => fetch(`http://localhost:8080/posts${userId !== null ? `?companyID=${userId}` : ''}`)
 		.then(response => response.json())
 		.then(data => {
 			const types = [], cities = [];

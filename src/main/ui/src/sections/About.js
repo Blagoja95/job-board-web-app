@@ -9,11 +9,11 @@ const About = () => {
 				</p>
 
 				<p>
-					Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo studije poslovne informatike. Kasnije se prebacio na novi smjer inženjering informacionih tehnologija u akademskoj 2019-2020. godini.
+					Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo studije poslovne informatike. Kasnije se prebacio na novo formirani smjer inženjering informacionih tehnologija u akademskoj 2019-2020. godini koji i završava u Maju mjesecu 2023. godine.
 				</p>
 
 				<p>
-					Trenutno je Boris zaposlen kao programer. Tokom svog akademskog i profesionalnog puta, Boris je pokazao veliki interes prema tehnologiji i sklonost ka rješavanju problema u oblasti informacionih tehnologija.
+					Radi u struci kao Softverski Inženjer. Tokom svog akademskog i profesionalnog puta, Boris je pokazao veliki interes prema tehnologiji i sklonost ka rješavanju problema u oblasti informacionih tehnologija.
 				</p>
 			</div>
 		</div>

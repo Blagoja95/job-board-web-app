@@ -2,8 +2,7 @@ import "./index.css";
 import Navigation from "./sections/Navigation";
 import Footer from "./sections/Footer";
 import Home from "./pages/Home";
-import Companies from "./pages/Companies"
-import About from "./pages/About";
+import About from "./sections/About";
 import Login from "./components/Login";
 import CreatePost from "./components/CreatePost";
 import Reviews from "./components/Reviews";
@@ -15,6 +14,8 @@ import DetailedPost from "./components/DetailedPost";
 import Modal from "./components/Modal";
 import {createPortal} from "react-dom";
 import {getLoginArray} from './cookie'
+import Users from "./sections/Users";
+import DetailedUser from "./components/DetailedUser";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -49,13 +50,13 @@ function App() {
 								<Routes>
 									<Route path="/" element={<Home/>}/>
 									<Route path="/posts" element={<Home/>}/>
-									<Route path="/users" element={<Companies/>}/>
+									<Route path="/users" element={<Users/>}/>
 									<Route path="/about" element={<About/>}/>
 									<Route path="/login" element={<Login/>}/>
 									<Route path="/npost" element={<CreatePost create={true}/> }/>
 									<Route path="/register" element={<Register/>}/>
 									<Route path="/posts/detailed" element={<DetailedPost/>}/>
-									<Route path="/users/detailed" element={<DetailedPost/>}/>
+									<Route path="/users/detailed" element={<DetailedUser/>}/>
 									<Route path="/update" element={<CreatePost/>}/>
 									<Route path="/reviews" element={<Reviews/>}/>
 								</Routes>

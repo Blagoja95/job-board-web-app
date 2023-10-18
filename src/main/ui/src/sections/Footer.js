@@ -13,7 +13,7 @@ const Footer = () => {
 					<div className="hidden md:block">|</div>
 					<div><a href="#top" className="hover:text-mint">Vrati me na vrh</a></div>
 					<div className="hidden md:block">|</div>
-					<div><a href="/about" className="hover:text-mint">Informacije</a></div>
+					<div><a href="/About" className="hover:text-mint">Informacije</a></div>
 				</div>
 			</div>
 		</section>
