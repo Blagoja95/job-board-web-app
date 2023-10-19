@@ -6,7 +6,6 @@ import About from "./sections/About";
 import Login from "./components/Login";
 import CreatePost from "./components/CreatePost";
 import Reviews from "./components/Reviews";
-
 import {Routes, Route} from "react-router-dom";
 import {useState, createContext} from "react";
 import Register from "./components/Register";
@@ -16,6 +15,7 @@ import {createPortal} from "react-dom";
 import {getLoginArray} from './cookie'
 import Users from "./sections/Users";
 import DetailedUser from "./components/DetailedUser";
+import Page404 from "./sections/Page404";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -59,6 +59,7 @@ function App() {
 									<Route path="/users/detailed" element={<DetailedUser/>}/>
 									<Route path="/update" element={<CreatePost/>}/>
 									<Route path="/reviews" element={<Reviews/>}/>
+									<Route path="*" element={<Page404/>}/>
 								</Routes>
 
 								<Footer/>
