@@ -33,7 +33,7 @@ export const getUserInitial = (name) => {
 	}
 	else
 	{
-		return name.slice(0, 1);
+		return name.slice(0, 1).toUpperCase();
 	}
 }
 
@@ -53,11 +53,8 @@ const getImage = (user) => {
 
 export const getRandomColor = () => {
 	const colorList = [
-		'gray',
 		'beige',
 		'blueviolet',
-		'aquamarine',
-		'Silver',
 		'aquamarine',
 		'greenyellow',
 		'lavender',
