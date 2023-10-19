@@ -88,7 +88,7 @@ const DetaildPost = () => {
 			<section className="bg-gray-light h-96 z-10" id="top">
 				<div className="pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0">
 					<h2 className="text-mint hover:underline">
-						<a className="" href={"/user?id=" + detailed.companyID}>
+						<a className="" href={"/users/detailed?id=" + detailed.companyID}>
 							{detailed.company}
 						</a>
 						<FontAwesomeIcon className="ml-1 pb-2" icon={faLink}/>

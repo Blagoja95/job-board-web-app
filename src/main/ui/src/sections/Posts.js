@@ -2,12 +2,9 @@ import ShortPost from "../components/ShortPost";
 import {useContext, useEffect} from "react";
 import {PostsContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import {removeDuplicates} from "../utils";
 
-export const removeDuplicates = (items) => {
-	return items.filter((item,index) => items.indexOf(item) === index);
-};
-
-const Posts = () => {
+const Posts = ({userId = null}) => {
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 	const nav = useNavigate();
 
@@ -16,7 +13,7 @@ const Posts = () => {
 	}, []);
 
 
-	const getPosts = (setPosts, setCities, setTypes) => fetch('http://localhost:8080/posts')
+	const getPosts = (setPosts, setCities, setTypes) => fetch(`http://localhost:8080/posts${userId !== null ? `?companyID=${userId}` : ''}`)
 		.then(response => response.json())
 		.then(data => {
 			const types = [], cities = [];
@@ -27,13 +24,14 @@ const Posts = () => {
 			});
 
 			setPosts(data.posts);
+
 			setCities(removeDuplicates(cities));
 			setTypes(removeDuplicates(types));
 		});
 
 	const makeShortPosts = (posts, nav) => {
 		return posts.map((post, i) => (
-			<ShortPost post={post} key={post.id + '-' + post.title.replace(' ', '_') + '_' + i} openDetailedPost={() => nav('/detailed' + '?id=' + post.id)} />
+			<ShortPost post={post} key={post.id + '-' + post.title.replace(' ', '_') + '_' + i} openDetailedPost={() => nav('/posts/detailed' + '?id=' + post.id)} />
 		));
 	};
 
