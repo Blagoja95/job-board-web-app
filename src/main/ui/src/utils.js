@@ -2,12 +2,13 @@ export const openMail = (mail) => {
 	window.location.href = 'mailto:' + mail;
 };
 
-export const blurRoot = (state = false) => {
-	document.getElementById('root')?.add('blur-lg');
+export const blurRoot = () => {
+	console.log(document.getElementById('root'))
+	document.getElementById('root')?.classList?.add('blur-lg');
 };
 
 export const unBloorRoot = () => {
-	document.getElementById('root')?.remove('blur-lg');
+	(document.getElementById('root'))?.classList?.remove('blur-lg');
 };
 
 export const EMPTY_FUNCTION = () => { };

@@ -4,7 +4,7 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "./Button";
-import {openMail, blurRoot} from "../utils";
+import {openMail, blurRoot, unBloorRoot} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext, LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
@@ -51,7 +51,7 @@ const DetaildPost = () => {
 			btn1Txt: "Da",
 			btn2Txt: "Ne",
 			btn1Fn() {
-				blurRoot();
+				unBloorRoot();
 				setModal(null);
 
 			fetch('http://localhost:8080/posts?id=' + id, {
@@ -76,7 +76,8 @@ const DetaildPost = () => {
 					});
 			},
 			btn2Fn() {
-				blurRoot();
+				unBloorRoot();
+
 				setModal(null);
 			}
 		})
@@ -141,7 +142,9 @@ const DetaildPost = () => {
 							<Button
 								text="Uredi oglas"
 								className="text-wht bg-mint mr-5"
-								onClick={() => nav('/update' + '?id=' + detailed.id)}
+								onClick={() => {
+									nav('/update' + '?id=' + detailed.id);
+								}}
 							/>
 							<Button
 								text="Obriši oglas"
