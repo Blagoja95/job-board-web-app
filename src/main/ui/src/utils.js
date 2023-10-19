@@ -3,17 +3,12 @@ export const openMail = (mail) => {
 };
 
 export const blurRoot = () => {
-	const root = document.getElementById('root'),
-		classes = root.classList;
+	console.log(document.getElementById('root'))
+	document.getElementById('root')?.classList?.add('blur-lg');
+};
 
-	if (classes.contains('blur-lg'))
-	{
-		classes.remove('blur-lg');
-	}
-	else
-	{
-		classes.add('blur-lg');
-	}
+export const unBloorRoot = () => {
+	(document.getElementById('root'))?.classList?.remove('blur-lg');
 };
 
 export const EMPTY_FUNCTION = () => { };
@@ -31,5 +26,5 @@ export const debounce = (fn, timeout = 500) => {
 };
 
 export const removeDuplicates = (items) => {
-	return items.filter((item,index) => items.indexOf(item) === index);
+	return items.filter((item, index) => items.indexOf(item) === index);
 };

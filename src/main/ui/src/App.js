@@ -16,6 +16,7 @@ import {getLoginArray} from './cookie'
 import Users from "./sections/Users";
 import DetailedUser from "./components/DetailedUser";
 import Page404 from "./sections/Page404";
+import CookiePopup from "./components/CookiePopup";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -61,6 +62,8 @@ function App() {
 									<Route path="/reviews" element={<Reviews/>}/>
 									<Route path="*" element={<Page404/>}/>
 								</Routes>
+
+								<CookiePopup/>
 
 								<Footer/>
 
