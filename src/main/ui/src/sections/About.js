@@ -26,7 +26,7 @@ const About = () => {
 			<div className='m-auto w-3/4 flex justify-end'>
 				<Button
 					text="Mail"
-					className="text-blue-300 bg-white border-white hover:bg-blue-400 hover:text-white w-36"
+					className="text-blue-300 bg-white border-white hover:bg-blue-300 hover:text-white w-36"
 					onClick={() => openMail('boris.blagojevicc@hotmail.com')}
 				/>
 
