@@ -34,7 +34,7 @@ function App() {
 	const [logged, setLogged] = useState(getLoginArray(['username', 'userID']));
 	const [modal, setModal] = useState(null);
 	const [detailed, setDetailed] = useState(null);
-	const [banner, setBanner] = useState(null);
+	const [banner, setBanner] = useState({show: false});
 
 	const postsValue = {posts, setPosts, cities, setCities, types, setTypes};
 
@@ -52,7 +52,7 @@ function App() {
 									modalObj={modal}/>, document.getElementById('modal')) : null}
 								<div className="forInner flex flex-row justify-center"></div>
 
-								<Banner show={banner?.show} type='warning' message={banner?.msg} />
+								<Banner show={banner?.show} type={banner?.type} message={banner?.msg} />
 
 								<Routes>
 									<Route path="/" element={<Home/>}/>
