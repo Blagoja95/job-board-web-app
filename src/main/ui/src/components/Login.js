@@ -2,10 +2,11 @@ import {EMPTY_FUNCTION} from "../utils";
 import Button from "./Button";
 import {useContext} from "react";
 import {LoginContext} from "../App";
+import {BannerContext} from "../App";
 import {useNavigate} from "react-router-dom";
 import {getLoginArray} from '../cookie';
 
-const handleSubmit = (e, setLogged, nav) => {
+const handleSubmit = (e, setLogged, nav, setBanner) => {
 	e.preventDefault();
 
 	const params = new URLSearchParams();
@@ -24,12 +25,19 @@ const handleSubmit = (e, setLogged, nav) => {
 			if (data?.login?.status === 1)
 			{
 				setLogged(getLoginArray(['username', 'userID']));
+				setBanner({
+					show: true,
+					msg: `Welcome ${username ? username : 'back'}`,
+					type: 'error'
+				});
 
-				const loginLabel = document.querySelector('.lgn-status');
-				loginLabel.innerText = 'Welcome ' + (username ? username : 'back');
-				loginLabel.className = 'lgn-status text-center text-mint';
+				setTimeout(() => {
+					nav('/posts');
+				}, 500);
 
-				setTimeout(() => nav('/posts'), 500);
+				setTimeout(() => {
+					setBanner({show: false});
+				}, 2000)
 			}
 
 			if (data?.login?.status === 0)
@@ -44,6 +52,7 @@ const handleSubmit = (e, setLogged, nav) => {
 
 const Login = () => {
 	const {setLogged} = useContext(LoginContext);
+	const setBanner = useContext(BannerContext);
 
 	const nav = useNavigate();
 
@@ -51,7 +60,7 @@ const Login = () => {
 		<div className="h-[60vh]">
 			<form
 				className="w-96 m-auto flex flex-col gap-5 mt-20 logForm "
-				onSubmit={(e) => handleSubmit(e, setLogged, nav)}
+				onSubmit={(e) => handleSubmit(e, setLogged, nav, setBanner)}
 			>
 				<h3 className="text-mint">Prijava</h3>
 				<input type="text" placeholder="Korisničko ime" name="username"

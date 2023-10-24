@@ -17,12 +17,14 @@ import Users from "./sections/Users";
 import DetailedUser from "./components/DetailedUser";
 import Page404 from "./sections/Page404";
 import CookiePopup from "./components/CookiePopup";
+import Banner from "./components/Banner";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
 export const LoginContext = createContext(null);
 export const ModalContext = createContext(null);
 export const DetailContext = createContext(null);
+export const BannerContext = createContext(null);
 
 function App() {
 	const [posts, setPosts] = useState([]);
@@ -32,6 +34,7 @@ function App() {
 	const [logged, setLogged] = useState(getLoginArray(['username', 'userID']));
 	const [modal, setModal] = useState(null);
 	const [detailed, setDetailed] = useState(null);
+	const [banner, setBanner] = useState(null);
 
 	const postsValue = {posts, setPosts, cities, setCities, types, setTypes};
 
@@ -42,11 +45,14 @@ function App() {
 					<UsersContext.Provider value={{users, setUsers}}>
 						<LoginContext.Provider value={{logged, setLogged}}>
 							<ModalContext.Provider value={{modal, setModal}}>
+								<BannerContext.Provider value={setBanner}>
 
 								<Navigation/>
 								{(modal && Object.keys(modal).length > 0) ? createPortal(<Modal
 									modalObj={modal}/>, document.getElementById('modal')) : null}
 								<div className="forInner flex flex-row justify-center"></div>
+
+								<Banner show={banner?.show} type='warning' message={banner?.msg} />
 
 								<Routes>
 									<Route path="/" element={<Home/>}/>
@@ -67,6 +73,7 @@ function App() {
 
 								<Footer/>
 
+								</BannerContext.Provider>
 							</ModalContext.Provider>
 						</LoginContext.Provider>
 					</UsersContext.Provider>

@@ -19,7 +19,7 @@ const Navigation = () => {
 	return (
 		<>
 			{/* MOBILE */}
-			<div className="mobile pt-8 px-12 md:hidden">
+			<div className="mobile py-8 md:hidden">
 
 				{/* mobile menu */}
 				<div className="register flex flex-col items-center">
@@ -89,7 +89,7 @@ const Navigation = () => {
 			</div>
 
 			{/* laptop */}
-			<div className="hidden md:flex flex-row justify-evenly pt-8 pb-12 px-24 md:px-6 md:justify-evenly">
+			<div className="hidden md:flex flex-row justify-evenly items-center py-8 px-24 md:px-6 md:justify-evenly">
 				<div className="image"><span className="text-mint">Trebaš posao?</span></div>
 
 				<div className="w-2/6 flex flex-row justify-around align-center">
