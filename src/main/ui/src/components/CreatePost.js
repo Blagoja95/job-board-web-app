@@ -4,14 +4,16 @@ import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import {DetailContext, LoginContext, ModalContext} from "../App";
 
-const CreatePost = ({create}) => {
+const CreatePost = ({create}) =>
+{
 	const nav = useNavigate();
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const {setModal} = useContext(ModalContext);
 	const {logged} = useContext(LoginContext)
 
 	// TODO: next method is a temp solution
-	const clearFields = () => {
+	const clearFields = () =>
+	{
 		const form = document.querySelector('.nPostForm');
 
 		if (!form)
@@ -28,7 +30,8 @@ const CreatePost = ({create}) => {
 		}
 	};
 
-	const handleSubmit = (e, nav) => {
+	const handleSubmit = (e, nav) =>
+	{
 		e.preventDefault();
 
 		const params = new URLSearchParams();
@@ -49,7 +52,6 @@ const CreatePost = ({create}) => {
 		}
 		else
 		{
-
 			params.set('companyName', logged[0]);
 			params.set('companyID', logged[1]);
 		}
@@ -60,7 +62,8 @@ const CreatePost = ({create}) => {
 			body: params
 		})
 			.then(res => res.json())
-			.then(data => {
+			.then(data =>
+			{
 				const propType = create ? 'posts' : 'update';
 
 				if (data[propType] && data[propType]?.status === 1)
@@ -80,7 +83,8 @@ const CreatePost = ({create}) => {
 			});
 	};
 
-	const common = () => {
+	const common = () =>
+	{
 		unBloorRoot();
 
 		setModal(null);
@@ -97,7 +101,8 @@ const CreatePost = ({create}) => {
 			<h3 className="text-mint text-center">{!detailed ? "Objavi oglas" : "Uredi oglas"}</h3>
 			<form
 				className="nPostForm w-96 m-auto flex flex-col gap-5 mt-6"
-				onSubmit={e => {
+				onSubmit={e =>
+				{
 					e.preventDefault();
 
 					if (create)
@@ -113,12 +118,14 @@ const CreatePost = ({create}) => {
 							text: "Da li ste sigurni da želite urediti ovaj oglas?",
 							btn1Txt: "Da",
 							btn2Txt: "Ne",
-							btn1Fn() {
+							btn1Fn()
+							{
 								common();
 
 								handleSubmit(e, nav);
 							},
-							btn2Fn() {
+							btn2Fn()
+							{
 								common();
 							}
 						});

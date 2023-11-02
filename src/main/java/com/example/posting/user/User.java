@@ -2,6 +2,7 @@ package com.example.posting.user;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.util.Objects;
 
 public class User
@@ -16,8 +17,9 @@ public class User
 
 	private String city;
 
-    public User() {
-    }
+	public User()
+	{
+	}
 
 	public User(int id, String name, String hashPass, String email, String about, String username, String city)
 	{

@@ -81,7 +81,7 @@ public class UpdatePostServlet extends OverrideServlet
 		{
 			response.getWriter().println(this.getErrorJSON("UserID cookie is missing!"));
 
-		return;
+			return;
 		}
 
 		try
