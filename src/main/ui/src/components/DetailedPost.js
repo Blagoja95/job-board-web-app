@@ -8,6 +8,7 @@ import {openMail, blurRoot, unBloorRoot} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext, LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import PingAnimation from "./PingAnimation";
 
 const DetaildPost = () =>
 {
@@ -176,7 +177,7 @@ const DetaildPost = () =>
 
 	if (loading)
 	{
-		return <div className={"text-mint font-bold text-2xl text-center pt-64 h-[70vh]"}>Loading ...</div>
+		return <PingAnimation/>
 	}
 
 	return PostJSX(detailed);

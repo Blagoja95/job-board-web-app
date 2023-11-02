@@ -44,6 +44,8 @@ export const displayBanner = (ob, setBanner, autoHide = true) =>
 		return;
 	}
 
+	hideBanner(setBanner, 0);
+
 	ob.show = true;
 
 	setBanner(ob);

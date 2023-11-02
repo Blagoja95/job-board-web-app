@@ -1,28 +1,31 @@
-import {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {UsersContext, PostsContext} from "../App";
 import UserShort from "../components/UserShort";
 import {useNavigate} from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import {removeDuplicates} from "../utils";
+import PingAnimation from "../components/PingAnimation";
 
-const getUsers = (setUsers) =>
+const getUsers = (setUsers, setLoading) =>
 {
 	fetch('http://localhost:8080/users')
 		.then(response => response.json())
 		.then(data =>
 		{
 			setUsers(data.users);
+			setLoading(false);
 		});
 };
 
 const Users = () =>
 {
+	const [loading, setLoading] = useState(true);
 	const {users, setUsers} = useContext(UsersContext);
 	const nav = useNavigate();
 
 	useEffect(() =>
 	{
-		getUsers(setUsers);
+		getUsers(setUsers, setLoading);
 	}, []);
 
 	const makeShortUsers = (users) =>
@@ -31,7 +34,7 @@ const Users = () =>
 												 openDetailedUser={() => nav('/users/detailed' + '?id=' + user.id)}/>)
 	};
 
-	if (!Array.isArray(users) || users.length < 1)
+	if (!loading && (!Array.isArray(users) || users.length < 1))
 	{
 		return <p className={"text-mint font-bold text-2xl text-center py-20"}>Currently there is no users to show!</p>
 	}
@@ -49,9 +52,10 @@ const Users = () =>
 				</div>
 			</div>
 			{/*<SearchBar uri={'users'} cmbTypeOn={false}/>*/}
-			<div className="py-20">
+
+		{loading ? <PingAnimation/> : <div className="py-20">
 				{makeShortUsers(users)}
-			</div>
+			</div>}
 		</>
 	)
 };

@@ -36,6 +36,11 @@ const Navigation = () =>
 							}
 							else
 							{
+								displayBanner({
+									type: 'info',
+									msg: 'Prvo se prijavite!'
+								}, setBanner);
+
 								nav('/login');
 							}
 						}
@@ -110,6 +115,11 @@ const Navigation = () =>
 						}
 						else
 						{
+							displayBanner({
+								type: 'info',
+								msg: 'Prvo se prijavite!'
+							}, setBanner);
+
 							nav('/login');
 						}
 					}

@@ -1,11 +1,13 @@
 import ShortPost from "../components/ShortPost";
-import {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {PostsContext} from "../App";
 import {useNavigate} from "react-router-dom";
 import {removeDuplicates} from "../utils";
+import PingAnimation from "../components/PingAnimation";
 
 const Posts = ({userId = null}) =>
 {
+	const [loading, setLoading] = useState(true);
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 	const nav = useNavigate();
 
@@ -31,6 +33,7 @@ const Posts = ({userId = null}) =>
 
 			setCities(removeDuplicates(cities));
 			setTypes(removeDuplicates(types));
+			setLoading(false);
 		});
 
 	const makeShortPosts = (posts, nav) =>
@@ -40,6 +43,11 @@ const Posts = ({userId = null}) =>
 					   openDetailedPost={() => nav('/posts/detailed' + '?id=' + post.id)}/>
 		));
 	};
+
+	if (loading)
+	{
+		return <PingAnimation/>
+	}
 
 	if (!Array.isArray(posts) || posts.length < 1)
 		return <p className={"text-mint font-bold text-2xl text-center py-20"}>Currently there is no job postings

@@ -8,6 +8,7 @@ import {openMail} from "../utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, PostsContext} from "../App";
 import Posts from "../sections/Posts";
+import PingAnimation from "./PingAnimation";
 
 const DetailedUser = () =>
 {
@@ -89,7 +90,7 @@ const DetailedUser = () =>
 
 	if (loading)
 	{
-		return <div className={"text-mint font-bold text-2xl text-center pt-64 h-[70vh]"}>Loading ...</div>
+		return <PingAnimation/>
 	}
 
 	return UserJSX(detailed);
