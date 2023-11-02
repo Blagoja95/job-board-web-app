@@ -118,7 +118,7 @@ public class RegiserUserServlet extends OverrideServlet
 		innerJson.put("status", 1);
 		innerJson.put("info", "Wellcome " + user.getName());
 
-		if(session == null)
+		if (session == null)
 		{
 			session = request.getSession();
 		}

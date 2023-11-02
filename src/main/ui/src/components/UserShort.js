@@ -2,7 +2,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLocationArrow} from "@fortawesome/fontawesome-free-solid";
 import colors from "tailwindcss/colors";
 
-export const getFirstLine = (input) => {
+export const getFirstLine = (input) =>
+{
 
 	if (!input)
 	{
@@ -25,7 +26,8 @@ export const getFirstLine = (input) => {
 	return text.length > 69 ? text.slice(0, 69) + ' ...' : text;
 };
 
-export const getUserInitial = (name) => {
+export const getUserInitial = (name) =>
+{
 
 	if (!name || name?.length < 1)
 	{
@@ -37,7 +39,8 @@ export const getUserInitial = (name) => {
 	}
 }
 
-const getImage = (user) => {
+const getImage = (user) =>
+{
 
 	if (user?.img)
 	{
@@ -51,7 +54,8 @@ const getImage = (user) => {
 	}
 }
 
-export const getRandomColor = () => {
+export const getRandomColor = () =>
+{
 	const colorList = [
 		'beige',
 		'blueviolet',
@@ -69,11 +73,13 @@ export const getRandomColor = () => {
 	return colorList[Math.floor(Math.random() * colorList.length)];
 }
 
-const UserShort = ({user, openDetailedUser}) => {
+const UserShort = ({user, openDetailedUser}) =>
+{
 	const line = getFirstLine(user.about);
 
 	return <a
-		onClick={(e) => {
+		onClick={(e) =>
+		{
 			e.preventDefault();
 			openDetailedUser();
 		}}

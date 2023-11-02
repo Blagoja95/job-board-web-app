@@ -9,19 +9,22 @@ import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext, LoginContext} from "../App";
 import {useNavigate} from "react-router-dom";
 
-const DetaildPost = () => {
+const DetaildPost = () =>
+{
 	const [loading, setLoading] = useState(true);
 	const {setModal} = useContext(ModalContext);
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const nav = useNavigate();
 	const {logged} = useContext(LoginContext);
 
-	useEffect(() => async () => {
+	useEffect(() => async () =>
+	{
 		const id = new URLSearchParams(window.location.search).get('id');
 
 		await fetch('http://localhost:8080/posts?id=' + id)
 			.then(response => response.json())
-			.then(async data => {
+			.then(async data =>
+			{
 				if (!data || data?.results === 0)
 				{
 					return;
@@ -42,7 +45,8 @@ const DetaildPost = () => {
 			});
 	}, []);
 
-	const handleDelete = (id) => {
+	const handleDelete = (id) =>
+	{
 		blurRoot();
 
 		setModal({
@@ -50,14 +54,16 @@ const DetaildPost = () => {
 			text: "Da li ste sigurni da želite obrisati ovaj oglas?",
 			btn1Txt: "Da",
 			btn2Txt: "Ne",
-			btn1Fn() {
+			btn1Fn()
+			{
 				unBloorRoot();
 				setModal(null);
 
-			fetch('http://localhost:8080/posts?id=' + id, {
-				method: 'DELETE'
+				fetch('http://localhost:8080/posts?id=' + id, {
+					method: 'DELETE'
 				}).then(res => res.json())
-					.then(res => {
+					.then(res =>
+					{
 						if (res?.posts?.status === 1)
 						{
 							nav('/');
@@ -67,7 +73,8 @@ const DetaildPost = () => {
 							inner.insertAdjacentHTML('beforeend', `
 							<p class="py-4">Oglas uspješno obrisan!</p>`);
 
-							setTimeout(() => {
+							setTimeout(() =>
+							{
 								while (inner.firstChild) inner.removeChild(inner.firstChild);
 							}, 2000);
 						}
@@ -75,7 +82,8 @@ const DetaildPost = () => {
 						// todo: error handling
 					});
 			},
-			btn2Fn() {
+			btn2Fn()
+			{
 				unBloorRoot();
 
 				setModal(null);
@@ -83,7 +91,8 @@ const DetaildPost = () => {
 		})
 	};
 
-	const PostJSX = (detailed) => {
+	const PostJSX = (detailed) =>
+	{
 
 		return <>
 			<section className="bg-gray-light h-96 z-10" id="top">
@@ -142,7 +151,8 @@ const DetaildPost = () => {
 							<Button
 								text="Uredi oglas"
 								className="text-wht bg-mint mr-5"
-								onClick={() => {
+								onClick={() =>
+								{
 									nav('/update' + '?id=' + detailed.id);
 								}}
 							/>

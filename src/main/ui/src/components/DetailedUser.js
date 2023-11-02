@@ -9,17 +9,20 @@ import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, PostsContext} from "../App";
 import Posts from "../sections/Posts";
 
-const DetailedUser = () => {
+const DetailedUser = () =>
+{
 	const [loading, setLoading] = useState(true);
 	const {posts} = useContext(PostsContext);
 	const {detailed, setDetailed} = useContext(DetailContext);
 
-	useEffect(() => async () => {
+	useEffect(() => async () =>
+	{
 		const id = new URLSearchParams(window.location.search).get('id');
 
 		await fetch('http://localhost:8080/users?id=' + id)
 			.then(response => response.json())
-			.then(async data => {
+			.then(async data =>
+			{
 				if (!data || data?.results === 0)
 				{
 					return;
@@ -30,7 +33,8 @@ const DetailedUser = () => {
 			});
 	}, []);
 
-	const UserJSX = (detailed) => {
+	const UserJSX = (detailed) =>
+	{
 
 		return <>
 			<section className="bg-gray-light h-96 z-10" id="top">

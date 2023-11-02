@@ -1,4 +1,5 @@
-export const getCookie = (name) => {
+export const getCookie = (name) =>
+{
 	const nameEQ = name + "=";
 
 	const all = document.cookie.split(';');
@@ -25,7 +26,8 @@ export const getCookie = (name) => {
  *
  * @returns {*[], ['cookieVal1', 'cookieVal2', '...']}
  */
-export const getLoginArray = (names) => {
+export const getLoginArray = (names) =>
+{
 	if (!names || names?.length < 1)
 	{
 		return [];
@@ -33,7 +35,8 @@ export const getLoginArray = (names) => {
 
 	let arr = [];
 
-	names.forEach(name => {
+	names.forEach(name =>
+	{
 		const a = getCookie(name);
 
 		if (a && typeof a === 'string')
@@ -45,6 +48,7 @@ export const getLoginArray = (names) => {
 	return arr;
 };
 
-export const deleteCookie = (name) => {
+export const deleteCookie = (name) =>
+{
 	document.cookie = name + '=; Max-Age=-1'
 };

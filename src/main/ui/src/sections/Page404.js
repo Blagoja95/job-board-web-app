@@ -1,10 +1,12 @@
 import {useEffect, useState} from "react";
 
-const Page404 = () => {
+const Page404 = () =>
+{
 
 	const [color, setColor] = useState();
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		const colors = [
 			'text-yellow-300',
 			'text-yellow-500',
@@ -16,10 +18,12 @@ const Page404 = () => {
 			'text-red-500',
 		];
 
-		const changeColor = (i) => {
+		const changeColor = (i) =>
+		{
 			setColor(colors[i]);
 
-			setTimeout(() => {
+			setTimeout(() =>
+			{
 				const k = (i + 1) % colors.length;
 				changeColor(k);
 			}, 1500);

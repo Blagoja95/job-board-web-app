@@ -30,7 +30,7 @@ public class LoginServlet extends OverrideServlet
 
 		response.setContentType("application/json");
 
-		if(!request.getSession().isNew())
+		if (!request.getSession().isNew())
 		{
 			String user = this.getCookieValue(request, "username");
 

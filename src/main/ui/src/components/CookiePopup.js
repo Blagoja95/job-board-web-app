@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import Button from "./Button";
 import {blurRoot, unBloorRoot} from "../utils";
 
-const CookiePopup = () => {
+const CookiePopup = () =>
+{
 	const [isVisible, setIsVisible] = useState(false);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		const isCookieAccepted = localStorage.getItem('cookieAccepted');
 
 		if (!isCookieAccepted)
@@ -14,7 +16,8 @@ const CookiePopup = () => {
 		}
 	}, []);
 
-	const acceptCookies = () => {
+	const acceptCookies = () =>
+	{
 		localStorage.setItem('cookieAccepted', 'true');
 		setIsVisible(false);
 	};

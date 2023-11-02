@@ -288,7 +288,7 @@ public class PostsServlet extends OverrideServlet
 		{
 			ResultSet res = db.checkIfExist(List.of("posts", "id", id));
 
-			if(res == null || !res.next())
+			if (res == null || !res.next())
 			{
 				response.getWriter().println(this.getErrorJSON("Post with ID " + id + " is not found!"));
 
@@ -301,8 +301,7 @@ public class PostsServlet extends OverrideServlet
 
 				return;
 			}
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
 			throw new RuntimeException(e);
 		}
