@@ -34,7 +34,7 @@ public class LoginServlet extends OverrideServlet
 		{
 			String user = this.getCookieValue(request, "username");
 
-			response.getWriter().println((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!");
+			response.getWriter().println(this.getErrorJSON((!user.isEmpty() ? user + " y" : "Y") + "ou are already logged in!"));
 
 			return;
 		}
@@ -63,6 +63,8 @@ public class LoginServlet extends OverrideServlet
 		}
 		else
 		{
+			request.getSession(false).invalidate();
+
 			response.getWriter().println(this.getErrorJSON("There is no user with provided credentials!"));
 
 			return;
