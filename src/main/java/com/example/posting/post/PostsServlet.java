@@ -245,7 +245,7 @@ public class PostsServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
-		response.setHeader("Access-Control-Allow-Methods", "DELETE");
+		response.addHeader("Access-Control-Allow-Methods", "DELETE");
 		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.addHeader("Access-Control-Allow-Credentials", "true");
 

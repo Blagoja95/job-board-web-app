@@ -61,6 +61,56 @@ const DetaildPost = () =>
 			});
 	}, []);
 
+<<<<<<< main:src/main/ui/src/sections/detailed/post/DetailedPost.js
+=======
+	const handleDelete = (id) =>
+	{
+		blurRoot();
+
+		setModal({
+			id: id,
+			text: "Da li ste sigurni da želite obrisati ovaj oglas?",
+			btn1Txt: "Da",
+			btn2Txt: "Ne",
+			btn1Fn()
+			{
+				unBloorRoot();
+				setModal(null);
+
+				fetch('http://localhost:8080/posts?id=' + id, {
+					method: 'DELETE',
+					credentials: 'include'
+				}).then(res => res.json())
+					.then(res =>
+					{
+						if (res?.posts?.status === 1)
+						{
+							nav('/');
+
+							const inner = document.querySelector('.forInner');
+
+							inner.insertAdjacentHTML('beforeend', `
+							<p class="py-4">Oglas uspješno obrisan!</p>`);
+
+							setTimeout(() =>
+							{
+								while (inner.firstChild) inner.removeChild(inner.firstChild);
+							}, 2000);
+						}
+
+						// todo: error handling
+					});
+			},
+			btn2Fn()
+			{
+				unBloorRoot();
+
+				setModal(null);
+			}
+		})
+	};
+
+>>>>>>> #79 CORS delete method init:src/main/ui/src/components/DetailedPost.js
 	const PostJSX = (detailed) =>
 	{
 

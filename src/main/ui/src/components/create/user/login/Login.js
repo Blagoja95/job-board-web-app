@@ -27,6 +27,7 @@ const handleSubmit = (e, setLogged, nav, setBanner) =>
 			if (data?.login?.status === 1)
 			{
 				setLogged(getLoginArray(['username', 'userID']));
+
 				displayBanner({
 					msg: `Welcome ${username ? username : 'back'}`,
 					type: 'success'
@@ -40,6 +41,7 @@ const handleSubmit = (e, setLogged, nav, setBanner) =>
 			else
 			{
 				setLogged([]);
+
 				displayBanner({
 					msg: data.login?.info?.length > 0 ? data.login.info : 'Došlo je do greške!',
 					type: 'error'
