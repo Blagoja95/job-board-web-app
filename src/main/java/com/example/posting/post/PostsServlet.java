@@ -245,9 +245,26 @@ public class PostsServlet extends OverrideServlet
 	{
 		response.setContentType("application/json");
 
+		String origin = request.getHeader("Origin");
+		System.out.println("HI");
+//
+//		if (origin != null)
+//		{
+//			response.setHeader("Access-Control-Allow-Origin", origin);
+//		}
+//		else
+//		{
+//			 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//
+//			 response.getWriter().println(this.getErrorJSON("Missing 'Origin' header"));
+//
+//			return;
+//		}
+
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		response.addHeader("Access-Control-Allow-Methods", "DELETE");
-		response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.addHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
 		if (this.checkUserCookies(request, response))
 		{

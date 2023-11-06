@@ -77,9 +77,13 @@ const DetaildPost = () =>
 				unBloorRoot();
 				setModal(null);
 
-				fetch('http://localhost:8080/posts?id=' + id, {
+				const params = new URLSearchParams();
+				params.set('id', id);
+
+				fetch('http://localhost:8080/posts', {
 					method: 'DELETE',
-					credentials: 'include'
+					credentials: 'include',
+					body: params
 				}).then(res => res.json())
 					.then(res =>
 					{
