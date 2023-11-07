@@ -1,23 +1,23 @@
 import "./index.css";
-import Navigation from "./sections/Navigation";
-import Footer from "./sections/Footer";
+import Navigation from "./sections/navigation/Navigation";
+import Footer from "./sections/footer/Footer";
 import Home from "./pages/Home";
-import About from "./sections/About";
-import Login from "./components/Login";
-import CreatePost from "./components/CreatePost";
-import Reviews from "./components/Reviews";
+import About from "./sections/about/About";
+import Login from "./components/create/user/login/Login";
+import CreatePost from "./components/create/post/CreatePost";
+import Reviews from "./components/review/Reviews";
 import {Routes, Route} from "react-router-dom";
 import {useState, createContext} from "react";
-import Register from "./components/Register";
-import DetailedPost from "./components/DetailedPost";
-import Modal from "./components/Modal";
+import Register from "./components/create/user/register/Register";
+import DetailedPost from "./sections/detailed/post/DetailedPost";
+import Modal from "./components/modal/Modal";
 import {createPortal} from "react-dom";
-import {getLoginArray} from './cookie'
-import Users from "./sections/Users";
-import DetailedUser from "./components/DetailedUser";
-import Page404 from "./sections/Page404";
-import CookiePopup from "./components/CookiePopup";
-import Banner from "./components/Banner";
+import {getLoginArray} from './utils/cookie/cookie'
+import Users from "./sections/grid/user/Users";
+import DetailedUser from "./sections/detailed/user/DetailedUser";
+import Page404 from "./sections/error/Page404";
+import CookiePopup from "./components/banner/cookie/CookiePopup";
+import Banner from "./components/banner/msg/Banner";
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);

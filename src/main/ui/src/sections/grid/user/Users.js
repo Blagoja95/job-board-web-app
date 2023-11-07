@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
-import {UsersContext, PostsContext} from "../App";
-import UserShort from "../components/UserShort";
+import {UsersContext, PostsContext} from "../../../App";
+import UserShort from "../../../components/card/user/UserShort";
 import {useNavigate} from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import {removeDuplicates} from "../utils";
-import PingAnimation from "../components/PingAnimation";
+import SearchBar from "../../../components/search/posts/SearchBar";
+import {removeDuplicates} from "../../../utils/util/utils";
+import PingAnimation from "../../../components/ping/PingAnimation";
 
 const getUsers = (setUsers, setLoading) =>
 {

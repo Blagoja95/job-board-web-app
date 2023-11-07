@@ -1,6 +1,6 @@
-import Header from "../sections/Header";
-import SearchBar from "../components/SearchBar";
-import Posts from "../sections/Posts";
+import Header from "../sections/header/Header";
+import SearchBar from "../components/search/posts/SearchBar";
+import Posts from "../sections/grid/post/Posts";
 
 const Home = () =>
 {

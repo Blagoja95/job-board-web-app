@@ -1,9 +1,9 @@
-import {EMPTY_FUNCTION, debounce, displayBanner} from "../utils";
-import Button from "./Button";
+import {EMPTY_FUNCTION, debounce, displayBanner} from "../../../../utils/util/utils";
+import Button from "../../../button/Button";
 import {useContext, useEffect, useState} from "react";
-import {LoginContext, BannerContext} from "../App";
+import {LoginContext, BannerContext} from "../../../../App";
 import {useNavigate} from "react-router-dom";
-import {getLoginArray} from "../cookie";
+import {getLoginArray} from "../../../../utils/cookie/cookie";
 
 const handleSubmit = (e, setLogged, nav, setBanner) =>
 {

@@ -3,12 +3,12 @@ import {
 	faLocationArrow,
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
-import Button from "./Button";
-import {openMail} from "../utils";
+import Button from "../../../components/button/Button";
+import {openMail} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
-import {DetailContext, PostsContext} from "../App";
-import Posts from "../sections/Posts";
-import PingAnimation from "./PingAnimation";
+import {DetailContext, PostsContext} from "../../../App";
+import Posts from "../../grid/post/Posts";
+import PingAnimation from "../../../components/ping/PingAnimation";
 
 const DetailedUser = () =>
 {

@@ -1,8 +1,8 @@
-import {blurRoot, EMPTY_FUNCTION, unBloorRoot} from "../utils";
-import Button from "./Button";
+import {blurRoot, EMPTY_FUNCTION, unBloorRoot} from "../../../utils/util/utils";
+import Button from "../../button/Button";
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
-import {DetailContext, LoginContext, ModalContext} from "../App";
+import {DetailContext, LoginContext, ModalContext} from "../../../App";
 
 const CreatePost = ({create}) =>
 {

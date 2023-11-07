@@ -1,4 +1,4 @@
-import {removeDuplicates} from "../../utils";
+import {removeDuplicates} from "./utils";
 
 describe("Makes a set", () => {
     it("Testing removeDuplicate method", () => {

@@ -1,5 +1,5 @@
-import {openMail} from "../utils";
-import Button from "../components/Button";
+import {openMail} from "../../utils/util/utils";
+import Button from "../../components/button/Button";
 import React from "react";
 
 const About = () =>
