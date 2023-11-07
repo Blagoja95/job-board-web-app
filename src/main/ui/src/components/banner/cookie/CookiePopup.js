@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import Button from "./Button";
-import {blurRoot, unBloorRoot} from "../utils";
+import Button from "../../button/Button";
+import {blurRoot, unBloorRoot} from "../../../utils/util/utils";
 
 const CookiePopup = () =>
 {

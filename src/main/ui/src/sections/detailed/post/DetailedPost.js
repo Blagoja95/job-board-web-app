@@ -3,12 +3,12 @@ import {
 	faLocationArrow,
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
-import Button from "./Button";
-import {openMail, blurRoot, unBloorRoot} from "../utils";
+import Button from "../../../components/button/Button";
+import {openMail, blurRoot, unBloorRoot} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
-import {DetailContext, ModalContext, LoginContext} from "../App";
+import {DetailContext, ModalContext, LoginContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
-import PingAnimation from "./PingAnimation";
+import PingAnimation from "../../../components/ping/PingAnimation";
 
 const DetaildPost = () =>
 {

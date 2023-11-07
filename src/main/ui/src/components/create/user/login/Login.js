@@ -1,10 +1,10 @@
-import {EMPTY_FUNCTION, displayBanner, hideBanner} from "../utils";
-import Button from "./Button";
+import {EMPTY_FUNCTION, displayBanner, hideBanner} from "../../../../utils/util/utils";
+import Button from "../../../button/Button";
 import {useContext} from "react";
-import {LoginContext} from "../App";
-import {BannerContext} from "../App";
+import {LoginContext} from "../../../../App";
+import {BannerContext} from "../../../../App";
 import {useNavigate} from "react-router-dom";
-import {getLoginArray} from '../cookie';
+import {getLoginArray} from '../../../../utils/cookie/cookie';
 
 const handleSubmit = (e, setLogged, nav, setBanner) =>
 {

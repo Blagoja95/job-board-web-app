@@ -1,4 +1,4 @@
-import {getUserInitial} from "../../components/UserShort";
+import {getUserInitial} from "./UserShort";
 
 describe('Metod get first letter of users name', () => {
 

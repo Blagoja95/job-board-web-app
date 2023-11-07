@@ -1,9 +1,9 @@
-import ShortPost from "../components/ShortPost";
+import ShortPost from "../../../components/card/post/ShortPost";
 import React, {useContext, useEffect, useState} from "react";
-import {PostsContext} from "../App";
+import {PostsContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
-import {removeDuplicates} from "../utils";
-import PingAnimation from "../components/PingAnimation";
+import {removeDuplicates} from "../../../utils/util/utils";
+import PingAnimation from "../../../components/ping/PingAnimation";
 
 const Posts = ({userId = null}) =>
 {

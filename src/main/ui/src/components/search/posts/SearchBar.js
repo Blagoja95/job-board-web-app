@@ -1,7 +1,7 @@
 import {Combobox} from "react-widgets";
-import Button from "./Button";
+import Button from "../../button/Button";
 import {useContext} from "react";
-import {PostsContext} from "../App";
+import {PostsContext} from "../../../App";
 
 const SearchBar = ({
 					   uri = 'posts',

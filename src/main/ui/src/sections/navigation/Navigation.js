@@ -1,11 +1,11 @@
-import Button from "../components/Button";
-import NavItem from "../components/NavItem";
+import Button from "../../components/button/Button";
+import NavItem from "./NavItem";
 
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
-import {LoginContext, BannerContext} from "../App";
-import {deleteCookie} from '../cookie'
-import {displayBanner} from "../utils";
+import {LoginContext, BannerContext} from "../../App";
+import {deleteCookie} from '../../utils/cookie/cookie'
+import {displayBanner} from "../../utils/util/utils";
 
 const navItemsText = [
 	{text: "Poslovi", href: "/posts"},

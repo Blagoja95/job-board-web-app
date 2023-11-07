@@ -1,4 +1,4 @@
-import {getFirstLine} from "../../components/UserShort";
+import {getFirstLine} from "./UserShort";
 
 describe('Get first sentence from string of sentences', () => {
 
