@@ -8,7 +8,7 @@ const CookiePopup = () =>
 
 	useEffect(() =>
 	{
-		const isCookieAccepted = localStorage.getItem('cookieAccepted');
+		const isCookieAccepted = JSON.parse(localStorage.getItem('cookieAccepted'));
 
 		if (!isCookieAccepted)
 		{
@@ -28,7 +28,7 @@ const CookiePopup = () =>
 				{/*<p>This website uses cookies to ensure you get the best experience on our website.</p>*/}
 				<p>Ova veb lokacija koristi kolačiće kako bismo vam omogućili najbolje iskustvo na našoj veb
 					lokaciji.</p>
-				<Button onClick={acceptCookies} className="bg-mint" text={'Uredu'}/>
+				<Button onClick={acceptCookies} className="bg-mint cookie-btn" text={'Uredu'}/>
 			</div>
 		</div>
 	);
