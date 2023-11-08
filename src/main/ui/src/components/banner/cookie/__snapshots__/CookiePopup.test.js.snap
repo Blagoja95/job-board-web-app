@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CookiePopup is hidden 1`] = `
+<div
+  className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 hidden"
+>
+  <div
+    className="max-w-screen-lg mx-auto flex items-center justify-between"
+  >
+    <p>
+      Ova veb lokacija koristi kolačiće kako bismo vam omogućili najbolje iskustvo na našoj veb lokaciji.
+    </p>
+    <button
+      className="lg:px-6 lg:py-3 px-3 py-1 rounded-full border border-solid border-mint hover:bg-keppel hover:text-wht bg-mint cookie-btn"
+      name="button"
+      onClick={[Function]}
+    >
+      Uredu
+    </button>
+  </div>
+</div>
+`;
