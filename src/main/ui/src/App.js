@@ -1,23 +1,24 @@
-import "./index.css";
-import Navigation from "./sections/navigation/Navigation";
-import Footer from "./sections/footer/Footer";
-import Home from "./pages/Home";
-import About from "./sections/about/About";
-import Login from "./components/create/user/login/Login";
-import CreatePost from "./components/create/post/CreatePost";
-import Reviews from "./components/review/Reviews";
-import {Routes, Route} from "react-router-dom";
-import {useState, createContext} from "react";
-import Register from "./components/create/user/register/Register";
-import DetailedPost from "./sections/detailed/post/DetailedPost";
-import Modal from "./components/modal/Modal";
-import {createPortal} from "react-dom";
+import './index.css';
+import Navigation from './sections/navigation/Navigation';
+import Footer from './sections/footer/Footer';
+import Home from './pages/Home';
+import About from './sections/about/About';
+import Login from './components/create/user/login/Login';
+import CreatePost from './components/create/post/CreatePost';
+import Reviews from './components/review/Reviews';
+import {Routes, Route} from 'react-router-dom';
+import {useState, createContext} from 'react';
+import Register from './components/create/user/register/Register';
+import DetailedPost from './sections/detailed/post/DetailedPost';
+import Modal from './components/modal/Modal';
+import {createPortal} from 'react-dom';
 import {getLoginArray} from './utils/cookie/cookie'
-import Users from "./sections/grid/user/Users";
-import DetailedUser from "./sections/detailed/user/DetailedUser";
-import Page404 from "./sections/error/Page404";
-import CookiePopup from "./components/banner/cookie/CookiePopup";
-import Banner from "./components/banner/msg/Banner";
+import Users from './sections/grid/user/Users';
+import DetailedUser from './sections/detailed/user/DetailedUser';
+import Page404 from './sections/error/Page404';
+import CookiePopup from './components/banner/cookie/CookiePopup';
+import Banner from './components/banner/msg/Banner';
+import Settings from './sections/settings/Settings'
 
 export const PostsContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -50,23 +51,24 @@ function App() {
 								<Navigation/>
 								{(modal && Object.keys(modal).length > 0) ? createPortal(<Modal
 									modalObj={modal}/>, document.getElementById('modal')) : null}
-								<div className="forInner flex flex-row justify-center"></div>
+								<div className='forInner flex flex-row justify-center'></div>
 
 								<Banner show={banner?.show} type={banner?.type} message={banner?.msg} />
 
 								<Routes>
-									<Route path="/" element={<Home/>}/>
-									<Route path="/posts" element={<Home/>}/>
-									<Route path="/users" element={<Users/>}/>
-									<Route path="/about" element={<About/>}/>
-									<Route path="/login" element={<Login/>}/>
-									<Route path="/npost" element={<CreatePost create={true}/> }/>
-									<Route path="/register" element={<Register/>}/>
-									<Route path="/posts/detailed" element={<DetailedPost/>}/>
-									<Route path="/users/detailed" element={<DetailedUser/>}/>
-									<Route path="/update" element={<CreatePost/>}/>
-									<Route path="/reviews" element={<Reviews/>}/>
-									<Route path="*" element={<Page404/>}/>
+									<Route path='/' element={<Home/>}/>
+									<Route path='/posts' element={<Home/>}/>
+									<Route path='/users' element={<Users/>}/>
+									<Route path='/about' element={<About/>}/>
+									<Route path='/login' element={<Login/>}/>
+									<Route path='/npost' element={<CreatePost create={true}/> }/>
+									<Route path='/register' element={<Register/>}/>
+									<Route path='/posts/detailed' element={<DetailedPost/>}/>
+									<Route path='/users/detailed' element={<DetailedUser/>}/>
+									<Route path='/update' element={<CreatePost/>}/>
+									<Route path='/reviews' element={<Reviews/>}/>
+									<Route path='/settings' element={<Settings/>}/>
+									<Route path='*' element={<Page404/>}/>
 								</Routes>
 
 								<CookiePopup/>

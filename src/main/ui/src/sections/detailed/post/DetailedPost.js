@@ -4,7 +4,7 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "../../../components/button/Button";
-import {openMail, blurRoot, unBloorRoot, displayBanner} from "../../../utils/util/utils";
+import {openMail, blurRoot, unBloorRoot, displayBanner, handleDelete} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext, LoginContext, BannerContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
@@ -59,64 +59,7 @@ const DetaildPost = () =>
 					type: 'error'
 				}, setBanner);
 			});
-		;
 	}, []);
-
-	const handleDelete = (id) =>
-	{
-		blurRoot();
-
-		setModal({
-			id: id,
-			text: "Da li ste sigurni da želite obrisati ovaj oglas?",
-			btn1Txt: "Da",
-			btn2Txt: "Ne",
-			btn1Fn()
-			{
-				unBloorRoot();
-				setModal(null);
-
-				fetch('http://localhost:8080/posts?id=' + id, {
-					method: 'DELETE'
-				}).then(res => res.json())
-					.then(res =>
-					{
-						if (res?.posts?.status === 1)
-						{
-							displayBanner({
-								msg: res?.posts?.info ?? 'Oglas uspješno obrisan!',
-								type: 'success'
-							}, setBanner);
-
-							setTimeout(() =>
-							{
-								nav('/posts');
-							}, 500);
-						}
-						else
-						{
-							displayBanner({
-								msg: res.post?.info ?? 'Došlo je do greške!',
-								type: 'error'
-							}, setBanner);
-						}
-					})
-					.catch((res) =>
-					{
-						displayBanner({
-							msg: res.message,
-							type: 'error'
-						}, setBanner);
-					});
-			},
-			btn2Fn()
-			{
-				unBloorRoot();
-
-				setModal(null);
-			}
-		})
-	};
 
 	const PostJSX = (detailed) =>
 	{
@@ -186,7 +129,7 @@ const DetaildPost = () =>
 							<Button
 								text="Obriši oglas"
 								className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
-								onClick={() => handleDelete(detailed.id)}
+								onClick={() => handleDelete(detailed.id, setModal, setBanner, nav, 'posts', 'Da li želite da obrišete ovaj oglas?')}
 							/>
 						</>
 					) : (
