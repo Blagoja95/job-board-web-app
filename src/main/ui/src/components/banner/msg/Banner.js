@@ -4,7 +4,7 @@ import {
 	faExclamationTriangle,
 	faInfoCircle,
 	faCheckCircle
-} from "@fortawesome/fontawesome-free-solid";
+} from '@fortawesome/fontawesome-free-solid';
 
 const Banner = ({type, message, show}) =>
 {

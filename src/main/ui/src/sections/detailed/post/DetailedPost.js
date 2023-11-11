@@ -4,9 +4,9 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "../../../components/button/Button";
-import {openMail, blurRoot, unBloorRoot} from "../../../utils/util/utils";
+import {openMail, blurRoot, unBloorRoot, displayBanner} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
-import {DetailContext, ModalContext, LoginContext} from "../../../App";
+import {DetailContext, ModalContext, LoginContext, BannerContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
 import PingAnimation from "../../../components/ping/PingAnimation";
 
@@ -17,6 +17,7 @@ const DetaildPost = () =>
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const nav = useNavigate();
 	const {logged} = useContext(LoginContext);
+	const setBanner = useContext(BannerContext);
 
 	useEffect(() => async () =>
 	{
@@ -34,7 +35,14 @@ const DetaildPost = () =>
 				const post = data.posts[0];
 				const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
 					.then(response => response.json())
-					.then(data => data.users[0]);
+					.then(data => data.users[0])
+					.catch((res) =>
+					{
+						displayBanner({
+							msg: res.message,
+							type: 'error'
+						}, setBanner);
+					});
 
 				setDetailed({
 					...post,
@@ -43,7 +51,15 @@ const DetaildPost = () =>
 					email: user.email
 				});
 				setLoading(false);
+			})
+			.catch((res) =>
+			{
+				displayBanner({
+					msg: res.message,
+					type: 'error'
+				}, setBanner);
 			});
+		;
 	}, []);
 
 	const handleDelete = (id) =>
@@ -67,20 +83,30 @@ const DetaildPost = () =>
 					{
 						if (res?.posts?.status === 1)
 						{
-							nav('/');
-
-							const inner = document.querySelector('.forInner');
-
-							inner.insertAdjacentHTML('beforeend', `
-							<p class="py-4">Oglas uspješno obrisan!</p>`);
+							displayBanner({
+								msg: res?.posts?.info ?? 'Oglas uspješno obrisan!',
+								type: 'success'
+							}, setBanner);
 
 							setTimeout(() =>
 							{
-								while (inner.firstChild) inner.removeChild(inner.firstChild);
-							}, 2000);
+								nav('/posts');
+							}, 500);
 						}
-
-						// todo: error handling
+						else
+						{
+							displayBanner({
+								msg: res.post?.info ?? 'Došlo je do greške!',
+								type: 'error'
+							}, setBanner);
+						}
+					})
+					.catch((res) =>
+					{
+						displayBanner({
+							msg: res.message,
+							type: 'error'
+						}, setBanner);
 					});
 			},
 			btn2Fn()

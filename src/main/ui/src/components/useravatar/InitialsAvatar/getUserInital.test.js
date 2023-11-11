@@ -1,4 +1,4 @@
-import {getUserInitial} from "./UserShort";
+import {getUserInitial} from "./InitialsAvatar";
 
 describe('Metod get first letter of users name', () => {
 

@@ -1,8 +1,8 @@
 import ShortPost from "../../../components/card/post/ShortPost";
 import React, {useContext, useEffect, useState} from "react";
-import {PostsContext} from "../../../App";
+import {PostsContext, BannerContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
-import {removeDuplicates} from "../../../utils/util/utils";
+import {displayBanner, removeDuplicates} from "../../../utils/util/utils";
 import PingAnimation from "../../../components/ping/PingAnimation";
 
 const Posts = ({userId = null}) =>
@@ -10,6 +10,7 @@ const Posts = ({userId = null}) =>
 	const [loading, setLoading] = useState(true);
 	const {posts, setPosts, setCities, setTypes} = useContext(PostsContext);
 	const nav = useNavigate();
+	const setBanner = useContext(BannerContext);
 
 	useEffect(() =>
 	{
@@ -34,6 +35,13 @@ const Posts = ({userId = null}) =>
 			setCities(removeDuplicates(cities));
 			setTypes(removeDuplicates(types));
 			setLoading(false);
+		})
+		.catch((res) =>
+		{
+			displayBanner({
+				msg: res.message,
+				type: 'error'
+			}, setBanner);
 		});
 
 	const makeShortPosts = (posts, nav) =>
