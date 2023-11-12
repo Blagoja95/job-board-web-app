@@ -16,12 +16,12 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 
 4. Pull images:
     1. `docker pull blagoja95/job-board-mysql-image:v1.0.1`
-    2. `docker pull blagoja95/job-board-tomcat-image:v1.1.0`
-    3. `docker pull blagoja95/job-board-node-image:v1.1.0`
+    2. `docker pull blagoja95/job-board-tomcat-image:v1.2.0`
+    3. `docker pull blagoja95/job-board-node-image:v1.2.0`
 5. Create containers:
     1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/job-board-mysql-image:v1.0.1`
-    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.1.0`
-    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.1.0`
+    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.2.0`
+    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.2.0`
 
 6. Open your browser and in URL bar search for `localhost:3000`
 
