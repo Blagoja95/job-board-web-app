@@ -7,12 +7,13 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 [Colors](https://coolors.co/d8ddef-a0a4b8-7293a0-45b69c-21d19f)
 
 ## USE
+
 1. First download [docker](https://www.docker.com/products/docker-desktop/) for desktop
- 
+
 2. Open yor CLI and start running following commands (one by one)
-   
+
 3. Create docker network `docker network create job-board-net`
-   
+
 4. Pull images:
     1. `docker pull blagoja95/job-board-mysql-image:v1.0.1`
     2. `docker pull blagoja95/job-board-tomcat-image:v1.1.0`
@@ -21,7 +22,7 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
     1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/job-board-mysql-image:v1.0.1`
     2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.1.0`
     3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.1.0`
-       
+
 6. Open your browser and in URL bar search for `localhost:3000`
 
 Welcome to the Job posting app
@@ -273,22 +274,23 @@ If successful response JSON with new post ID will return with success status
 
 ### Delete [^3]
 
-Create network request using DELETE method. **MUST BE LOGGED IN**
+Create network request using POST method (POST METHOD IS USED TEMPORARY). **MUST BE LOGGED IN**
 
 Request parameter is *id* of the desired post or user for delete.
 
-Also require userID cookie.
+This call requires userID and JSESSIONID cookies.
 
 #### Post
 
 ```powershell
-curl -X DELETE -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/posts?id=8063
+curl -X POST -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/posts/delete?id=8063
 ```
 
 #### User
 
-This feature curently is missing! Will be addresed in
-issue <a href="https://github.com/Blagoja95/job-board-web-app/issues/63">63</a>.
+```powershell
+curl -X POST -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/users/delete?id=8063
+```
 
 #### Response
 
@@ -299,6 +301,18 @@ If successful response JSON with number that is greater than zero (rows affected
   "posts": {
     "status": 1,
     "info": "Post successfully deleted!"
+  }
+}
+```
+
+or for user
+
+```JSON
+
+{
+  "users": {
+    "status": 1,
+    "info": "User successfully deleted!"
   }
 }
 ```

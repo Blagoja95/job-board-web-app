@@ -1,13 +1,15 @@
 import Button from "../../../../components/button/Button";
 import {checkIfSessionLive, displayBanner, getID, handleDelete, openMail} from "../../../../utils/util/utils";
-import React, {useContext, useEffect, useState} from "react";
-import {BannerContext, ModalContext} from "../../../../App";
+import React, {useContext} from "react";
+import {BannerContext, LoginContext, ModalContext} from "../../../../App";
 import {useNavigate} from "react-router-dom";
+import {deleteCookie} from "../../../../utils/cookie/cookie";
 
 const General = ({setSetting, user}) =>
 {
 	const {setModal} = useContext(ModalContext);
 	const setBanner = useContext(BannerContext);
+	const {setLogged} = useContext(LoginContext);
 	const nav = useNavigate();
 
 	return (
@@ -82,7 +84,33 @@ const General = ({setSetting, user}) =>
 						{
 							if (checkIfSessionLive(setBanner))
 							{
-								handleDelete(getID(), setModal, setBanner, nav, 'users', 'Da li želite da obrišete Vaš nalog?')
+								handleDelete(getID(), setModal, setBanner, nav, 'users/delete', 'Da li želite da obrišete Vaš nalog?',
+									function (res)
+									{
+										if (res?.users?.status === 1)
+										{
+											setLogged([]);
+											deleteCookie('username');
+											deleteCookie('userID');
+
+											displayBanner({
+												msg: res?.users?.info ?? 'Uspješno ste obrisali Vaš račun! Prebacujemo vas na početnu stranicu.',
+												type: 'success'
+											}, setBanner);
+
+											setTimeout(() =>
+											{
+												nav('/');
+											}, 500);
+										}
+										else
+										{
+											displayBanner({
+												msg: res.users?.info ?? 'Došlo je do greške!',
+												type: 'error'
+											}, setBanner);
+										}
+									})
 							}
 							else
 							{

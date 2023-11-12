@@ -125,9 +125,4 @@ public class UsersServlet extends OverrideServlet
 
 		return respJson;
 	}
-
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-	{
-		// TODO: issue 63
-	}
 }

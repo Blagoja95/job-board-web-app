@@ -4,7 +4,7 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "../../../components/button/Button";
-import {openMail, blurRoot, unBloorRoot, displayBanner, handleDelete} from "../../../utils/util/utils";
+import {openMail, displayBanner, handleDelete} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
 import {DetailContext, ModalContext, LoginContext, BannerContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
@@ -129,7 +129,29 @@ const DetaildPost = () =>
 							<Button
 								text="Obriši oglas"
 								className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
-								onClick={() => handleDelete(detailed.id, setModal, setBanner, nav, 'posts', 'Da li želite da obrišete ovaj oglas?')}
+								onClick={() => handleDelete(detailed.id, setModal, setBanner, nav, 'posts/delete', 'Da li želite da obrišete ovaj oglas?',
+									function (res)
+									{
+										if (res?.posts?.status === 1)
+										{
+											displayBanner({
+												msg: res?.posts?.info ?? 'Oglas uspjesno izbrisan!',
+												type: 'success'
+											}, setBanner);
+
+											setTimeout(() =>
+											{
+												nav('/');
+											}, 500);
+										}
+										else
+										{
+											displayBanner({
+												msg: res.posts?.info ?? 'Došlo je do greške!',
+												type: 'error'
+											}, setBanner);
+										}
+									})}
 							/>
 						</>
 					) : (
