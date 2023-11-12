@@ -17,10 +17,10 @@ const ShortPost = ({post, openDetailedPost}) =>
 			}}
 		>
 			<div
-				className='grid grid-cols-5 justify-items-center border rounded-xl w-4/5 m-auto py-5 md:py-10 mb-4 hover:border-mint hover:border-1 hover:cursor-pointer'>
+				className='grid xl:grid-cols-5 md:grid-cols-4 grid-cols-3 justify-items-center border rounded-xl w-4/5 m-auto py-5 md:py-10 mb-4 hover:border-mint hover:border-1 hover:cursor-pointer max-w-[1000px]'>
 				<img className='w-[44px] sm:w-[64px]' src={'https://picsum.photos/64?random=' + post.id}></img>
 
-				<div className='text-left flex flex-col items-left gap-2 w-[200px]'>
+				<div className='text-left flex flex-col col-span-2 sm:col-span-1 items-left gap-2 md:w-[200px]'>
 					<h3 className='text-sm sm:text-base text-mint text-center sm:text-left'>{post.title}</h3>
 					<p className='text-sm sm:text-base text-center sm:text-left'>{post.companyName}</p>
 				</div>
@@ -37,7 +37,7 @@ const ShortPost = ({post, openDetailedPost}) =>
 					<p>{post.city}</p>
 				</div>
 
-				<div className='hidden md:flex flex-col items-center'>
+				<div className='hidden xl:flex flex-col items-center'>
 					<div className='flex flex-row items-center gap-2'>
 						<FontAwesomeIcon
 							icon={faClipboard}

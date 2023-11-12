@@ -7,7 +7,7 @@ const About = () =>
 	return (
 		<section>
 			<div className="mx-auto w-3/4 flex justify-center md:h-[60vh]">
-				<div className="flex flex-col gap-4 mt-6 border-t-2">
+				<div className="flex flex-col gap-4 mt-6 border-t-2 text-center md:text-left">
 					<h1 className="text-mint text-center md:text-left pt-4 md:pt-24">O autoru</h1>
 
 					<p className='text-coolGray-dark'>
@@ -34,7 +34,7 @@ const About = () =>
 				</div>
 			</div>
 
-			<div className='m-auto w-3/4 flex justify-end'>
+			<div className='m-auto w-3/4 flex justify-end mt-6 md:mt-0'>
 				<Button
 					text="Mail"
 					className="text-blue-300 bg-white border-white hover:bg-blue-300 hover:text-white w-36"

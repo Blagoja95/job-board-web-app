@@ -16,7 +16,7 @@ const navItemsText = [
 	{text: "Informacije", href: "/about"}
 ];
 
-const logout = (logged, setLogged, setBanner) =>
+const logout = (logged, setLogged, setBanner, nav) =>
 {
 	if (!logged || !setBanner || !setLogged)
 	{
@@ -52,6 +52,8 @@ const logout = (logged, setLogged, setBanner) =>
 					msg: data?.info ? data.info : 'Došlo je do greške!'
 				}, setBanner);
 			}
+
+			nav('/')
 		})
 		.catch((res) =>
 		{
@@ -193,7 +195,7 @@ const Navigation = () =>
 									 className='border-2 border-mint hover:cursor-pointer hover:border-green-400 rounded-full relative active:scale-95'>
 									{getAvatar({name: getCookie('username')}, 'rounded-full text-mint')}
 
-									{menuVisible ? <Menu fn={() => logout(logged, setLogged, setBanner)}/> : <></>}
+									{menuVisible ? <Menu fn={() => logout(logged, setLogged, setBanner, nav)}/> : <></>}
 								</div>
 							]
 							:

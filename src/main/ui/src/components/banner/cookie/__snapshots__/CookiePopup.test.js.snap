@@ -11,7 +11,7 @@ exports[`CookiePopup is hidden 1`] = `
       Ova veb lokacija koristi kolačiće kako bismo vam omogućili najbolje iskustvo na našoj veb lokaciji.
     </p>
     <button
-      className="lg:px-6 lg:py-3 px-3 py-1 rounded-full border border-solid border-mint hover:bg-keppel hover:text-wht bg-mint cookie-btn"
+      className="lg:px-6 lg:py-3 px-3 py-1 rounded-full border border-solid border-mint hover:bg-keppel hover:text-wht select-none active:scale-95 bg-mint cookie-btn"
       name="button"
       onClick={[Function]}
     >

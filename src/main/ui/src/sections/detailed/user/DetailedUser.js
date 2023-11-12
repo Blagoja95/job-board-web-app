@@ -46,7 +46,7 @@ const DetailedUser = () =>
 	{
 
 		return <>
-			<section className='bg-gray-light h-96 z-10' id='top'>
+			<section className='bg-gray-light md:h-96 z-10' id='top'>
 				<div
 					className='flex flex-col items-center gap-4 pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0'>
 					{getAvatar(detailed, 'text-mint rounded-full border-white border-6')}
