@@ -68,7 +68,7 @@ export const hideBanner = (setBanner, time = 2000) =>
 	setTimeout(() => setBanner({show: false}), time);
 };
 
-export const handleDelete = (id, setModal, setBanner, nav, what, text = 'Da li želite obrisati?') =>
+export const handleDelete = (id, setModal, setBanner, nav, what, text = 'Da li želite obrisati?', fn = null) =>
 {
 	if (!id || !setModal || !setBanner || !what || typeof what !== 'string' || what.length < 1)
 	{
@@ -90,28 +90,14 @@ export const handleDelete = (id, setModal, setBanner, nav, what, text = 'Da li �
 			setModal(null);
 
 			fetch('http://localhost:8080/' + what + '?id=' + id, {
-				method: 'DELETE'
+				method: 'POST',
+				credentials: 'include',
 			}).then(res => res.json())
 				.then(res =>
 				{
-					if (res?.posts?.status === 1)
+					if (fn && typeof fn === 'function')
 					{
-						displayBanner({
-							msg: res?.posts?.info ?? 'Oglas uspješno obrisan!',
-							type: 'success'
-						}, setBanner);
-
-						setTimeout(() =>
-						{
-							nav('/');
-						}, 500);
-					}
-					else
-					{
-						displayBanner({
-							msg: res.post?.info ?? 'Došlo je do greške!',
-							type: 'error'
-						}, setBanner);
+						fn(res);
 					}
 				})
 				.catch((res) =>
