@@ -1,3 +1,5 @@
+import {openMail} from "../../utils/util/utils";
+
 const Footer = () =>
 {
 	return (
@@ -16,6 +18,11 @@ const Footer = () =>
 					<div><a href="#top" className="hover:text-mint">Vrati me na vrh</a></div>
 					<div className="hidden md:block">|</div>
 					<div><a href="/about" className="hover:text-mint">Informacije</a></div>
+					<div className="hidden md:block">|</div>
+					<div>
+						<a href="#mail" className="hover:text-mint"
+						   onClick={() => openMail('boris.blagojevicc@hotmail.com')}>Prijavi problem</a>
+					</div>
 				</div>
 			</div>
 		</section>

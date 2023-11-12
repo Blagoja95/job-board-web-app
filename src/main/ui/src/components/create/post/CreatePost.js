@@ -1,15 +1,16 @@
-import {blurRoot, EMPTY_FUNCTION, unBloorRoot} from "../../../utils/util/utils";
-import Button from "../../button/Button";
-import {useNavigate} from "react-router-dom";
-import {useContext} from "react";
-import {DetailContext, LoginContext, ModalContext} from "../../../App";
+import {blurRoot, displayBanner, EMPTY_FUNCTION, unBloorRoot} from '../../../utils/util/utils';
+import Button from '../../button/Button';
+import {useNavigate} from 'react-router-dom';
+import {useContext} from 'react';
+import {DetailContext, LoginContext, ModalContext, BannerContext} from '../../../App';
 
 const CreatePost = ({create}) =>
 {
 	const nav = useNavigate();
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const {setModal} = useContext(ModalContext);
-	const {logged} = useContext(LoginContext)
+	const {logged} = useContext(LoginContext);
+	const setBanner = useContext(BannerContext);
 
 	// TODO: next method is a temp solution
 	const clearFields = () =>
@@ -57,7 +58,7 @@ const CreatePost = ({create}) =>
 		}
 
 		fetch(`http://localhost:8080/posts${!create ? '/update' : ''}`, {
-			method: "POST",
+			method: 'POST',
 			credentials: 'include',
 			body: params
 		})
@@ -68,18 +69,42 @@ const CreatePost = ({create}) =>
 
 				if (data[propType] && data[propType]?.status === 1)
 				{
-					if (data[propType]?.id)
+					displayBanner({
+						msg: 'Uspješno ste napravili novu objavu!',
+						type: 'success'
+					}, setBanner);
+
+					setTimeout(() =>
 					{
-						nav('/posts/detailed?id=' + data[propType].id);
-					}
-					else
+						if (data[propType]?.id)
+						{
+							nav('/posts/detailed?id=' + data[propType].id);
+						}
+						else
+						{
+							nav('/posts');
+						}
+					}, 500);
+				}
+				else
+				{
+					displayBanner({
+						msg: data[propType]?.info ?? 'Došlo je do greške!',
+						type: 'error'
+					}, setBanner);
+
+					setTimeout(() =>
 					{
 						nav('/posts');
-					}
+					}, 500);
 				}
-
-
-				// TODO: fail case
+			})
+			.catch((res) =>
+			{
+				displayBanner({
+					msg: res.message,
+					type: 'error'
+				}, setBanner);
 			});
 	};
 
@@ -97,10 +122,10 @@ const CreatePost = ({create}) =>
 	}
 
 	return (
-		<div className="h-[60vh] flex flex-col">
-			<h3 className="text-mint text-center">{!detailed ? "Objavi oglas" : "Uredi oglas"}</h3>
+		<div className='h-[60vh] flex flex-col'>
+			<h3 className='text-mint text-center'>{!detailed ? 'Objavi oglas' : 'Uredi oglas'}</h3>
 			<form
-				className="nPostForm w-96 m-auto flex flex-col gap-5 mt-6"
+				className='nPostForm w-96 m-auto flex flex-col gap-5 mt-6'
 				onSubmit={e =>
 				{
 					e.preventDefault();
@@ -115,9 +140,9 @@ const CreatePost = ({create}) =>
 						blurRoot();
 
 						setModal({
-							text: "Da li ste sigurni da želite urediti ovaj oglas?",
-							btn1Txt: "Da",
-							btn2Txt: "Ne",
+							text: 'Da li ste sigurni da želite urediti ovaj oglas?',
+							btn1Txt: 'Da',
+							btn2Txt: 'Ne',
 							btn1Fn()
 							{
 								common();
@@ -132,28 +157,28 @@ const CreatePost = ({create}) =>
 					}
 				}}
 			>
-				<input required minLength={4} type="text" placeholder="Naslov" name='title'
+				<input required minLength={4} type='text' placeholder='Naslov' name='title'
 					   defaultValue={detailed?.title ? detailed?.title : ''}
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<input required minLength={4} type="text" placeholder="Angažmana" name='type'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<input required minLength={4} type='text' placeholder='Angažmana' name='type'
 					   defaultValue={detailed?.type ? detailed?.type : ''}
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<input required minLength={4} type="text" placeholder="Grad" name='city'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<input required minLength={4} type='text' placeholder='Grad' name='city'
 					   defaultValue={detailed?.city ? detailed?.city : ''}
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<textarea required minLength={4} placeholder="Kvalifikacije" name='qual'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<textarea required minLength={4} placeholder='Kvalifikacije' name='qual'
 						  defaultValue={detailed?.qual ? detailed?.qual : ''}
-						  className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
+						  className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
 
-				<textarea required minLength={4} placeholder="Detalji o poslu" name='about'
+				<textarea required minLength={4} placeholder='Detalji o poslu' name='about'
 						  defaultValue={detailed?.about ? detailed?.about : ''}
-						  className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
+						  className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
 
 				<Button
-					text={create ? "Objavi" : "Uredi"}
-					className={"mr-2 my-4 bg-mint text-wht"}
-					type="submit"
-					name={"skip"}
+					text={create ? 'Objavi' : 'Uredi'}
+					className={'mr-2 my-4 bg-mint text-wht'}
+					type='submit'
+					name={'skip'}
 					onClick={EMPTY_FUNCTION}
 				/>
 			</form>

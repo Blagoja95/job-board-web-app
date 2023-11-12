@@ -4,9 +4,9 @@ import {
 	faLink,
 } from "@fortawesome/fontawesome-free-solid";
 import Button from "../../../components/button/Button";
-import {openMail, blurRoot, unBloorRoot} from "../../../utils/util/utils";
+import {openMail, blurRoot, unBloorRoot, displayBanner, handleDelete} from "../../../utils/util/utils";
 import React, {useContext, useEffect, useState} from "react";
-import {DetailContext, ModalContext, LoginContext} from "../../../App";
+import {DetailContext, ModalContext, LoginContext, BannerContext} from "../../../App";
 import {useNavigate} from "react-router-dom";
 import PingAnimation from "../../../components/ping/PingAnimation";
 
@@ -17,6 +17,7 @@ const DetaildPost = () =>
 	const {detailed, setDetailed} = useContext(DetailContext);
 	const nav = useNavigate();
 	const {logged} = useContext(LoginContext);
+	const setBanner = useContext(BannerContext);
 
 	useEffect(() => async () =>
 	{
@@ -34,7 +35,14 @@ const DetaildPost = () =>
 				const post = data.posts[0];
 				const user = await fetch('http://localhost:8080/users?id=' + post.companyID)
 					.then(response => response.json())
-					.then(data => data.users[0]);
+					.then(data => data.users[0])
+					.catch((res) =>
+					{
+						displayBanner({
+							msg: res.message,
+							type: 'error'
+						}, setBanner);
+					});
 
 				setDetailed({
 					...post,
@@ -43,66 +51,27 @@ const DetaildPost = () =>
 					email: user.email
 				});
 				setLoading(false);
+			})
+			.catch((res) =>
+			{
+				displayBanner({
+					msg: res.message,
+					type: 'error'
+				}, setBanner);
 			});
 	}, []);
-
-	const handleDelete = (id) =>
-	{
-		blurRoot();
-
-		setModal({
-			id: id,
-			text: "Da li ste sigurni da želite obrisati ovaj oglas?",
-			btn1Txt: "Da",
-			btn2Txt: "Ne",
-			btn1Fn()
-			{
-				unBloorRoot();
-				setModal(null);
-
-				fetch('http://localhost:8080/posts?id=' + id, {
-					method: 'DELETE'
-				}).then(res => res.json())
-					.then(res =>
-					{
-						if (res?.posts?.status === 1)
-						{
-							nav('/');
-
-							const inner = document.querySelector('.forInner');
-
-							inner.insertAdjacentHTML('beforeend', `
-							<p class="py-4">Oglas uspješno obrisan!</p>`);
-
-							setTimeout(() =>
-							{
-								while (inner.firstChild) inner.removeChild(inner.firstChild);
-							}, 2000);
-						}
-
-						// todo: error handling
-					});
-			},
-			btn2Fn()
-			{
-				unBloorRoot();
-
-				setModal(null);
-			}
-		})
-	};
 
 	const PostJSX = (detailed) =>
 	{
 
 		return <>
-			<section className="bg-gray-light h-96 z-10" id="top">
+			<section className="bg-gray-light md:h-96 z-10" id="top">
 				<div className="pt-10 pb-16 md:py-28 text-center max-w-screen-sm m-auto px-6 lg:px-0">
 					<h2 className="text-mint hover:underline">
 						<a className="" href={"/users/detailed?id=" + detailed.companyID}>
 							{detailed.company}
 						</a>
-						<FontAwesomeIcon className="ml-1 pb-2" icon={faLink}/>
+						<FontAwesomeIcon className="ml-1 md:pb-2" icon={faLink}/>
 					</h2>
 					<h1 className="text-xl md:text-4xl md:leading-snug pb-4 font-semibold text-coolGray-dark">
 						{detailed.title}
@@ -160,7 +129,7 @@ const DetaildPost = () =>
 							<Button
 								text="Obriši oglas"
 								className="text-wht bg-redwood-normal border-redwood-normal hover:bg-redwood-light"
-								onClick={() => handleDelete(detailed.id)}
+								onClick={() => handleDelete(detailed.id, setModal, setBanner, nav, 'posts', 'Da li želite da obrišete ovaj oglas?')}
 							/>
 						</>
 					) : (

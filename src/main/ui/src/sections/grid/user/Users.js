@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {UsersContext, PostsContext} from "../../../App";
+import {UsersContext, BannerContext} from "../../../App";
 import UserShort from "../../../components/card/user/UserShort";
 import {useNavigate} from "react-router-dom";
-import SearchBar from "../../../components/search/posts/SearchBar";
-import {removeDuplicates} from "../../../utils/util/utils";
+import {displayBanner, removeDuplicates} from "../../../utils/util/utils";
 import PingAnimation from "../../../components/ping/PingAnimation";
 
-const getUsers = (setUsers, setLoading) =>
+const getUsers = (setUsers, setLoading, setBanner) =>
 {
 	fetch('http://localhost:8080/users')
 		.then(response => response.json())
@@ -14,6 +13,13 @@ const getUsers = (setUsers, setLoading) =>
 		{
 			setUsers(data.users);
 			setLoading(false);
+		})
+		.catch((res) =>
+		{
+			displayBanner({
+				msg: res.message,
+				type: 'error'
+			}, setBanner);
 		});
 };
 
@@ -22,6 +28,7 @@ const Users = () =>
 	const [loading, setLoading] = useState(true);
 	const {users, setUsers} = useContext(UsersContext);
 	const nav = useNavigate();
+	const setBanner = useContext(BannerContext);
 
 	useEffect(() =>
 	{

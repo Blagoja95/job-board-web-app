@@ -7,10 +7,10 @@ const About = () =>
 	return (
 		<section>
 			<div className="mx-auto w-3/4 flex justify-center md:h-[60vh]">
-				<div className="flex flex-col gap-4 mt-6 border-t-2">
+				<div className="flex flex-col gap-4 mt-6 border-t-2 text-center md:text-left">
 					<h1 className="text-mint text-center md:text-left pt-4 md:pt-24">O autoru</h1>
 
-					<p>
+					<p className='text-coolGray-dark'>
 						<a href={'https://www.borisblagojevic.me'} target={'_blank'}
 						   className='hover:text-mint font-semibold'>Boris Blagojević</a> rođen je 22. septembra 1995.
 						godine u Banjoj Luci. Završio je osnovnu školu u Banjoj Luci, nakon čega je upisao Srednju
@@ -18,7 +18,7 @@ const About = () =>
 						telekomunikacija i maturirao 2014. godine.
 					</p>
 
-					<p>
+					<p className='text-coolGray-dark'>
 						Nakon završetka srednje škole, Boris se upisao na Fakultet informacionih tehnologija
 						Panevropskog univerziteta Apeiron u Banjoj Luci, gdje je u akademskoj godini 2016-2017. započeo
 						studije poslovne informatike. Kasnije se prebacio na novo formirani smjer inženjering
@@ -26,7 +26,7 @@ const About = () =>
 						godine.
 					</p>
 
-					<p>
+					<p className='text-coolGray-dark'>
 						Radi u struci kao Softverski Inženjer. Tokom svog akademskog i profesionalnog puta, Boris je
 						pokazao veliki interes prema tehnologiji i sklonost ka rješavanju problema u oblasti
 						informacionih tehnologija.
@@ -34,7 +34,7 @@ const About = () =>
 				</div>
 			</div>
 
-			<div className='m-auto w-3/4 flex justify-end'>
+			<div className='m-auto w-3/4 flex justify-end mt-6 md:mt-0'>
 				<Button
 					text="Mail"
 					className="text-blue-300 bg-white border-white hover:bg-blue-300 hover:text-white w-36"

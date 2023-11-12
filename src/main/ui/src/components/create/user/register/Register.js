@@ -1,9 +1,9 @@
-import {EMPTY_FUNCTION, debounce, displayBanner} from "../../../../utils/util/utils";
-import Button from "../../../button/Button";
-import {useContext, useEffect, useState} from "react";
-import {LoginContext, BannerContext} from "../../../../App";
-import {useNavigate} from "react-router-dom";
-import {getLoginArray} from "../../../../utils/cookie/cookie";
+import {EMPTY_FUNCTION, debounce, displayBanner} from '../../../../utils/util/utils';
+import Button from '../../../button/Button';
+import {useContext, useEffect, useState} from 'react';
+import {LoginContext, BannerContext} from '../../../../App';
+import {useNavigate} from 'react-router-dom';
+import {getLoginArray} from '../../../../utils/cookie/cookie';
 
 const handleSubmit = (e, setLogged, nav, setBanner) =>
 {
@@ -19,7 +19,7 @@ const handleSubmit = (e, setLogged, nav, setBanner) =>
 		}
 
 	fetch('http://localhost:8080/register', {
-		method: "POST",
+		method: 'POST',
 		credentials: 'include',
 		body: params
 	})
@@ -45,6 +45,13 @@ const handleSubmit = (e, setLogged, nav, setBanner) =>
 				}, setBanner);
 			}
 		})
+		.catch((res) =>
+		{
+			displayBanner({
+				msg: res.message,
+				type: 'error'
+			}, setBanner);
+		});
 };
 
 export const checkPassword = (val) =>
@@ -105,38 +112,43 @@ const Register = () =>
 	// }, );
 
 	return (
-		<div className="">
+		<div className=''>
 			<form
-				className="regForm w-96 m-auto flex flex-col gap-5 mt-6"
+				className='regForm w-96 m-auto flex flex-col gap-5 mt-6'
 				onSubmit={(e) => handleSubmit(e, setLogged, nav, setBanner)}
 			>
-				<h3 className="text-mint">Registracija</h3>
-				<input required minLength={4} type="text" placeholder="Ime kompanije" name='name'
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<input required minLength={4} type="text" placeholder="Korisničko ime" name='username'
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<input required minLength={4} type="text" placeholder="Grad" name='city'
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				<input required minLength={4} type="email" placeholder="Mejl adresa" name='email'
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
+				<h3 className='text-mint'>Registracija</h3>
+				<input required minLength={4} type='text' placeholder='Ime kompanije' name='name'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<input required minLength={4} type='text' placeholder='Korisničko ime' name='username'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<input required minLength={4} type='text' placeholder='Grad' name='city'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				<input required minLength={4} type='email' placeholder='Mejl adresa' name='email'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
 
-				<textarea placeholder="O kompaniji" name='about'
-						  className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
+				<textarea placeholder='O kompaniji' name='about'
+						  className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
 
-				<input required minLength={4} name='password' type="password" placeholder="Unesi lozinku"
-					   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>
-				{/*<input required minLength={4} name='password' type="password" placeholder="Potvrdi lozinku"*/}
+				<input required minLength={4} name='password' type='password' placeholder='Unesi lozinku'
+					   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>
+				{/*<input required minLength={4} name='password' type='password' placeholder='Potvrdi lozinku'*/}
 				{/*	   onChange={(e) => setPassStatus(debounce(checkPassword)(e.target.value))}*/}
-				{/*	   className="border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint"/>*/}
+				{/*	   className='border border-coolGray-light outline-none p-1 pl-4 rounded-xl hover:border-airForceBlue focus:border-mint'/>*/}
 
 				<Button
-					text={"Registruj se"}
-					className={"mr-2 my-4 bg-mint text-wht"}
-					name={"skip"}
-					type="submit"
+					text={'Registruj se'}
+					className={'mr-2 my-4 bg-mint text-wht'}
+					name={'skip'}
+					type='submit'
 					onClick={EMPTY_FUNCTION}
 				/>
 			</form>
+
+			<div className={'flex flex-row justify-center text-coolGray-normal text-sm mt-10'}>
+				Već ste registrovani? Prijavite se na Vaš <span className='text-mint ml-1 cursor-pointer'
+														 onClick={() => nav('/login')}>nalog</span>
+			</div>
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import Button from "../../button/Button";
-import {blurRoot, unBloorRoot} from "../../../utils/util/utils";
+import Button from '../../button/Button';
+import {blurRoot, unBloorRoot} from '../../../utils/util/utils';
 
 const CookiePopup = () =>
 {
@@ -24,11 +24,11 @@ const CookiePopup = () =>
 
 	return (
 		<div className={`fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 ${isVisible ? 'block' : 'hidden'}`}>
-			<div className="max-w-screen-lg mx-auto flex items-center justify-between">
+			<div className='max-w-screen-lg mx-auto flex items-center justify-between'>
 				{/*<p>This website uses cookies to ensure you get the best experience on our website.</p>*/}
 				<p>Ova veb lokacija koristi kolačiće kako bismo vam omogućili najbolje iskustvo na našoj veb
 					lokaciji.</p>
-				<Button onClick={acceptCookies} className="bg-mint cookie-btn" text={'Uredu'}/>
+				<Button onClick={acceptCookies} className='bg-mint cookie-btn' text={'Uredu'}/>
 			</div>
 		</div>
 	);
