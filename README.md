@@ -1,4 +1,4 @@
-# Job board web app
+# Job board web app1
 
 Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySQL as DBMS.
 
