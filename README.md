@@ -27,7 +27,7 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 
 Welcome to the Job posting app
 
-![page](./assets/documentation/images/fpage.png)
+![page](assets\documentation\images\fpage.png)
 
 ## API [^1]
 
