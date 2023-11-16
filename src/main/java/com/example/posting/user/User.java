@@ -109,15 +109,7 @@ public class User
 	@Override
 	public String toString()
 	{
-		return "User{" +
-				"id=" + this.id +
-				", name='" + this.name + '\'' +
-				", hashPass=" + this.hashPass +
-				", email='" + this.email + '\'' +
-				", about='" + this.about + '\'' +
-				", username='" + this.username + '\'' +
-				", city='" + this.city + '\'' +
-				'}';
+		return getUser().toJSONString();
 	}
 
 	public String getCity()

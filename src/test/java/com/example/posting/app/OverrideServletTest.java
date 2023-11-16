@@ -9,7 +9,6 @@ public class OverrideServletTest
 	@Test
 	public void test ()
 	{
-
 		OverrideServlet test = new OverrideServlet();
 
 		Assert.assertEquals(test.getErrorJSON(null).toJSONString(), "{\"request\":{\"status\":0,\"info\":\"Generic Error!\"}}");
