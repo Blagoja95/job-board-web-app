@@ -39,18 +39,14 @@ public class PostModel
 		this.qual = qual;
 	}
 
-	public PostModel(int id, String companyID, String title, String type, String city, String about, String qual)
+	public PostModel()
 	{
 	}
-
-	;
 
 	public String getCompanyName()
 	{
 		return companyName;
 	}
-
-	;
 
 	public void setCompanyName(String companyName)
 	{
@@ -147,16 +143,6 @@ public class PostModel
 	@Override
 	public String toString()
 	{
-		return "Post{" +
-				"id=" + this.id +
-				", companyID=" + this.companyID +
-				", companyName=" + this.companyName +
-				", title='" + this.title + '\'' +
-				", type='" + this.type + '\'' +
-				", city='" + this.city + '\'' +
-				", about='" + this.about + '\'' +
-				", qual='" + this.qual + '\'' +
-				", qual='" + this.date.toString() + '\'' +
-				'}';
+		return this.getPost().toJSONString();
 	}
 }
