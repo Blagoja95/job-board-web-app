@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+
+  mysql:
+    image: mysql:latest
+    container_name: job-board-mysql
+    hostname: mysql-db
+    restart: unless-stopped
+    tty: true
+    deploy:
+      mode: replicated
+      replicas: 0
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "mydbpassword"
+    volumes:
+      - v-mysql-data:/var/lib/mysql
+    networks:
+      - job-board-net
+    # TODO
+
+  tomcat:
+    image: tomcat:latest
+    # TODO
+
+  nodejs:
+    image: node:latest
+    # TODO
+
