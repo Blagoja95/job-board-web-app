@@ -3,11 +3,12 @@ version: "3"
 services:
 
   mysql:
-    image: mysql:latest
+    build: ./docker/mysql/
+    image: job-board-mysql-test-compose-img # TAGS ?
     container_name: job-board-mysql
-    hostname: mysql-db
+  #    hostname: mysql-db
     restart: unless-stopped
-    tty: true
+    command: --default-authentication-plugin=mysql_native_password
     deploy:
       mode: replicated
       replicas: 0
@@ -16,18 +17,33 @@ services:
     expose:
       - 3306
     environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "mydbpassword"
       MYSQL_ROOT_PASSWORD: "mydbpassword"
-    volumes:
-      - v-mysql-data:/var/lib/mysql
-    networks:
-      - job-board-net
+      MYSQL_DATABASE: "jobPostingsDB"
+#    volumes:
+#      - MYSQL_DATA:/var/lib/mysql
+#    networks:
+#      - job-board-net
     # TODO
 
-  tomcat:
-    image: tomcat:latest
-    # TODO
-
-  nodejs:
-    image: node:latest
+#  tomcat:
+#    build: ./docker/Tomcat/
+#    image: blagoja95/job-board-tomcat-image:v1.2.0
+#    networks:
+#      - job-board-net
+#    ports:
+#      - 8080:8080
+#    expose:
+#      - 8080
+#    # TODO
+#
+#  nodejs:
+#    build: src/main/ui/ # TODO change path
+#    image: blagoja95/job-board-node-image:v1.2.0
+#    networks:
+#      - job-board-net
+#    ports:
+#      - 3000:3000
     # TODO
 
