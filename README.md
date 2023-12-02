@@ -1,6 +1,25 @@
 # Job board web app
 
-Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat web server and MySQL as DBMS.
+Job board web app made with ReactJS, TailwindCSS and JAVA. Running back-end on Tomcat and storing data using MySQL
+RDBMS and administrating it using phpMyAdmin. All parts containerized using Docker and docker compose tool to handle all
+images, containers, hot reload and other configurations.
+
+- [Job board web app](#job-board-web-app)
+    - [Colors](#colors)
+    - [USE](#use)
+        - [IMAGES](#images)
+        - [DOCKER COMPOSE](#docker-compose)
+        - [phpMyAdmin](#phpmyadmin)
+    - [API](#api-1)
+        - [GET](#get)
+        - [Response status](#response-status)
+        - [Login and registration of users](#login-and-registration-of-users)
+        - [Create post](#create-post)
+        - [Delete](#delete-3)
+        - [Update](#update)
+        - [Handling incorrect requests](#handling-incorrect-requests)
+        - [Errors](#errors)
+    - [Additional information](#documentation)
 
 ## Colors
 
@@ -9,6 +28,8 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 ## USE
 
 1. First download [docker](https://www.docker.com/products/docker-desktop/) for desktop
+
+### IMAGES:
 
 2. Open yor CLI and start running following commands (one by one)
 
@@ -28,6 +49,31 @@ Job board web app made with ReactJS, TailwindCSS and JAVA. Hosted using Tomcat w
 Welcome to the Job posting app
 
 ![page](./assets/documentation/images/fpage.png)
+
+### DOCKER COMPOSE
+
+If you want to change source (currently React/Node.js can be hot reloaded) use `Docker Compose`:
+
+1. clone this git repository
+2. open terminal -> in root run `docker-compose up -d --build` [^6]
+3. same url `localhost:3000`
+
+### phpMyAdmin
+
+If you want to use `phpMyAdmin`:
+
+1. create containers
+   1a. docker compose
+    1. run docker-compose up command
+
+   or
+
+   2b. images:
+    1. `docker pull phpmyadmin/phpmyadmin`
+    2. `docker run --name phpmyadmin-container --net job-board-net -d -p 8081:80 -e PMA_HOST=job-board-mysql -e PMA_PORT=3306 phpmyadmin/phpmyadmin`
+
+2. in browser run `localhost:8081`
+3. login using username `root` and password `mydbpassword`
 
 ## API [^1]
 
@@ -732,7 +778,11 @@ send them back (-b flag) when creating, deleting or updating data.
 [^5]: **IDs** must exist when they are used for update or creation. New Posts use existing `companyID`, update use
 corresponding IDs for post and user row.
 
-### Documentation
+[^6]: **Docker compose on linux**: command must be run with sudo, if `bootkit` fails or error massage appears with
+invalid host header
+use command  `sudo DOCKER_BUILDKIT=0 docker-compose up -d --build`
+
+### Additional information
 
 If you found documentation or software errors please feel free to [contact me](mailto:boris.blagojevicc@hotmail.com) or
 raise an [issue](https://github.com/Blagoja95/job-board-web-app/issues).
