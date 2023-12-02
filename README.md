@@ -63,14 +63,14 @@ If you want to change source (currently React/Node.js can be hot reloaded) use `
 If you want to use `phpMyAdmin`:
 
 1. create containers
-   1a. docker compose
-    1. run docker-compose up command
+    1. docker compose
+        1. run docker-compose up command
 
    or
 
-   2b. images:
-    1. `docker pull phpmyadmin/phpmyadmin`
-    2. `docker run --name phpmyadmin-container --net job-board-net -d -p 8081:80 -e PMA_HOST=job-board-mysql -e PMA_PORT=3306 phpmyadmin/phpmyadmin`
+    2. images:
+        1. `docker pull phpmyadmin/phpmyadmin`
+        2. `docker run --name phpmyadmin-container --net job-board-net -d -p 8081:80 -e PMA_HOST=job-board-mysql -e PMA_PORT=3306 phpmyadmin/phpmyadmin`
 
 2. in browser run `localhost:8081`
 3. login using username `root` and password `mydbpassword`
