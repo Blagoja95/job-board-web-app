@@ -4,7 +4,7 @@ services:
 
   mysql-db:
     build: ./docker/mysql
-#    image: job-board-mysql-image
+    image: job-board-mysql-image
     container_name: job-board-mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -59,7 +59,7 @@ services:
 
   nodejs-fe:
     build: ./src/main/ui/
-#    image: job-board-node-image
+    image: job-board-node-image
     container_name: job-board-react-fe
     networks:
       - job-board-net
@@ -69,6 +69,13 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    volumes:
+      - type: bind
+        source: ./src/main/ui
+        target: /app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
 networks:
   job-board-net: { }

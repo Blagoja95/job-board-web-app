@@ -2,14 +2,16 @@ FROM node:latest
 
 LABEL maintainer="Boris Blagojević <boris.blagojevicc@hotmail.com>"
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY public/ ./public
-COPY src/ ./src
+ENV PATH /app/node_modules/.bin:$PATH
+
 COPY package.json ./
 COPY package-lock.json ./
 COPY tailwind.config.js ./
 
-RUN npm install
+RUN npm install nodemon --save-dev
 
-CMD ["npm", "start"]
+COPY . ./
+
+CMD ["nodemon", "--exec", "npm", "start"]
