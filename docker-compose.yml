@@ -42,6 +42,15 @@ services:
     networks:
       - job-board-net
 
+  maven-build:
+    build:
+      context: ./docker/tomcat/
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: mvn clean package
+
   tomcat-be:
     #    build: ./docker/Tomcat/
     image: blagoja95/job-board-tomcat-image:v1.2.0

@@ -11,7 +11,7 @@ ENV JAVA_OPTS "-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
 
 RUN rm -rf $CATALINA_BASE/webapps/*
 
-COPY burza-rada-1.0-SNAPSHOT.war $CATALINA_BASE/webapps/ROOT.war
+#COPY burza-rada-1.0-SNAPSHOT.war $CATALINA_BASE/webapps/ROOT.war
 
 EXPOSE 8080
 
