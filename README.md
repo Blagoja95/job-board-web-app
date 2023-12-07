@@ -48,7 +48,7 @@ images, containers, hot reload and other configurations.
 
 Welcome to the Job posting app
 
-![page](./assets/documentation/images/fpage.png)
+![page](assets\documentation\images\fpage.png)
 
 ### DOCKER COMPOSE
 
