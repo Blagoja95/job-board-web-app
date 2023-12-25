@@ -25,7 +25,7 @@ images, containers, hot reload and other configurations.
 
 [Colors](https://coolors.co/d8ddef-a0a4b8-7293a0-45b69c-21d19f)
 
-## USE
+## USEAGE
 
 1. First download [docker](https://www.docker.com/products/docker-desktop/) for desktop
 
@@ -296,7 +296,9 @@ If password is wrong following JSON response is returned
 }
 ```
 
-### Create post
+### CREATE
+
+#### Posts
 
 Create network request using POST method. **MUST BE LOGGED IN**
 
@@ -318,7 +320,7 @@ If successful response JSON with new post ID will return with success status
 }
 ```
 
-### Delete [^3]
+### DELETE [^3]
 
 Create network request using POST method (POST METHOD IS USED TEMPORARY). **MUST BE LOGGED IN**
 
@@ -326,13 +328,13 @@ Request parameter is *id* of the desired post or user for delete.
 
 This call requires userID and JSESSIONID cookies.
 
-#### Post
+#### Posts
 
 ```powershell
 curl -X POST -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/posts/delete?id=8063
 ```
 
-#### User
+#### Users
 
 ```powershell
 curl -X POST -b "JSESSIONID=B0F4A3D4373564E825050EEFB9E6999B" -b "userID=641" localhost:8080/users/delete?id=8063
