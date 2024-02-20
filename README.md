@@ -1,26 +1,48 @@
 # Job board web app
 
-Job board web app made with ReactJS, TailwindCSS and JAVA. Running back-end on Tomcat and storing data using MySQL
+Job board web app where employers list job vacancies and job seekers apply for positions. Made with ReactJS, TailwindCSS and JAVA. Running back-end on Tomcat and storing data using MySQL
 RDBMS and administrating it using phpMyAdmin. All parts containerized using Docker and docker compose tool to handle all
 images, containers, hot reload and other configurations.
 
-- [Job board web app](#job-board-web-app)
-    - [Colors](#colors)
-    - [USE](#use)
-        - [IMAGES](#images)
-        - [DOCKER COMPOSE](#docker-compose)
-        - [phpMyAdmin](#phpmyadmin)
-    - [API](#api-1)
-        - [GET](#get)
-        - [Response status](#response-status)
-        - [Login and registration of users](#login-and-registration-of-users)
-        - [Create post](#create-post)
-        - [Delete](#delete-3)
-        - [Update](#update)
-        - [Handling incorrect requests](#handling-incorrect-requests)
-        - [Errors](#errors)
-    - [Additional information](#documentation)
-
+* [Job board web app](#job-board-web-app)
+  * [Colors](#colors)
+  * [USE](#use)
+    * [phpMyAdmin](#phpmyadmin)
+    * [Manually pull images](#manually-pull-images)
+  * [API [^1]](#api-1)
+    * [GET](#get)
+      * [Error response specific for GET method](#error-response-specific-for-get-method)
+    * [Response status](#response-status)
+    * [Login and registration of users](#login-and-registration-of-users)
+      * [Register [^2]](#register-2)
+      * [Login [^2]](#login-2)
+      * [Logout](#logout)
+        * [Error response specific for login and registration](#error-response-specific-for-login-and-registration)
+          * [No user](#no-user)
+          * [Incorrect password](#incorrect-password)
+    * [Create post](#create-post)
+    * [Delete [^3]](#delete-3)
+      * [Post](#post)
+      * [User](#user)
+      * [Response](#response)
+      * [Errors](#errors)
+        * [Current user does not have rights to delete post](#current-user-does-not-have-rights-to-delete-post)
+    * [Update](#update)
+      * [User](#user-1)
+      * [Post](#post-1)
+      * [Errors](#errors-1)
+    * [Handling incorrect requests](#handling-incorrect-requests)
+      * [No parameters](#no-parameters)
+      * [Empty parameters value](#empty-parameters-value)
+      * [Missing required parameter](#missing-required-parameter)
+      * [Not existing ID](#not-existing-id)
+      * [Missing cookie](#missing-cookie)
+          * [No session](#no-session)
+          * [Missing UserID cookie](#missing-userid-cookie)
+          * [Post ID parameter missing](#post-id-parameter-missing)
+          * [Post with ID=`value` not found](#post-with-idvalue-not-found)
+    * [Additional information](#additional-information)
+  
 ## Colors
 
 [Colors](https://coolors.co/d8ddef-a0a4b8-7293a0-45b69c-21d19f)
@@ -29,51 +51,41 @@ images, containers, hot reload and other configurations.
 
 1. First download [docker](https://www.docker.com/products/docker-desktop/) for desktop
 
-### IMAGES:
+2. In CLI run following command: `docker compose -p job-board up --build -d` [^6]
 
-2. Open yor CLI and start running following commands (one by one)
-
-3. Create docker network `docker network create job-board-net`
-
-4. Pull images:
-    1. `docker pull blagoja95/job-board-mysql-image:v1.0.1`
-    2. `docker pull blagoja95/job-board-tomcat-image:v1.2.0`
-    3. `docker pull blagoja95/job-board-node-image:v1.2.0`
-5. Create containers:
-    1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/job-board-mysql-image:v1.0.1`
-    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.2.0`
-    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.2.0`
-
-6. Open your browser and in URL bar search for `localhost:3000`
+3. In your preferred browser open [localhost](http://localhost:3000)
 
 Welcome to the Job posting app
 
 ![page](./assets/documentation/images/fpage.png)
 
-### DOCKER COMPOSE
-
-If you want to change source (currently React/Node.js can be hot reloaded) use `Docker Compose`:
-
-1. clone this git repository
-2. open terminal -> in root run `docker-compose up -d --build` [^6]
-3. same url `localhost:3000`
+If you want to stop docker compose run: `docker compose -p job-board down`
 
 ### phpMyAdmin
 
 If you want to use `phpMyAdmin`:
 
-1. create containers
-    1. docker compose
-        1. run docker-compose up command
-
-   or
-
-    2. images:
-        1. `docker pull phpmyadmin/phpmyadmin`
-        2. `docker run --name phpmyadmin-container --net job-board-net -d -p 8081:80 -e PMA_HOST=job-board-mysql -e PMA_PORT=3306 phpmyadmin/phpmyadmin`
-
-2. in browser run `localhost:8081`
+1. Create container
+2. in browser open [localhost]('h')
 3. login using username `root` and password `mydbpassword`
+
+### Manually pull images
+
+1. Open yor CLI and start running following commands (one by one)
+
+2. Create docker network `docker network create job-board-net`
+
+3. Pull images:
+    1. `docker pull blagoja95/job-board-mysql-image:v1.0.1`
+    2. `docker pull blagoja95/job-board-tomcat-image:v1.2.0`
+    3. `docker pull blagoja95/job-board-node-image:v1.2.0`
+    4. `docker pull phpmyadmin/phpmyadmin` if you want to use phpmyadmin (optional)
+   
+4. Create containers:
+    1. `docker run -d -p 3306:3306 --name job-board-mysql --net job-board-net -e MYSQL_ROOT_PASSWORD=mydbpassword blagoja95/job-board-mysql-image:v1.0.1`
+    2. `docker run --name job-board-tomcat -d -p 8080:8080 --net job-board-net blagoja95/job-board-tomcat-image:v1.2.0`
+    3. `docker run -dp 3000:3000 --name job-board-node blagoja95/job-board-node-image:v1.2.0`
+    4. `docker run --name phpmyadmin-container --net job-board-net -d -p 8081:80 -e PMA_HOST=job-board-mysql -e PMA_PORT=3306 phpmyadmin/phpmyadmin` (optional)
 
 ## API [^1]
 
@@ -778,7 +790,7 @@ send them back (-b flag) when creating, deleting or updating data.
 [^5]: **IDs** must exist when they are used for update or creation. New Posts use existing `companyID`, update use
 corresponding IDs for post and user row.
 
-[^6]: **Docker compose on linux**: command must be run with sudo, if `bootkit` fails or error massage appears with
+[^6]: **Docker compose on linux**: command must be run with sudo, if `bootkit` fails or error message appears with
 invalid host header
 use command  `sudo DOCKER_BUILDKIT=0 docker-compose up -d --build`
 
