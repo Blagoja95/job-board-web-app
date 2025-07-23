@@ -66,7 +66,15 @@ services:
       context: .
       dockerfile: ./docker/apache/Apache.Dockerfile
     container_name: apache_bck
+    environment:
+      HOST: ${HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
+      - /var/www/html/vendor
       - ./backend/pbck/src:/var/www/html/
     networks:
       - job-board-net

@@ -1,6 +1,6 @@
 <?php
 
-namespace pbck;
+namespace router;
 
 class Router
 {
