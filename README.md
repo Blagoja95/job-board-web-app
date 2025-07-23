@@ -1,5 +1,9 @@
 # Job board web app
 
+```shell
+docker compose -f docker-compose.dev.yml --profile test  up -d
+``` 
+
 Job board web app where employers list job vacancies and job seekers apply for positions. Made with ReactJS, TailwindCSS and JAVA. Running back-end on Tomcat and storing data using MySQL
 RDBMS and administrating it using phpMyAdmin. All parts containerized using Docker and docker compose tool to handle all
 images, containers, hot reload and other configurations.

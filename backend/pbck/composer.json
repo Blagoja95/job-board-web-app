@@ -1,0 +1,11 @@
+{
+  "require": {
+    "vlucas/phpdotenv": "*"
+  },
+  "autoload": {
+    "classmap" : [
+      "src/database",
+      "src/router"
+    ]
+  }
+}
