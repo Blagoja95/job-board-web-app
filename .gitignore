@@ -1,7 +1,7 @@
 backend/target/
-!backend/jbck/.mvn/wrapper/maven-wrapper.jar
-!backend/jbck/src/main/**/target/
-!backend/jbck/src/test/**/target/
+!backend/.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 .idea/
 *.iws
@@ -22,15 +22,13 @@ backend/target/
 /nbdist/
 /.nb-gradle/
 build/
-!backend/jbck/src/main/**/build/
-!backend/jbck/src/main/**/build/
-!backend/jbck/src/test/**/build/
+!**/src/main/**/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 .vscode/
 
 node_modules/
 build/
-.DS_Store
 
-.env*
-!.env.example
+.DS_Store
