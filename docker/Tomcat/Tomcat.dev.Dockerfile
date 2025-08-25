@@ -1,17 +1,21 @@
-FROM tomcat:latest
+FROM maven:latest AS builder
+LABEL author="boris.blagoejvicc@hotmail.com"
 
-LABEL maintainer="Boris Blagojević <boris.blagojevicc@hotmail.com>"
+WORKDIR /app
 
-ENV JRE_HOME:           /usr
-ENV CATALINA_BASE       /usr/local/tomcat
-ENV CATALINA_HOME       /usr/local/tomcat
-ENV CATALINA_TMPDIR     /usr/local/tomcat/temp
-ENV CLASSPATH:          /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
-ENV JAVA_OPTS "-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
+COPY backend/pom.xml .
 
-RUN rm -rf $CATALINA_BASE/webapps/*
+RUN mvn clean install
 
-COPY burza-rada-1.0-SNAPSHOT.war $CATALINA_BASE/webapps/ROOT.war
+COPY backend/src ./src
+
+RUN mvn package -Dmaven.test.skip
+
+FROM tomcat:10
+
+WORKDIR /usr/local/tomcat/webapps/
+
+COPY --from=builder /app/target/burza-rada-1.0-SNAPSHOT.war  /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
 
